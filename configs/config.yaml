@@ -1,0 +1,86 @@
+# Multimodal RAG System Configuration
+
+# Model Settings
+models:
+  embedding:
+    provider: openai  # Options: openai, huggingface
+    model_name: text-embedding-3-large
+    dimension: 3072
+
+  clip:
+    model_name: ViT-B/32
+    dimension: 512
+
+  llm:
+    provider: openai  # Options: openai, anthropic
+    model_name: gpt-4-turbo-preview
+    temperature: 0.7
+    max_tokens: 1000
+
+# Vector Database Settings
+vector_db:
+  type: faiss  # Options: faiss, pinecone, chromadb
+
+  faiss:
+    index_type: flatip  # Options: flatl2, flatip, ivf
+    metric: cosine
+
+  pinecone:
+    environment: us-east-1
+    metric: cosine
+
+  chromadb:
+    persist_directory: ./data/processed/chromadb
+    collection_name: multimodal_embeddings
+
+# Retrieval Settings
+retrieval:
+  top_k: 5
+  similarity_threshold: 0.5
+  rerank: false
+  hybrid_weight:
+    text: 0.5
+    image: 0.5
+
+# RAG Settings
+rag:
+  context_window: 5
+  use_multi_query: false
+  num_queries: 3
+  conversation_memory: 3  # Number of previous exchanges to remember
+
+# Data Processing
+data:
+  batch_size: 32
+  max_image_size: [512, 512]
+  supported_formats:
+    images: [jpg, jpeg, png, webp]
+    text: [csv, json, txt]
+
+# API Settings
+api:
+  host: 0.0.0.0
+  port: 8000
+  cors_origins: ["*"]
+  request_timeout: 60
+
+# Frontend Settings
+frontend:
+  port: 8501
+  max_upload_size: 10  # MB
+  default_k: 5
+
+# Evaluation Settings
+evaluation:
+  metrics:
+    - recall@k
+    - precision@k
+    - ndcg@k
+    - mrr
+  k_values: [1, 3, 5, 10]
+
+# Logging
+logging:
+  level: INFO
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: logs/app.log

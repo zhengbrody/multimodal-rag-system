@@ -1,0 +1,23 @@
+# Simplified requirements for Personal RAG System
+# Compatible with Python 3.12+
+
+# Core API
+fastapi==0.104.1
+uvicorn==0.24.0
+pydantic==2.5.0
+python-multipart==0.0.6
+
+# LLM & RAG
+openai==1.3.0
+
+# Data Processing - Updated for Python 3.12 compatibility
+numpy>=1.26.0
+scikit-learn>=1.3.2
+
+# Frontend
+streamlit==1.28.2
+
+# Utilities
+python-dotenv==1.0.0
+pyyaml==6.0.1
+requests==2.31.0
