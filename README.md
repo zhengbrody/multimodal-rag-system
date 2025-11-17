@@ -406,9 +406,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📧 Contact
 
-Your Name - [your.email@example.com](mailto:your.email@example.com)
+Your Name - [a13105129007@gmail.com](mailto:a13105129007@gmail.com)
 
-Project Link: [https://github.com/yourusername/multimodal-rag-system](https://github.com/yourusername/multimodal-rag-system)
+Project Link: [https://github.com/zhengbrody/multimodal-rag-system/tree/main](https://github.com/zhengbrody/multimodal-rag-system/tree/main)
 
 ---
 
