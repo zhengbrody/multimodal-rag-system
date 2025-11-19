@@ -1,0 +1,17 @@
+# Frontend-only requirements for Streamlit deployment
+# No ML/AI libraries needed - frontend only makes API calls to backend
+
+# Core Frontend Framework
+streamlit==1.28.2
+
+# API Communication
+requests==2.31.0
+
+# Image Processing (for display only)
+Pillow==10.1.0
+
+# Data Display
+pandas==2.1.3
+
+# Configuration
+python-dotenv==1.0.0

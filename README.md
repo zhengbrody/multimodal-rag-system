@@ -2,7 +2,7 @@
 
 > **End-to-end Retrieval-Augmented Generation (RAG) system integrating visual and textual information for intelligent product search and knowledge retrieval.**
 
-[![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
+[![Python 3.11-3.12](https://img.shields.io/badge/python-3.11--3.12-blue.svg)](https://www.python.org/downloads/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.104+-green.svg)](https://fastapi.tiangolo.com/)
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.28+-red.svg)](https://streamlit.io/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -112,10 +112,12 @@ A **Multimodal RAG pipeline** that:
 
 ### Prerequisites
 
-- Python 3.9+
+- Python 3.11-3.12 (recommended for best compatibility)
 - pip or conda
 - Docker (for containerized deployment)
 - OpenAI API key (for embeddings and LLM)
+
+**Note:** Python 3.13+ is not yet supported due to torch compatibility issues.
 
 ### Setup
 
@@ -323,6 +325,35 @@ docker-compose up -d
 ### AWS Lambda (API only)
 
 Use the serverless framework or AWS SAM for deploying the API as a Lambda function.
+
+### Streamlit Cloud (Frontend Only)
+
+Deploy the frontend to Streamlit Cloud for easy public access:
+
+1. **Prerequisites**
+   - GitHub repository with your code
+   - Streamlit Cloud account (free at [share.streamlit.io](https://share.streamlit.io))
+   - Backend API deployed separately (AWS EC2, Lambda, etc.)
+
+2. **Deployment Steps**
+   - Push your code to GitHub
+   - Go to [share.streamlit.io](https://share.streamlit.io) and click "New app"
+   - Select your repository and branch (main)
+   - Set main file path: `frontend/app.py`
+   - Click "Advanced settings" and configure:
+     - **Python version**: 3.11
+     - **Requirements file**: `frontend/requirements.txt`
+   - In "Secrets" section, add your backend API URL:
+     ```toml
+     API_URL = "https://your-backend-api-url.com"
+     ```
+   - Click "Deploy"
+
+3. **Important Notes**
+   - The frontend uses a minimal `frontend/requirements.txt` (no ML libraries)
+   - Python 3.11 is specified in `.python-version` and `runtime.txt`
+   - Deployment is free and takes ~2-3 minutes
+   - Auto-updates on git push if enabled
 
 ### Monitoring
 

@@ -25,7 +25,12 @@ st.set_page_config(
 )
 
 # API configuration
-API_URL = st.secrets.get("API_URL", "http://localhost:8000")
+# Try to get from secrets first, fallback to environment variable, then default
+try:
+    API_URL = st.secrets.get("API_URL", "http://localhost:8000")
+except (FileNotFoundError, KeyError):
+    import os
+    API_URL = os.getenv("API_URL", "http://localhost:8000")
 
 # Custom CSS
 st.markdown("""

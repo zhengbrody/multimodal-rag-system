@@ -34,6 +34,9 @@ ENV/
 .env
 .env.local
 
+# Streamlit secrets
+.streamlit/secrets.toml
+
 # Data files
 data/raw/*
 data/processed/*

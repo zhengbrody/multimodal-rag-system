@@ -1,0 +1,20 @@
+# Streamlit Configuration for Multimodal RAG System
+
+[server]
+# Server settings
+headless = true
+port = 8501
+enableCORS = false
+enableXsrfProtection = true
+
+[browser]
+# Browser settings
+gatherUsageStats = false
+
+[theme]
+# Custom theme
+primaryColor = "#1E88E5"
+backgroundColor = "#FFFFFF"
+secondaryBackgroundColor = "#F5F5F5"
+textColor = "#424242"
+font = "sans serif"
