@@ -1,0 +1,937 @@
+{
+  "personal_info": {
+    "name": "Zheng Dong",
+    "title": "Machine Learning Engineer / Software Engineer",
+    "email": "a13105129007@gmail.com",
+    "phone": "(814) 826-8590",
+    "location": "San Diego, CA",
+    "bio": "I'm a graduate student at UC San Diego pursuing M.S. in Electrical and Computer Engineering, with a strong foundation in machine learning and software engineering. With hands-on experience at Allianz Insurance and multiple successful Kaggle competitions, I specialize in building production-grade ML systems, distributed computing, and full-stack development. Currently seeking 2026 Summer internships in Machine Learning Engineering, with interests in MLOps, LLM applications, and scalable ML infrastructure."
+  },
+  "keyword_mappings": {
+    "internship": "Seeking 2026 Summer internship in Machine Learning Engineering or Software Engineering roles, available May/June 2026 for 10-12 weeks",
+    "2026": "Available for Summer 2026 internship starting May/June 2026",
+    "summer": "Seeking Summer 2026 internship, 10-12 weeks duration, open to relocation anywhere in US",
+    "visa": "F-1 student visa with CPT/OPT eligibility, international student from China",
+    "location": "Currently in San Diego, CA. Open to relocate anywhere in US for internship",
+    "graduation": "Expected graduation June 2027 from UC San Diego with M.S. in ECE",
+    "school": "Currently at UC San Diego (M.S. ECE, exp. 2027), graduated from Penn State (B.Eng. Data Science, 2025)",
+    "gpa": "Strong academic performance in Data Science and ECE programs",
+    "age": "Graduate student, completed undergraduate 2021-2025",
+    
+    "python": "Expert level - 4+ years experience, used in all ML projects and production systems",
+    "pytorch": "Advanced level - built LLM inference system, RAG pipeline, recommendation system using PyTorch",
+    "tensorflow": "Proficient - used in academic projects and early ML work",
+    "langchain": "Advanced - built production RAG system processing 50K+ products with LangChain",
+    "llm": "Strong experience - fine-tuned LLaMA with LoRA, built RAG systems, Kaggle Silver Medal in LLM inference",
+    "rag": "Expert - built multimodal RAG system with 92% accuracy, sub-1s latency, 500+ concurrent users",
+    "mlops": "Production experience - MLflow, Docker, Kubernetes, model monitoring, A/B testing, automated retraining",
+    "aws": "Hands-on experience - EC2, Lambda, DynamoDB, S3, CloudFormation, deployed multiple production systems",
+    "docker": "Production level - containerized all ML models, used in CI/CD pipelines",
+    "kubernetes": "Deployed LLM inference system on K8s achieving 99.9% availability",
+    "spark": "Built systems processing 10M+ daily events using PySpark",
+    "kafka": "Implemented real-time ML pipelines with Kafka streaming, 10K+ concurrent requests",
+    "redis": "Used for caching in multiple projects - API caching, feature store, reduced latency by 30-70%",
+    "postgresql": "Migrated production DB at Allianz, optimized queries reducing execution time by 35%",
+    "fastapi": "Built multiple production APIs - RAG system, recommendation engine, fraud detection",
+    "react": "Frontend development for full-stack projects, built UI for RAG system",
+    
+    "kaggle": "Silver Medal (Top 5%) in distributed LLM inference competition, 65% latency improvement",
+    "competition": "Kaggle Silver Medal winner - LLM inference optimization competition",
+    "medal": "Won Silver Medal in Kaggle LLM competition by optimizing inference to 105ms (65% improvement)",
+    
+    "allianz": "Machine Learning Engineer intern Jun-Sep 2024, built fraud detection system processing 200K+ transactions",
+    "penn state": "Research Assistant Aug-Dec 2024, built NLP pipeline with 92% F1-score, also completed B.Eng. 2021-2025",
+    "research": "ML Research Assistant at Penn State - NLP, document processing, entity extraction with BERT",
+    
+    "project": "5 major projects: Multimodal RAG (92% accuracy), Recommendation System (10M events/day), LLM Inference (Kaggle Silver), Cloud E-commerce (8K transactions/day), Music Recommender",
+    "rag project": "Built end-to-end multimodal RAG with CLIP+OpenAI embeddings, 92% accuracy, sub-1s latency, deployed on AWS",
+    "recommendation": "Built collaborative filtering system with PySpark processing 10M+ daily interactions, 0.85 AUC, 2K+ QPS",
+    "llm project": "Kaggle Silver Medal - Fine-tuned LLaMA with LoRA, 65% latency reduction, 99.9% availability on K8s",
+    
+    "strength": "End-to-end ML systems, production deployment, performance optimization, both research and engineering",
+    "skills": "Python, PyTorch, TensorFlow, LangChain, PySpark, Kafka, MLflow, Docker, K8s, AWS, FastAPI, PostgreSQL",
+    "languages": "Python (expert), Java, SQL, C++, JavaScript, Scala, PHP",
+    
+    "salary": "Open to competitive internship compensation standard for ML engineering at top tech companies",
+    "compensation": "Flexible on compensation, focused on learning opportunity and impactful work",
+    
+    "availability": "Available Summer 2026, May/June start, 10-12 weeks, open to relocation",
+    "start date": "Flexible May/June 2026 start date for summer internship",
+    "duration": "10-12 weeks for summer 2026 internship",
+    
+    "github": "https://github.com/zhengbrody - featured repos: multimodal-rag-system, llm-inference-optimization",
+    "linkedin": "https://linkedin.com/in/zheng-dong-25492029a",
+    "email": "a13105129007@gmail.com",
+    "phone": "(814) 826-8590",
+    
+    "achievement": "Kaggle Silver Medal, 92% RAG accuracy, 65% latency reduction, 99.9% uptime, 15% precision improvement, 18% CTR increase",
+    "metric": "Key metrics: 92% accuracy, 200K+ transactions/day, 10M+ events/day, sub-1s latency, 99.9% uptime",
+    
+    "interest": "LLMs, RAG systems, MLOps, distributed ML, recommendation systems, model optimization, online learning",
+    "goal": "Become ML engineering leader building scalable ML platforms solving real-world problems",
+    
+    "prefer": "Interested in Big Tech, AI-first companies (OpenAI, Anthropic), ML infrastructure roles"
+  },
+  "comprehensive_qa": {
+    "basic_info": [
+      {
+        "q": "What's your name?",
+        "keywords": ["name"],
+        "a": "Zheng Dong"
+      },
+      {
+        "q": "Where are you located?",
+        "keywords": ["location", "where", "based"],
+        "a": "San Diego, CA (currently at UC San Diego)"
+      },
+      {
+        "q": "How to contact you?",
+        "keywords": ["contact", "email", "phone", "reach"],
+        "a": "Email: a13105129007@gmail.com, Phone: (814) 826-8590, LinkedIn: linkedin.com/in/zheng-dong-25492029a, GitHub: github.com/zhengbrody"
+      },
+      {
+        "q": "What's your current status?",
+        "keywords": ["status", "student", "currently"],
+        "a": "Full-time M.S. student at UC San Diego in Electrical and Computer Engineering, expected graduation June 2027"
+      },
+      {
+        "q": "What's your visa status?",
+        "keywords": ["visa", "work authorization", "immigration"],
+        "a": "F-1 student visa with CPT/OPT eligibility, international student from China"
+      },
+      {
+        "q": "When did you graduate from undergrad?",
+        "keywords": ["undergraduate", "bachelor", "graduation"],
+        "a": "May 2025 from Pennsylvania State University with B.Eng. in Data Science"
+      },
+      {
+        "q": "What's your age?",
+        "keywords": ["age", "old", "year born"],
+        "a": "Graduate student, completed undergraduate from 2021-2025, so approximately 23-24 years old"
+      },
+      {
+        "q": "Are you looking for a job?",
+        "keywords": ["job", "looking", "seeking", "opportunity"],
+        "a": "Yes, seeking 2026 Summer internship in Machine Learning Engineering or Software Engineering"
+      },
+      {
+        "q": "When are you available?",
+        "keywords": ["available", "when", "start"],
+        "a": "Available Summer 2026, flexible May/June start date, 10-12 weeks duration"
+      },
+      {
+        "q": "Can you relocate?",
+        "keywords": ["relocate", "move", "location preference"],
+        "a": "Yes, open to relocate anywhere in the US, with preference for tech hubs like SF Bay Area, Seattle, NYC"
+      }
+    ],
+    "education": [
+      {
+        "q": "What school do you go to?",
+        "keywords": ["school", "university", "college"],
+        "a": "Currently at UC San Diego for M.S. in ECE (exp. 2027), graduated from Penn State with B.Eng. in Data Science (2025)"
+      },
+      {
+        "q": "What's your major?",
+        "keywords": ["major", "degree", "field"],
+        "a": "M.S. in Electrical and Computer Engineering (UC San Diego), B.Eng. in Data Science (Penn State)"
+      },
+      {
+        "q": "What's your GPA?",
+        "keywords": ["gpa", "grades", "academic"],
+        "a": "Strong academic performance with focus on ML and data engineering coursework"
+      },
+      {
+        "q": "What courses have you taken?",
+        "keywords": ["courses", "coursework", "classes"],
+        "a": "Deep Learning, Machine Learning Systems, Distributed Computing, Natural Language Processing, Computer Vision, Data Structures, Algorithms"
+      },
+      {
+        "q": "When do you graduate?",
+        "keywords": ["graduation", "graduate", "finish"],
+        "a": "Expected graduation June 2027 from UC San Diego"
+      },
+      {
+        "q": "Why did you choose your major?",
+        "keywords": ["why major", "choose"],
+        "a": "Passionate about applying machine learning to solve real-world problems. Data Science undergrad gave me strong foundation in ML algorithms and statistics, now pursuing ECE masters to deepen technical skills in ML systems and computer engineering."
+      }
+    ],
+    "technical_skills": [
+      {
+        "q": "What programming languages do you know?",
+        "keywords": ["programming", "languages", "code"],
+        "a": "Expert: Python. Proficient: Java, SQL, C++, JavaScript, Scala, PHP"
+      },
+      {
+        "q": "How good is your Python?",
+        "keywords": ["python", "python skill"],
+        "a": "Expert level - 4+ years experience, used in all ML projects, production systems, and competitions. Built RAG systems, LLM inference, recommendation engines all in Python"
+      },
+      {
+        "q": "Do you know PyTorch?",
+        "keywords": ["pytorch", "torch"],
+        "a": "Yes, advanced level. Used PyTorch for LLM fine-tuning (LoRA), built distributed training pipeline, recommendation system, and Kaggle Silver Medal project"
+      },
+      {
+        "q": "TensorFlow or PyTorch?",
+        "keywords": ["tensorflow", "pytorch vs", "prefer framework"],
+        "a": "I prefer PyTorch for its flexibility and intuitive API, but I'm proficient in both. Used TensorFlow in earlier projects and academic work"
+      },
+      {
+        "q": "What ML frameworks do you use?",
+        "keywords": ["ml frameworks", "machine learning tools"],
+        "a": "PyTorch, TensorFlow, Scikit-learn, XGBoost, Hugging Face Transformers, LangChain, spaCy"
+      },
+      {
+        "q": "Do you know LangChain?",
+        "keywords": ["langchain", "rag framework"],
+        "a": "Yes, advanced level. Built production multimodal RAG system with LangChain processing 50K+ products, implemented chains, memory, and retrieval components"
+      },
+      {
+        "q": "What about LLMs?",
+        "keywords": ["llm", "large language model", "gpt", "llama"],
+        "a": "Strong experience - fine-tuned LLaMA using LoRA achieving 18% improvement, built RAG systems with GPT-4, won Kaggle Silver Medal in LLM inference optimization (65% latency reduction)"
+      },
+      {
+        "q": "Do you know Docker?",
+        "keywords": ["docker", "container"],
+        "a": "Yes, production level. Containerized all ML models, used in CI/CD pipelines, deployed fraud detection model at Allianz with Docker"
+      },
+      {
+        "q": "What about Kubernetes?",
+        "keywords": ["kubernetes", "k8s"],
+        "a": "Deployed distributed LLM inference system on Kubernetes achieving 99.9% service availability, implemented auto-scaling and health checks"
+      },
+      {
+        "q": "Do you know AWS?",
+        "keywords": ["aws", "cloud", "amazon"],
+        "a": "Yes, hands-on experience with EC2, Lambda, DynamoDB, S3, SQS, EventBridge, API Gateway, CloudFormation, CloudWatch, X-Ray. Deployed multiple production systems on AWS"
+      },
+      {
+        "q": "What databases do you know?",
+        "keywords": ["database", "db", "sql"],
+        "a": "PostgreSQL (migrated production DB, query optimization), MySQL, MongoDB, Redis (caching), DynamoDB, Vector databases (Pinecone, FAISS)"
+      },
+      {
+        "q": "Frontend development?",
+        "keywords": ["frontend", "react", "web"],
+        "a": "Proficient in React.js, built UI for RAG system and other full-stack projects. Also know HTML, CSS, JavaScript, TypeScript"
+      },
+      {
+        "q": "What about backend?",
+        "keywords": ["backend", "api", "server"],
+        "a": "Strong backend skills - FastAPI (built multiple production APIs), Flask, Node.js. Experience with RESTful APIs, WebSocket, microservices architecture"
+      },
+      {
+        "q": "Do you know Spark?",
+        "keywords": ["spark", "pyspark", "big data"],
+        "a": "Yes, built recommendation system processing 10M+ daily user interactions using PySpark, implemented ALS collaborative filtering achieving 0.85 AUC"
+      },
+      {
+        "q": "What about Kafka?",
+        "keywords": ["kafka", "streaming"],
+        "a": "Implemented real-time ML pipelines with Kafka streaming, handled 10K+ concurrent document processing requests, built online learning system with Kafka"
+      },
+      {
+        "q": "Git and version control?",
+        "keywords": ["git", "version control", "github"],
+        "a": "Proficient - all projects on GitHub, experience with Git workflows, branching strategies, pull requests, code reviews"
+      }
+    ],
+    "mlops_and_production": [
+      {
+        "q": "Do you have MLOps experience?",
+        "keywords": ["mlops", "ml production", "deployment"],
+        "a": "Yes, extensive production ML experience - MLflow for experiment tracking, Docker/K8s deployment, model monitoring, A/B testing, automated retraining, achieving 99.9% uptime"
+      },
+      {
+        "q": "What's your experience with model deployment?",
+        "keywords": ["model deployment", "production ml", "serving"],
+        "a": "Deployed fraud detection model at Allianz (200K+ transactions/day), RAG system on AWS (500+ concurrent users), recommendation API (2K+ QPS), LLM inference on K8s (99.9% availability)"
+      },
+      {
+        "q": "How do you monitor ML models?",
+        "keywords": ["monitoring", "model drift", "performance tracking"],
+        "a": "Use MLflow for metrics tracking, Grafana dashboards for real-time monitoring, automated alerts for model drift detection, implemented automated retraining when performance drops below threshold"
+      },
+      {
+        "q": "Have you done A/B testing?",
+        "keywords": ["ab test", "a/b testing", "experiment"],
+        "a": "Yes, built A/B testing frameworks showing 12-18% metric improvements. Implemented proper statistical analysis, controlled experiments, and metrics collection for fraud detection and recommendation systems"
+      },
+      {
+        "q": "What about CI/CD for ML?",
+        "keywords": ["cicd", "ci/cd", "automation"],
+        "a": "Implemented GitHub Actions for CI/CD, AWS CodePipeline for microservices deployment, automated testing (pytest), model versioning with DVC, reducing deployment time by 30%"
+      },
+      {
+        "q": "How do you handle model versioning?",
+        "keywords": ["model version", "versioning", "dvc"],
+        "a": "Use MLflow for experiment tracking and model registry, DVC for data and model versioning, implemented proper tagging and rollback strategies"
+      },
+      {
+        "q": "Experience with feature stores?",
+        "keywords": ["feature store", "feast"],
+        "a": "Developed feature store using Feast managing 200+ user/item features with hourly updates for recommendation system, enabled real-time feature serving"
+      },
+      {
+        "q": "How do you optimize model latency?",
+        "keywords": ["latency", "optimize", "speed"],
+        "a": "Multiple techniques: reduced API latency from 150ms to 105ms using Redis caching, achieved 65% latency reduction in LLM inference through dynamic batching and quantization, optimized database queries reducing execution time by 35%"
+      },
+      {
+        "q": "What about model quantization?",
+        "keywords": ["quantization", "compression", "optimization"],
+        "a": "Implemented quantization in LLM inference system reducing memory usage by 60% while maintaining 95% accuracy, used mixed precision training"
+      },
+      {
+        "q": "Do you know TorchServe?",
+        "keywords": ["torchserve", "model serving"],
+        "a": "Yes, deployed recommendation model using TorchServe handling 2K+ QPS with p99 latency under 50ms"
+      }
+    ],
+    "experience_deep_dive": [
+      {
+        "q": "Tell me about your Allianz experience",
+        "keywords": ["allianz", "insurance"],
+        "a": "Machine Learning Engineer intern (Jun-Sep 2024) at Allianz Insurance in Qingdao, China. Built end-to-end fraud detection ML pipeline processing 200K+ daily transactions using PySpark. Achieved 15% precision improvement through feature engineering. Deployed gradient boosting model with MLflow and Docker, implemented A/B testing and model monitoring. Also built microservice-based prediction system with Redis caching, optimizing API response time from 150ms to 105ms. Migrated production DB from MySQL to PostgreSQL."
+      },
+      {
+        "q": "What did you learn at Allianz?",
+        "keywords": ["learn allianz", "allianz learning"],
+        "a": "Learned production ML deployment in enterprise environment, working with large-scale data (200K+ daily transactions), model monitoring and drift detection, A/B testing methodologies, microservices architecture, database migration strategies, and collaborating with cross-functional teams"
+      },
+      {
+        "q": "What was the fraud detection system?",
+        "keywords": ["fraud detection", "fraud model"],
+        "a": "End-to-end ML pipeline for detecting fraudulent insurance claims. Used PySpark for data processing, implemented sliding window feature engineering, trained gradient boosting model achieving 15% precision improvement. Deployed to production with MLflow for tracking, Docker for containerization, implemented automated retraining triggers when performance drops below 85% threshold. Built real-time API with Redis caching serving 10,000+ requests/hour."
+      },
+      {
+        "q": "Tell me about Penn State research",
+        "keywords": ["penn state", "research assistant"],
+        "a": "ML Research Assistant (Aug-Dec 2024) at Penn State. Built NLP pipeline for entity extraction using spaCy and BERT Transformers, processing 10K+ documents daily with Kafka streaming. Achieved 92% F1-score on validation set. Developed automated ML experiment tracking with MLflow and Airflow DAGs, implemented hyperparameter tuning with Optuna reducing training time by 30%. Also built scalable document processing system achieving 3× throughput gain."
+      },
+      {
+        "q": "What about the consulting institute internship?",
+        "keywords": ["qingdao", "engineering consulting", "sensor"],
+        "a": "Software Engineer Intern (Jun-Sep 2023) at Qingdao Engineering Consulting Institute. Developed real-time monitoring platform streaming 500+ sensor feeds, built RESTful APIs with WebSocket and circuit breaker pattern, improved system reliability from 97% to 99.5% uptime. Created anomaly detection system using isolation forest and LSTM achieving 79% precision on time-series sensor data."
+      },
+      {
+        "q": "What was your biggest challenge at Allianz?",
+        "keywords": ["challenge allianz"],
+        "a": "Biggest challenge was handling data quality issues with 200K+ daily transactions while maintaining low latency. Solved by implementing robust preprocessing pipeline with outlier detection, optimizing batch processing, and using Redis caching to reduce API latency by 30%. Also needed to ensure model remained accurate over time, so implemented automated monitoring and retraining pipeline."
+      },
+      {
+        "q": "How did you improve the fraud detection precision?",
+        "keywords": ["improve precision", "15%"],
+        "a": "Achieved 15% precision improvement through better feature engineering - implemented sliding window aggregation to capture temporal patterns, created interaction features between transaction attributes, used domain knowledge to engineer risk indicators, and performed extensive feature selection using importance scores from gradient boosting models."
+      }
+    ],
+    "projects_detailed": [
+      {
+        "q": "What's your best project?",
+        "keywords": ["best project", "proud", "favorite"],
+        "a": "Multimodal RAG System for Product Search - built end-to-end system with 92% retrieval accuracy, sub-1s latency, supporting 500+ concurrent users. Combined CLIP and OpenAI embeddings for semantic search, deployed on AWS with full MLOps pipeline, achieved 18% CTR improvement through A/B testing. It demonstrates both ML expertise and production engineering skills."
+      },
+      {
+        "q": "Explain your RAG system",
+        "keywords": ["rag system", "multimodal rag", "product search"],
+        "a": "Built production-ready multimodal RAG system combining text (OpenAI embeddings) and image (CLIP) for product search. Pipeline: 1) Preprocessed 50K+ products 2) Generated embeddings 3) Stored in Pinecone vector DB 4) User query → embed → similarity search → retrieve top-K 5) LLM (GPT-4) generates contextual recommendations. FastAPI backend with Redis caching, Streamlit frontend, deployed on AWS EC2 with Docker. Achieved 92% top-5 accuracy, sub-1s latency, 18% CTR increase in A/B tests."
+      },
+      {
+        "q": "Why 92% accuracy for RAG?",
+        "keywords": ["92%", "accuracy", "rag accuracy"],
+        "a": "Achieved 92% Recall@5 through: 1) High-quality embeddings (CLIP for images, OpenAI text-embedding-3-large for text) 2) Proper document chunking strategy 3) Hybrid search combining text and image 4) Reranking pipeline for precision 5) Extensive evaluation on test set with human-labeled relevance"
+      },
+      {
+        "q": "How did you optimize RAG latency?",
+        "keywords": ["rag latency", "sub-1s", "fast"],
+        "a": "Achieved sub-1s latency through: 1) Redis caching for frequent queries 2) Async request handling in FastAPI 3) Efficient vector search with Pinecone 4) Batch embedding generation 5) Query preprocessing optimization 6) Connection pooling 7) CDN for static assets"
+      },
+      {
+        "q": "Tell me about your recommendation system",
+        "keywords": ["recommendation", "recsys", "collaborative filtering"],
+        "a": "Built real-time recommendation engine processing 10M+ daily user interactions using PySpark. Implemented ALS collaborative filtering achieving 0.85 AUC. Created feature store with Feast managing 200+ features with hourly updates. Deployed with TorchServe handling 2K+ QPS, p99 latency under 50ms. Built online learning pipeline with Kafka for real-time updates. A/B testing showed 15% engagement increase."
+      },
+      {
+        "q": "What's ALS in your recommendation system?",
+        "keywords": ["als", "matrix factorization"],
+        "a": "Alternating Least Squares - collaborative filtering algorithm for matrix factorization. Decomposes user-item interaction matrix into user and item latent factors. Used Spark MLlib implementation on 10M+ interactions, tuned hyperparameters (rank, regularization, iterations) achieving 0.85 AUC on holdout set."
+      },
+      {
+        "q": "How did you win Kaggle Silver Medal?",
+        "keywords": ["kaggle", "silver", "medal", "competition"],
+        "a": "Won Silver Medal (Top 5%) in distributed LLM inference competition. Key strategies: 1) Fine-tuned LLaMA with LoRA achieving 18% improvement 2) Implemented dynamic batching 3) Applied quantization reducing memory by 60% 4) Multi-GPU parallelization 5) Optimized inference pipeline reducing latency from 320ms to 105ms (65% improvement) 6) Deployed on Kubernetes with 99.9% availability"
+      },
+      {
+        "q": "What's LoRA fine-tuning?",
+        "keywords": ["lora", "fine-tune", "parameter efficient"],
+        "a": "Low-Rank Adaptation - parameter-efficient fine-tuning method that freezes pretrained weights and trains small rank decomposition matrices. Used it to fine-tune LLaMA model with minimal resources, achieved 18% performance improvement on benchmark while using <1% trainable parameters compared to full fine-tuning."
+      },
+      {
+        "q": "How did you reduce LLM inference latency?",
+        "keywords": ["llm latency", "320ms", "105ms", "65%"],
+        "a": "Reduced latency from 320ms to 105ms (65% reduction) through: 1) Dynamic batching - group requests efficiently 2) Quantization - reduce model size by 60% 3) KV cache optimization 4) Multi-GPU parallelization with ThreadPoolExecutor 5) Optimized tokenization 6) Async processing 7) Memory management"
+      },
+      {
+        "q": "What was the cloud e-commerce project?",
+        "keywords": ["ecommerce", "cloud-native", "serverless"],
+        "a": "Built serverless microservices platform on AWS serving 8,000+ daily transactions. Used Lambda, API Gateway, DynamoDB, SQS, EventBridge for event-driven architecture achieving 99.9% uptime. Implemented AWS CodePipeline for CI/CD across 12 microservices, CloudFormation for IaC, CloudWatch and X-Ray for monitoring/tracing, reducing debugging time by 30%."
+      },
+      {
+        "q": "Why use serverless architecture?",
+        "keywords": ["serverless", "lambda", "why"],
+        "a": "Chose serverless for: 1) Automatic scaling 2) Pay-per-use cost efficiency 3) No server management 4) High availability built-in 5) Fast development cycle 6) Easy integration with AWS services. Perfect fit for e-commerce with variable traffic patterns."
+      },
+      {
+        "q": "Tell me about music recommendation project",
+        "keywords": ["music", "flask", "redis"],
+        "a": "Built Flask RESTful API for music recommendations with Redis caching layer handling 1,200 concurrent requests. Achieved sub-80ms response latency through cache invalidation strategies and connection pooling. Optimized PostgreSQL queries (35% execution time reduction), implemented comprehensive pytest testing (88% coverage). Built A/B testing framework showing 12% user engagement improvement."
+      }
+    ],
+    "technical_depth": [
+      {
+        "q": "How do embeddings work?",
+        "keywords": ["embeddings", "vector", "representation"],
+        "a": "Embeddings convert text/images into dense vector representations in high-dimensional space where semantic similarity corresponds to distance. Used CLIP (image+text), OpenAI text-embedding-3-large (text) in RAG system. Process: input → neural network encoder → fixed-size vector → can compare using cosine similarity"
+      },
+      {
+        "q": "What's the difference between CLIP and BERT?",
+        "keywords": ["clip vs bert", "difference"],
+        "a": "CLIP is multimodal (trained on image-text pairs) for vision-language tasks, uses contrastive learning. BERT is text-only, trained on masked language modeling for NLP tasks. Used CLIP for multimodal RAG (image search), BERT for entity extraction (text-only). CLIP better for zero-shot image classification."
+      },
+      {
+        "q": "How do you choose embedding dimension?",
+        "keywords": ["embedding dimension", "vector size"],
+        "a": "Trade-off between representation quality and computational cost. OpenAI text-embedding-3-large uses 3072 dimensions for high quality. CLIP ViT-B/32 uses 512 dimensions. Higher dimensions capture more nuance but slower search and more storage. Typically use pre-trained model dimensions; can apply PCA for compression if needed."
+      },
+      {
+        "q": "What's cosine similarity?",
+        "keywords": ["cosine similarity", "similarity measure"],
+        "a": "Measures similarity between vectors using cosine of angle between them. Range [-1,1], where 1 = identical direction, 0 = orthogonal, -1 = opposite. Formula: (A·B) / (||A|| ||B||). Used in RAG system to find most similar products. Better than Euclidean distance for high-dimensional embeddings."
+      },
+      {
+        "q": "How does FAISS work?",
+        "keywords": ["faiss", "vector database"],
+        "a": "Facebook AI Similarity Search - library for efficient similarity search in large vector datasets. Uses indexing strategies (IVF, HNSW) for approximate nearest neighbor search. Used in RAG system for fast retrieval. Can handle billions of vectors, optimized for CPU/GPU, provides speed-accuracy tradeoff."
+      },
+      {
+        "q": "Why use Pinecone vs FAISS?",
+        "keywords": ["pinecone", "faiss vs", "vector db choice"],
+        "a": "Pinecone is managed cloud service (easier ops, auto-scaling), FAISS is self-hosted library (more control, lower cost). Used Pinecone for RAG production deployment (no server management), would use FAISS for local dev or when need maximum performance. Pinecone better for production, FAISS for research/prototyping."
+      },
+      {
+        "q": "How does gradient boosting work?",
+        "keywords": ["gradient boosting", "xgboost", "gbm"],
+        "a": "Ensemble method building trees sequentially, each correcting errors of previous ones. Uses gradient descent in function space. Used XGBoost for fraud detection at Allianz - handles imbalanced data well, provides feature importance, robust to overfitting with regularization. Achieved 15% precision improvement."
+      },
+      {
+        "q": "What's the difference between precision and recall?",
+        "keywords": ["precision", "recall", "difference"],
+        "a": "Precision = TP/(TP+FP) - of predicted positives, how many correct. Recall = TP/(TP+FN) - of actual positives, how many found. Fraud detection: high precision prevents false alarms, high recall catches more fraud. Trade-off controlled by threshold. Achieved 15% precision improvement at Allianz while maintaining acceptable recall."
+      },
+      {
+        "q": "How do you handle imbalanced data?",
+        "keywords": ["imbalanced", "class imbalance"],
+        "a": "Fraud detection had severe imbalance. Techniques used: 1) Resampling (SMOTE for oversampling minority) 2) Class weights in loss function 3) Evaluation with precision-recall curve, not accuracy 4) Threshold tuning for business requirements 5) Ensemble methods like XGBoost handle imbalance well"
+      },
+      {
+        "q": "What's F1-score?",
+        "keywords": ["f1", "f1-score"],
+        "a": "Harmonic mean of precision and recall: 2*(P*R)/(P+R). Better than accuracy for imbalanced data. Achieved 92% F1-score on entity extraction at Penn State. Balances precision and recall - useful when both false positives and false negatives matter."
+      },
+      {
+        "q": "How does BERT fine-tuning work?",
+        "keywords": ["bert", "fine-tuning", "transformer"],
+        "a": "Start with pretrained BERT, add task-specific layer, train on domain data. Used for entity extraction at Penn State: 1) Load pretrained BERT 2) Add token classification head 3) Fine-tune on labeled documents 4) Achieved 92% F1-score. Transfer learning leverages BERT's language understanding, few epochs needed."
+      },
+      {
+        "q": "What's attention mechanism?",
+        "keywords": ["attention", "self-attention", "transformer"],
+        "a": "Mechanism allowing model to focus on relevant parts of input. Self-attention in Transformers computes attention scores between all tokens. Key component in BERT, LLaMA. Formula: Attention(Q,K,V) = softmax(QK^T/√d)V. Enables parallel processing and captures long-range dependencies."
+      },
+      {
+        "q": "How do you prevent overfitting?",
+        "keywords": ["overfitting", "regularization"],
+        "a": "Multiple techniques used: 1) L1/L2 regularization 2) Dropout (used in NLP models) 3) Early stopping 4) Cross-validation 5) Data augmentation 6) Batch normalization 7) Reduce model complexity. Monitor train/val loss gap, use validation set for hyperparameter tuning."
+      },
+      {
+        "q": "What's your approach to hyperparameter tuning?",
+        "keywords": ["hyperparameter", "tuning", "optimization"],
+        "a": "Used Optuna for automated hyperparameter search at Penn State, reducing training time by 30%. Methods: 1) Grid search for small space 2) Random search for exploration 3) Bayesian optimization (Optuna) for efficiency 4) Define search space based on domain knowledge 5) Use cross-validation 6) Track experiments with MLflow"
+      },
+      {
+        "q": "How do you deal with data drift?",
+        "keywords": ["data drift", "model drift", "distribution shift"],
+        "a": "Monitor model performance metrics over time, compare input feature distributions, set up alerts when performance drops. Implemented at Allianz: automated retraining trigger when precision drops below 85% threshold. Techniques: statistical tests (KS test), performance monitoring dashboards, A/B test new models before full deployment."
+      },
+      {
+        "q": "What's your testing strategy for ML models?",
+        "keywords": ["testing", "ml testing", "validation"],
+        "a": "Multi-level approach: 1) Unit tests for preprocessing/feature engineering 2) Integration tests for pipeline 3) Model validation on holdout set 4) A/B testing in production 5) Monitor business metrics. Achieved 88% code coverage with pytest in music recommendation project. Test edge cases, data quality, model behavior."
+      }
+    ],
+    "system_design": [
+      {
+        "q": "How would you design a recommendation system?",
+        "keywords": ["design recommendation", "system design"],
+        "a": "1) Offline: batch processing user-item interactions (PySpark), train CF/deep learning models, generate embeddings, store in feature store. 2) Online: user request → feature lookup → model inference (cached features) → ranking → return top-K. 3) Feedback loop: collect clicks → update features → retrain models. Scale: use Redis caching, TorchServe for serving, Kafka for real-time updates, A/B test new models."
+      },
+      {
+        "q": "How to handle millions of users in recommendation system?",
+        "keywords": ["scale recommendation", "millions users"],
+        "a": "Built system processing 10M+ daily interactions: 1) Use distributed computing (PySpark) for batch processing 2) Feature store (Feast) with precomputed features 3) Model serving with batching (TorchServe) 2K+ QPS 4) Redis caching for popular items 5) Kafka for real-time updates 6) Horizontal scaling with load balancers 7) User/item sharding for parallelization"
+      },
+      {
+        "q": "Design a fraud detection system",
+        "keywords": ["design fraud", "fraud system"],
+        "a": "Built at Allianz: 1) Data pipeline: ingest 200K+ daily claims (PySpark) 2) Feature engineering: sliding window aggregation, transaction patterns 3) Model: gradient boosting, real-time scoring API 4) Deploy: Docker + K8s, MLflow tracking 5) Monitor: Grafana dashboards, automated alerts 6) Retrain: trigger when drift detected. Critical: low latency (<105ms), high precision to avoid false positives"
+      },
+      {
+        "q": "How to reduce API latency?",
+        "keywords": ["reduce latency", "api speed"],
+        "a": "Implemented multiple optimizations: 1) Redis caching (reduced latency 30-70%) 2) Database query optimization - indexes, query plans (35% improvement) 3) Async processing with FastAPI 4) Connection pooling 5) Batch requests 6) CDN for static content 7) Load balancing. Example: reduced API response from 150ms to 105ms at Allianz through caching and optimization."
+      },
+      {
+        "q": "How do you ensure high availability?",
+        "keywords": ["availability", "uptime", "reliability"],
+        "a": "Achieved 99.9% uptime across projects: 1) Redundancy - multiple replicas 2) Health checks and auto-restart (K8s) 3) Circuit breaker pattern for fault tolerance 4) Load balancing 5) Database replication 6) Monitoring and alerting (CloudWatch) 7) Graceful degradation 8) Regular backups. Example: improved system reliability from 97% to 99.5% at consulting institute."
+      },
+      {
+        "q": "Microservices vs monolith?",
+        "keywords": ["microservices", "monolith", "architecture"],
+        "a": "Built microservices e-commerce (12 services) and recommendation API. Microservices pros: independent deployment, technology flexibility, scalability, fault isolation. Cons: complexity, distributed system challenges. Use microservices for: large teams, need scaling different components, rapid deployment. Use monolith for: small projects, simpler ops, tightly coupled logic."
+      },
+      {
+        "q": "How do you design for scalability?",
+        "keywords": ["scalability", "scale", "design"],
+        "a": "Multiple techniques: 1) Horizontal scaling over vertical 2) Stateless services (easy replication) 3) Caching (Redis) for read-heavy loads 4) Message queues (Kafka) for async processing 5) Database sharding/replication 6) CDN for static content 7) Auto-scaling (K8s, AWS Lambda) 8) Load balancing. Example: serverless e-commerce auto-scales to handle traffic spikes."
+      },
+      {
+        "q": "How to handle real-time data processing?",
+        "keywords": ["real-time", "streaming", "processing"],
+        "a": "Built multiple real-time systems: 1) Kafka for message streaming (10K+ concurrent requests) 2) Spark Streaming for computation 3) Redis for low-latency storage 4) Async processing to avoid blocking 5) Batching and windowing for efficiency. Example: real-time monitoring platform streaming 500+ sensor feeds with WebSocket integration and circuit breaker pattern."
+      },
+      {
+        "q": "Database choice: SQL vs NoSQL?",
+        "keywords": ["database choice", "sql nosql"],
+        "a": "Depends on use case. SQL (PostgreSQL): structured data, complex queries, ACID transactions - used for fraud detection, migrated from MySQL. NoSQL (MongoDB, DynamoDB): flexible schema, horizontal scaling, high write throughput - used in e-commerce microservices. Redis for caching. Vector DB (Pinecone) for embeddings. Choose based on data structure, consistency requirements, scale."
+      }
+    ],
+    "behavioral": [
+      {
+        "q": "Why do you want to work in ML?",
+        "keywords": ["why ml", "motivation", "passion"],
+        "a": "Passionate about applying ML to solve real-world problems. Fascinated by how models can learn patterns from data and make intelligent decisions. My experience spans research (entity extraction, 92% F1) to production (fraud detection, 200K+ transactions/day), proving I can handle both theory and practice. Excited about current developments in LLMs and RAG systems."
+      },
+      {
+        "q": "What's your biggest achievement?",
+        "keywords": ["achievement", "accomplishment", "proud"],
+        "a": "Kaggle Silver Medal (Top 5%) in LLM inference competition. Demonstrates both ML expertise (LoRA fine-tuning, 18% improvement) and engineering skills (65% latency reduction, 99.9% availability on K8s). Competed against thousands, required deep technical knowledge and optimization skills. Also proud of RAG system with real business impact (18% CTR increase)."
+      },
+      {
+        "q": "Describe a technical challenge you faced",
+        "keywords": ["challenge", "difficult", "problem"],
+        "a": "At Allianz, handling 200K+ daily transactions while maintaining low latency and high accuracy was challenging. Data quality issues, class imbalance in fraud cases, and real-time serving requirements. Solution: robust preprocessing pipeline, advanced feature engineering (sliding window), gradient boosting for imbalance, Redis caching for latency. Achieved 15% precision improvement and 105ms response time."
+      },
+      {
+        "q": "How do you handle failure?",
+        "keywords": ["failure", "mistake", "learn"],
+        "a": "View failures as learning opportunities. In Kaggle competition, initial models performed poorly. Instead of giving up, analyzed failures, tried different architectures, experimented with optimization techniques, eventually achieved Silver Medal. Key: iterate quickly, learn from errors, seek feedback, stay persistent. Also implement proper testing and monitoring to catch issues early."
+      },
+      {
+        "q": "How do you stay current with ML?",
+        "keywords": ["learn", "stay current", "up-to-date"],
+        "a": "1) Read papers on arXiv (LLMs, RAG, optimization) 2) Implement new techniques in projects (LoRA, RAG) 3) Kaggle competitions for hands-on practice 4) Follow ML engineering blogs and Twitter 5) Experiment with latest tools (LangChain, Pinecone) 6) Online courses when needed. Example: learned LangChain by building production RAG system."
+      },
+      {
+        "q": "Tell me about teamwork experience",
+        "keywords": ["teamwork", "collaboration", "team"],
+        "a": "At Allianz, collaborated with data scientists, backend engineers, and product managers. Needed to explain ML concepts to non-technical stakeholders, integrate with existing systems, and coordinate deployments. At Penn State, worked in research team, shared code through Git, conducted code reviews. Key: clear communication, documentation, respect different perspectives."
+      },
+      {
+        "q": "How do you prioritize tasks?",
+        "keywords": ["prioritize", "manage", "time"],
+        "a": "Prioritize by impact and urgency. At Allianz: 1) Critical production issues first 2) High-impact features (15% precision improvement) 3) Optimization (latency reduction) 4) Nice-to-haves. Use agile methodology, break large projects into milestones. Example: RAG project - built MVP first (basic search), then added features (caching, A/B testing, monitoring). Balance perfectionism with shipping."
+      },
+      {
+        "q": "What's your work style?",
+        "keywords": ["work style", "approach"],
+        "a": "Systematic and iterative. Start with understanding problem and requirements, research existing solutions, design architecture, implement MVP, test thoroughly, optimize, deploy with monitoring. Document as I go. Believe in 'make it work, make it right, make it fast' philosophy. Example: RAG system - started with basic retrieval, then optimized for accuracy and latency. Always measure and validate improvements."
+      },
+      {
+        "q": "How do you handle ambiguous requirements?",
+        "keywords": ["ambiguous", "unclear", "vague"],
+        "a": "Ask clarifying questions, define success metrics upfront, propose solutions and get feedback. Example: building recommendation system - clarified business goals (engagement vs revenue), defined metrics (CTR, engagement time), proposed A/B testing framework. Start with MVP to validate approach, iterate based on feedback. Better to clarify early than build wrong solution."
+      },
+      {
+        "q": "Describe your debugging process",
+        "keywords": ["debug", "troubleshoot", "fix"],
+        "a": "Systematic approach: 1) Reproduce issue 2) Isolate problem (binary search, logging) 3) Form hypothesis 4) Test hypothesis 5) Fix and verify 6) Add tests to prevent regression. Tools: extensive logging, debuggers, profilers. Example: optimized RAG latency by profiling bottlenecks, found slow database queries, added indexes. Integrated CloudWatch and X-Ray for distributed tracing in microservices."
+      }
+    ],
+    "company_and_role_fit": [
+      {
+        "q": "What companies are you interested in?",
+        "keywords": ["companies", "where", "work"],
+        "a": "Interested in: 1) Big Tech (Google, Meta, Amazon, Microsoft, Apple) for scale and ML infrastructure 2) AI-first companies (OpenAI, Anthropic, Cohere, Hugging Face) for cutting-edge research 3) Top startups with strong ML focus. Looking for opportunities to work on impactful ML systems, learn from experts, and contribute to products used by millions."
+      },
+      {
+        "q": "What type of role are you looking for?",
+        "keywords": ["role", "position", "type"],
+        "a": "Primarily Machine Learning Engineer roles focusing on: 1) Production ML systems and MLOps 2) LLM applications and RAG 3) Recommendation systems 4) ML infrastructure. Also open to: Applied Scientist, ML Infrastructure Engineer, Software Engineer with ML focus. Want to work on end-to-end ML - from research to production deployment."
+      },
+      {
+        "q": "Why should we hire you?",
+        "keywords": ["hire", "why you", "fit"],
+        "a": "Unique combination: 1) Proven production ML experience (Allianz fraud detection, 200K+ transactions) 2) Strong engineering skills (99.9% uptime systems, sub-1s latency) 3) Research background (Penn State, 92% F1-score) 4) Competition success (Kaggle Silver Medal) 5) Full-stack capabilities (backend to deployment). Can build ML systems from scratch to production, optimize for performance, and deliver business impact."
+      },
+      {
+        "q": "What are your strengths?",
+        "keywords": ["strengths", "good at"],
+        "a": "1) End-to-end ML development - research to production 2) Performance optimization - reduced latency 65%, achieved 99.9% uptime 3) Fast learning - picked up LangChain, built production RAG system 4) Problem-solving - Kaggle Silver Medal 5) Production mindset - monitoring, testing, scalability 6) Both ML and SWE skills - can work across stack"
+      },
+      {
+        "q": "What are your weaknesses?",
+        "keywords": ["weakness", "improve", "work on"],
+        "a": "1) Sometimes too focused on perfection vs shipping quickly - learning to balance through MVP approach 2) Limited experience with certain domains (computer vision models) - actively learning through projects 3) Can dive too deep into technical details - working on communication for non-technical audiences. Actively working on all through practice and feedback."
+      },
+      {
+        "q": "Where do you see yourself in 5 years?",
+        "keywords": ["5 years", "future", "career"],
+        "a": "Aspire to be technical leader in ML engineering, building scalable ML platforms solving real problems. Interested in roles combining deep learning research with production engineering. Want to: 1) Master ML infrastructure and MLOps 2) Work on cutting-edge LLM applications 3) Mentor junior engineers 4) Contribute to open source 5) Maybe lead ML team. Long-term: Staff/Principal MLE or ML research engineer."
+      },
+      {
+        "q": "What do you value in a company?",
+        "keywords": ["value", "culture", "important"],
+        "a": "1) Strong engineering culture - code quality, best practices, learning 2) Impactful work - products used by real users 3) Cutting-edge technology - LLMs, ML infrastructure, scale 4) Talented teammates - learn from experts 5) Growth opportunities - mentorship, technical challenges 6) Work-life balance - sustainable pace. Want environment that values both speed and quality, encourages innovation."
+      },
+      {
+        "q": "Why do you want an internship?",
+        "keywords": ["why internship", "intern"],
+        "a": "Seeking 2026 Summer internship to: 1) Gain industry experience at top companies 2) Work on production ML systems at scale 3) Learn from senior engineers 4) Apply academic knowledge to real problems 5) Explore different domains (LLMs, infrastructure, etc.) 6) Build network in ML community. As grad student graduating 2027, internship is crucial for career development."
+      },
+      {
+        "q": "What interests you about our company?",
+        "keywords": ["why our company", "interest"],
+        "a": "[This would be customized per company, but general approach:] Interested in [Company] because: 1) Leader in ML/AI technology 2) Products impact millions of users 3) Strong engineering culture and talent 4) Cutting-edge work on [specific area like LLMs/infrastructure] 5) Opportunity to learn from experts. My experience in [relevant project] aligns well with [company's work]."
+      },
+      {
+        "q": "What questions do you have for us?",
+        "keywords": ["questions", "ask"],
+        "a": "Typical questions I ask: 1) What does day-to-day look like for ML engineers? 2) How does team handle model deployment and monitoring? 3) What's tech stack for ML? 4) Biggest technical challenges team facing? 5) How is ML engineering team structured? 6) Opportunities for growth and learning? 7) How do you measure impact of ML projects? 8) What's deployment frequency? 9) Mentorship structure for interns?"
+      }
+    ],
+    "tools_and_technologies": [
+      {
+        "q": "What's your favorite ML framework?",
+        "keywords": ["favorite framework"],
+        "a": "PyTorch - love its pythonic API, dynamic computation graph, strong research community, easy debugging. Used for LLM fine-tuning, recommendation system, Kaggle competition. TensorFlow is great for production deployment, but PyTorch better for research and rapid prototyping. Also appreciate Hugging Face Transformers for NLP."
+      },
+      {
+        "q": "How do you use MLflow?",
+        "keywords": ["mlflow", "experiment tracking"],
+        "a": "Use MLflow extensively: 1) Experiment tracking - log parameters, metrics, artifacts 2) Model registry - version control, staging, production 3) Model serving - deploy with REST API. Example at Allianz: tracked fraud detection experiments, registered best model, deployed with automated retraining. Also used for comparing RAG system configurations."
+      },
+      {
+        "q": "Tell me about your Docker experience",
+        "keywords": ["docker", "containerization"],
+        "a": "Containerized all ML models for consistent deployment. Dockerfile practices: multi-stage builds, minimal base images, layer caching optimization. Used Docker Compose for local development. Examples: fraud detection model at Allianz, RAG system on AWS, LLM inference with K8s. Benefits: reproducibility, easy deployment, isolated environments."
+      },
+      {
+        "q": "What about Kubernetes?",
+        "keywords": ["kubernetes", "k8s"],
+        "a": "Deployed LLM inference system on K8s achieving 99.9% availability. Used: deployments for stateless apps, services for load balancing, configmaps for config, health checks for reliability, horizontal pod autoscaling. Benefits: auto-scaling, self-healing, rolling updates. Learning curve steep but worth it for production ML systems."
+      },
+      {
+        "q": "How do you use Redis?",
+        "keywords": ["redis", "caching"],
+        "a": "Used Redis as caching layer in multiple projects: 1) Fraud detection - cache model predictions for common patterns 2) Music recommendation - cache popular queries (sub-80ms latency) 3) RAG system - cache frequent searches. Also as message broker, session store. Implemented cache invalidation strategies, connection pooling, TTL policies."
+      },
+      {
+        "q": "What's your experience with Kafka?",
+        "keywords": ["kafka", "message queue"],
+        "a": "Built real-time systems with Kafka: 1) Document processing - 10K+ concurrent requests 2) Online recommendation - streaming user events 3) Model monitoring - real-time metrics. Kafka provides: high throughput, fault tolerance, decoupling, event sourcing. Used with Spark Streaming for processing. Key concepts: topics, partitions, consumer groups, offset management."
+      },
+      {
+        "q": "Tell me about your AWS experience",
+        "keywords": ["aws", "cloud"],
+        "a": "Hands-on with multiple AWS services: 1) EC2 - deployed RAG system 2) Lambda + API Gateway - serverless e-commerce 3) DynamoDB - NoSQL for microservices 4) S3 - data lake, model artifacts 5) SQS/EventBridge - async messaging 6) CloudFormation - IaC 7) CloudWatch/X-Ray - monitoring/tracing. Achieved 99.9% uptime, auto-scaling, cost optimization."
+      },
+      {
+        "q": "How do you use Git?",
+        "keywords": ["git", "version control"],
+        "a": "Proficient Git user: branching strategies (feature branches), pull requests, code reviews, merge conflict resolution. Workflow: branch for feature → commit frequently with clear messages → push → PR → code review → merge. Use GitHub Actions for CI/CD. All projects on GitHub with proper README, documentation. Experience with collaborative development."
+      },
+      {
+        "q": "What about Jupyter notebooks?",
+        "keywords": ["jupyter", "notebook"],
+        "a": "Use Jupyter for: 1) EDA and visualization 2) Prototyping ML models 3) Sharing analysis with team. Best practices: clear markdown explanations, modular functions, restart-and-run-all before committing. Convert to Python scripts for production. Balance between notebook exploration and production code structure."
+      },
+      {
+        "q": "Testing frameworks you use?",
+        "keywords": ["testing", "pytest", "unittest"],
+        "a": "Use pytest primarily - cleaner syntax, powerful fixtures, good plugins. Achieved 88% code coverage in music recommendation project. Test types: 1) Unit tests for functions 2) Integration tests for pipelines 3) Model validation tests 4) API tests with FastAPI TestClient. Believe in TDD for critical components, especially data preprocessing and feature engineering."
+      }
+    ],
+    "metrics_and_impact": [
+      {
+        "q": "What metrics do you track?",
+        "keywords": ["metrics", "kpi", "measure"],
+        "a": "Depends on project: 1) ML metrics - accuracy, precision, recall, F1, AUC, NDCG 2) System metrics - latency, throughput, uptime, error rate 3) Business metrics - CTR, engagement, conversion. Example: RAG system tracked both 92% retrieval accuracy AND 18% CTR improvement. Always align technical metrics with business goals."
+      },
+      {
+        "q": "How do you measure model performance?",
+        "keywords": ["model performance", "evaluation"],
+        "a": "Multi-faceted: 1) Offline metrics on test set (F1, AUC, etc.) 2) Online A/B testing for business impact 3) Monitor in production (model drift, latency) 4) Edge case testing 5) User feedback. Example: fraud detection - 15% precision improvement offline, validated through A/B test, continuous monitoring of false positive rate."
+      },
+      {
+        "q": "What impact have your projects had?",
+        "keywords": ["impact", "business value"],
+        "a": "Quantifiable impacts: 1) Allianz - 15% precision improvement saving costs from false positives, 200K+ transactions processed daily 2) RAG system - 18% CTR increase, 92% accuracy 3) Recommendation - 15% engagement increase, 2K+ QPS serving 4) LLM - 65% latency reduction 5) E-commerce - 8K+ daily transactions, 99.9% uptime. Focus on metrics that matter to business."
+      },
+      {
+        "q": "How much data have you worked with?",
+        "keywords": ["data volume", "scale"],
+        "a": "Worked with: 1) 200K+ daily insurance transactions at Allianz 2) 10M+ daily user interactions in recommendation system 3) 50K+ products in RAG system 4) 10K+ documents daily in NLP pipeline 5) 500+ sensor streams. Comfortable with big data tools (PySpark, Kafka) and optimizing for large-scale processing."
+      },
+      {
+        "q": "What's your best optimization achievement?",
+        "keywords": ["optimization", "improvement"],
+        "a": "Multiple significant optimizations: 1) 65% latency reduction in LLM inference (320ms→105ms) through batching and quantization 2) 30-70% API latency reduction through Redis caching 3) 35% database query optimization through indexing 4) 30% model training time reduction through Optuna 5) 60% memory reduction through quantization while maintaining 95% accuracy"
+      }
+    ],
+    "miscellaneous": [
+      {
+        "q": "Do you have publications?",
+        "keywords": ["publications", "papers", "research"],
+        "a": "Currently focused on applied ML engineering rather than academic publications. Research experience at Penn State on NLP and document processing, but work more engineering-oriented. Open to research roles combining publication with production impact. Strong understanding of ML literature through implementing techniques from papers (LoRA, RAG, etc.)"
+      },
+      {
+        "q": "What side projects do you have?",
+        "keywords": ["side projects", "personal", "hobby"],
+        "a": "Main side projects: 1) Multimodal RAG system (featured on GitHub) 2) LLM inference optimization (Kaggle Silver Medal) 3) Music recommendation engine. All demonstrate end-to-end ML skills. Also contribute to open source when possible, explore new ML tools, participate in Kaggle competitions for learning."
+      },
+      {
+        "q": "How do you handle stress?",
+        "keywords": ["stress", "pressure", "deadline"],
+        "a": "Handle stress by: 1) Prioritization - focus on high-impact tasks 2) Break down large problems into manageable pieces 3) Regular breaks and exercise 4) Clear communication about timelines 5) Learn from experience - similar problems easier next time. Example: Kaggle competition deadline - planned milestones, focused on key optimizations, delivered Silver Medal result."
+      },
+      {
+        "q": "What's your communication style?",
+        "keywords": ["communication", "explain"],
+        "a": "Strive for clarity: 1) Explain technical concepts using analogies 2) Visual aids when helpful 3) Tailor explanation to audience (technical vs non-technical) 4) Welcome questions 5) Write clear documentation. Example: explained ML model to product managers at Allianz using business metrics rather than technical jargon. Believe good communication is crucial for ML engineers."
+      },
+      {
+        "q": "How do you deal with technical debt?",
+        "keywords": ["technical debt", "refactor"],
+        "a": "Balance speed and quality: 1) Document debt when taking shortcuts 2) Allocate time for refactoring 3) Prioritize debt that impacts velocity or reliability 4) Incremental improvements over big rewrites. Example: RAG system - built MVP quickly, then systematically improved (added caching, monitoring, testing). Believe in 'make it work, make it right, make it fast' philosophy."
+      },
+      {
+        "q": "What languages do you speak?",
+        "keywords": ["language", "speak", "english", "chinese"],
+        "a": "Fluent in English and Mandarin Chinese (native). Can communicate technical concepts in both languages. Studied and worked in US (Penn State, now UC San Diego), also worked in China (Allianz, consulting institute). Bilingual capability useful for international teams and projects."
+      },
+      {
+        "q": "Do you have management experience?",
+        "keywords": ["management", "lead", "mentor"],
+        "a": "Limited formal management but some leadership: 1) Led technical discussions at Penn State research 2) Mentored junior students on ML projects 3) Presented technical solutions to stakeholders at Allianz. Interested in growing into tech lead role eventually. Believe in leading by example, clear communication, and supporting team growth."
+      },
+      {
+        "q": "What's your salary expectation for full-time?",
+        "keywords": ["salary full-time", "compensation"],
+        "a": "For internship: competitive market rate for ML engineering internships at top companies. For full-time (after graduation 2027): open to discussing based on role, location, responsibilities. Primary focus is finding right opportunity for growth and impact. Understand ML engineers at top companies typically earn $150-250K+ for new grad positions."
+      },
+      {
+        "q": "Are you willing to work on-site?",
+        "keywords": ["remote", "on-site", "hybrid", "office"],
+        "a": "Open to all work arrangements: 1) On-site - great for learning from senior engineers, collaboration 2) Hybrid - good balance 3) Remote - demonstrated ability to work independently on projects. Preference for at least some in-person time for internship to build relationships and learn. Currently in San Diego, willing to relocate for opportunity."
+      },
+      {
+        "q": "What makes you unique?",
+        "keywords": ["unique", "different", "special"],
+        "a": "Unique combination: 1) Both ML research (Penn State, 92% F1) and production experience (Allianz, 200K+ transactions) 2) Proven competition success (Kaggle Silver Medal) 3) Full-stack skills from data to deployment 4) International experience (US education, China internships) 5) Strong optimization mindset (65% latency reduction) 6) Can bridge gap between research and engineering"
+      }
+    ]
+  },
+  "detailed_info": {
+    "education_extended": {
+      "ucsd": {
+        "program": "Master of Science in Electrical and Computer Engineering",
+        "expected_graduation": "June 2027",
+        "focus_areas": ["Machine Learning", "Computer Vision", "Distributed Systems", "Deep Learning"],
+        "status": "Currently enrolled, first-year graduate student",
+        "relevant_coursework": [
+          "Deep Learning and Neural Networks",
+          "Machine Learning Systems and MLOps",
+          "Distributed Computing and Systems",
+          "Natural Language Processing",
+          "Computer Vision and Image Processing",
+          "Advanced Algorithms and Data Structures"
+        ],
+        "research_interests": ["Large Language Models", "RAG Systems", "ML Infrastructure", "Model Optimization"]
+      },
+      "penn_state": {
+        "program": "Bachelor of Engineering in Data Science",
+        "graduation": "May 2025",
+        "gpa_note": "Strong academic performance",
+        "focus_areas": ["Machine Learning", "Statistical Analysis", "Data Engineering", "Software Development"],
+        "achievements": [
+          "Worked as ML Research Assistant (Aug-Dec 2024)",
+          "Completed comprehensive ML and data science curriculum",
+          "Built strong foundation in algorithms and system design",
+          "Participated in research projects on NLP and document processing"
+        ],
+        "relevant_coursework": [
+          "Machine Learning and Data Mining",
+          "Statistical Methods and Inference",
+          "Database Systems",
+          "Software Engineering",
+          "Data Structures and Algorithms",
+          "Big Data Analytics"
+        ]
+      }
+    },
+    "technical_proficiency": {
+      "python": {
+        "level": "Expert",
+        "years": "4+",
+        "libraries": ["NumPy", "Pandas", "Matplotlib", "Seaborn", "Requests", "BeautifulSoup"],
+        "use_cases": ["ML model development", "Data processing", "API development", "Scripting"],
+        "projects": "All major projects use Python as primary language"
+      },
+      "machine_learning": {
+        "frameworks": {
+          "pytorch": {
+            "level": "Advanced",
+            "experience": ["LLM fine-tuning with LoRA", "Custom model architectures", "Distributed training", "Model optimization"],
+            "projects": ["LLM Inference (Kaggle)", "Recommendation System", "NLP Pipeline"]
+          },
+          "tensorflow": {
+            "level": "Proficient",
+            "experience": ["Model training", "TensorBoard for visualization", "Model serving"],
+            "note": "Used in earlier projects, now prefer PyTorch"
+          },
+          "sklearn": {
+            "level": "Expert",
+            "experience": ["Classical ML algorithms", "Preprocessing", "Model evaluation", "Feature engineering"]
+          }
+        },
+        "nlp_tools": {
+          "transformers": "Advanced - fine-tuned BERT, worked with LLaMA",
+          "spacy": "Proficient - entity extraction pipeline",
+          "langchain": "Advanced - built production RAG system"
+        },
+        "computer_vision": {
+          "clip": "Used for multimodal RAG system",
+          "opencv": "Basic image processing",
+          "experience": "Primarily through CLIP embeddings in RAG project"
+        }
+      },
+      "mlops": {
+        "experiment_tracking": ["MLflow (expert)", "Weights & Biases (basic)", "TensorBoard"],
+        "model_versioning": ["MLflow Model Registry", "DVC for data/model versioning"],
+        "deployment": ["Docker (expert)", "Kubernetes (advanced)", "TorchServe", "FastAPI"],
+        "monitoring": ["Grafana dashboards", "CloudWatch", "Custom logging"],
+        "ci_cd": ["GitHub Actions", "AWS CodePipeline"],
+        "experience_level": "Production-ready MLOps skills from Allianz and personal projects"
+      },
+      "big_data": {
+        "spark": {
+          "level": "Advanced",
+          "components": ["PySpark DataFrame API", "Spark MLlib", "Spark Streaming"],
+          "scale": "Processed 10M+ daily events",
+          "use_cases": ["Batch processing", "Collaborative filtering", "ETL pipelines"]
+        },
+        "kafka": {
+          "level": "Proficient",
+          "experience": ["Message streaming", "Real-time pipelines", "Event-driven architecture"],
+          "scale": "Handled 10K+ concurrent requests"
+        },
+        "hadoop": {
+          "level": "Basic",
+          "experience": "Familiar with HDFS and MapReduce concepts"
+        }
+      },
+      "databases": {
+        "postgresql": {
+          "level": "Advanced",
+          "experience": ["Production migration from MySQL", "Query optimization", "Indexing strategies", "JSON support"],
+          "achievement": "35% query performance improvement"
+        },
+        "redis": {
+          "level": "Advanced",
+          "use_cases": ["Caching layer", "Session storage", "Feature store"],
+          "achievement": "30-70% latency reduction through caching"
+        },
+        "mongodb": {
+          "level": "Proficient",
+          "use_cases": ["Document storage", "Flexible schema applications"]
+        },
+        "vector_databases": {
+          "pinecone": "Production deployment in RAG system",
+          "faiss": "Local development and prototyping",
+          "chromadb": "Experimentation"
+        }
+      },
+      "backend": {
+        "fastapi": {
+          "level": "Advanced",
+          "features": ["Async endpoints", "Pydantic validation", "Automatic API docs", "WebSocket"],
+          "projects": ["RAG system API", "Fraud detection API", "Recommendation API"],
+          "scale": "Handled 500+ concurrent users, 2K+ QPS"
+        },
+        "flask": {
+          "level": "Proficient",
+          "use_cases": ["REST APIs", "ML model serving", "Microservices"]
+        },
+        "nodejs": {
+          "level": "Basic",
+          "experience": "Some full-stack projects"
+        }
+      },
+      "cloud": {
+        "aws": {
+          "level": "Advanced",
+          "services": {
+            "compute": ["EC2", "Lambda", "ECS"],
+            "storage": ["S3", "EBS"],
+            "database": ["DynamoDB", "RDS"],
+            "messaging": ["SQS", "SNS", "EventBridge"],
+            "api": ["API Gateway"],
+            "devops": ["CloudFormation", "CodePipeline"],
+            "monitoring": ["CloudWatch", "X-Ray"]
+          },
+          "certifications": "None yet (considering AWS ML Specialty)",
+          "projects": "Multiple production deployments on AWS"
+        }
+      }
+    },
+    "soft_skills": {
+      "communication": "Clear technical communication, can explain ML to non-technical audiences, bilingual (English/Chinese)",
+      "problem_solving": "Systematic approach, proven through Kaggle Silver Medal and optimization achievements",
+      "learning": "Fast learner - picked up LangChain and built production system, continuously learning new technologies",
+      "teamwork": "Collaborated at Allianz and Penn State, experience with code reviews and agile workflows",
+      "time_management": "Balanced coursework with research and side projects, met competition deadlines",
+      "adaptability": "Worked in different environments (US research, China corporate), adapted to new tech stacks"
+    },
+    "career_timeline": {
+      "2021-2025": "Undergraduate at Penn State, built ML foundation",
+      "2023": "First internship at Qingdao Engineering Consulting Institute (Software Engineer)",
+      "2024": "Allianz Insurance internship (ML Engineer) and Penn State research (ML Research Assistant)",
+      "2024-2025": "Built major side projects (RAG, Recommendation, LLM), won Kaggle Silver Medal",
+      "2025-2027": "Graduate studies at UC San Diego",
+      "2026": "Seeking Summer internship",
+      "2027": "Expected graduation, looking for full-time MLE roles"
+    },
+    "ideal_work_environment": {
+      "team_size": "Medium to large teams where I can learn from senior engineers",
+      "company_stage": "Prefer established companies or well-funded startups with product-market fit",
+      "tech_stack": "Modern ML stack - PyTorch, cloud platforms, MLOps tools, microservices",
+      "culture": "Strong engineering culture, emphasis on learning and growth, values both innovation and reliability",
+      "impact": "Work on products/systems that affect real users at scale",
+      "mentorship": "Access to senior engineers and technical mentorship"
+    }
+  }
+}

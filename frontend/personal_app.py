@@ -275,39 +275,33 @@ with col1:
 
         if result:
             # Display answer
-            st.markdown("### 🤖 Answer")
+            st.markdown("### 💬 Answer")
 
-            # Confidence badge
-            display_confidence_badge(result['confidence'])
+            # Format answer with proper paragraphs
+            answer_text = result['answer'].replace('\n\n', '<br><br>').replace('\n', '<br>')
 
-            # Answer text
             st.markdown(f"""
             <div class="answer-box">
-                {result['answer']}
+                {answer_text}
             </div>
             """, unsafe_allow_html=True)
 
-            # Sources
-            if result['sources']:
-                with st.expander("📚 View Information Sources", expanded=False):
-                    for i, source in enumerate(result['sources'], 1):
-                        score_color = "#28a745" if source['score'] > 0.7 else "#ffc107" if source['score'] > 0.5 else "#dc3545"
-                        st.markdown(f"""
-                        <div class="source-card">
-                            <strong>Source {i}</strong> | Type: {source['type']} | Category: {source['category']}
-                            <br>
-                            <span style="color: {score_color}; font-weight: bold;">Relevance: {source['score']:.2%}</span>
-                            <br><br>
-                            <em>{source['preview']}</em>
-                        </div>
-                        """, unsafe_allow_html=True)
+            # Optional: Show technical details in a minimal expander (hidden by default)
+            # Users can click to see sources if they want verification
+            with st.expander("🔍 Technical Details (Optional)", expanded=False):
+                # Confidence
+                st.write(f"**Confidence Level:** {result['confidence'].title()}")
 
-            # Retrieval stats
-            with st.expander("📈 Retrieval Statistics"):
-                avg_score = sum(result['retrieval_scores']) / len(result['retrieval_scores'])
-                st.write(f"Average Relevance: {avg_score:.2%}")
-                st.write(f"Highest Relevance: {max(result['retrieval_scores']):.2%}")
-                st.write(f"Lowest Relevance: {min(result['retrieval_scores']):.2%}")
+                # Only show if user wants to verify sources
+                if result['sources'] and st.checkbox("Show information sources", value=False, key="show_sources"):
+                    st.markdown("**Information Sources:**")
+                    for i, source in enumerate(result['sources'], 1):
+                        st.markdown(f"- Source {i}: {source['category']} (relevance: {source['score']:.0%})")
+
+                # Retrieval stats (very minimal)
+                if st.checkbox("Show retrieval statistics", value=False, key="show_stats"):
+                    avg_score = sum(result['retrieval_scores']) / len(result['retrieval_scores'])
+                    st.write(f"Average Relevance: {avg_score:.2%}")
 
     elif ask_button and not question:
         st.warning("Please enter a question")
@@ -360,3 +354,4 @@ with st.expander("💡 Usage Tips"):
     - Multiple strategies employed to prevent AI fabrication
     - Supports conversation mode for multi-turn Q&A
     """)
+    

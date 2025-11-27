@@ -22,24 +22,17 @@ class MockRAGPipeline:
         if not retrieved_docs:
             return "Sorry, I could not find relevant information for your question."
 
-        # Get the most relevant document
-        top_doc = retrieved_docs[0]
-        doc_type = top_doc['metadata'].get('type', 'unknown')
+        # Combine content from top retrieved documents
+        answer_parts = []
 
-        # Create answer based on document type and content
-        answer_parts = [f"Based on my knowledge base, here's what I found:\n"]
+        for doc in retrieved_docs[:3]:
+            content = doc['content'].strip()
+            # Add content directly without verbose source labels
+            if content and content not in answer_parts:
+                answer_parts.append(content)
 
-        for i, doc in enumerate(retrieved_docs[:3], 1):
-            content = doc['content']
-            # Truncate if too long
-            if len(content) > 500:
-                content = content[:500] + "..."
-
-            answer_parts.append(f"\n**Source {i}** ({doc['metadata'].get('type', 'info')}):\n{content}\n")
-
-        answer_parts.append(f"\n---\n*This is a mock response generated without LLM. In production, an AI model would synthesize this information into a natural language answer.*")
-
-        return "\n".join(answer_parts)
+        # Join with line breaks for readability
+        return "\n\n".join(answer_parts)
 
     def query(
         self,

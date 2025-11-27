@@ -25,6 +25,11 @@ venv/
 env/
 ENV/
 .venv
+.venv/
+
+# UV package manager
+.uv/
+uv.lock
 
 # Jupyter Notebook
 .ipynb_checkpoints
@@ -42,6 +47,7 @@ data/raw/*
 data/processed/*
 !data/raw/.gitkeep
 !data/processed/.gitkeep
+!data/raw/knowledge_base.json
 
 # Model files
 *.pkl
