@@ -1,0 +1,30 @@
+# Lightweight requirements for Personal RAG System
+# No heavy ML dependencies - uses OpenAI API or mock mode
+
+# Core API Framework
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+pydantic==2.5.0
+python-multipart==0.0.6
+
+# OpenAI Integration
+openai==1.3.0
+
+# Data Processing
+numpy==1.24.3
+pandas==2.1.3
+
+# Frontend (optional, for standalone deployment)
+streamlit==1.28.2
+requests==2.31.0
+Pillow==10.1.0
+
+# Utilities
+python-dotenv==1.0.0
+pyyaml==6.0.1
+
+# Testing (optional)
+pytest==7.4.3
+pytest-cov==4.1.0
+httpx==0.25.2
+

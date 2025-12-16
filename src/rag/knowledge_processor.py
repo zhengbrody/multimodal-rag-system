@@ -291,6 +291,14 @@ def process_comprehensive_qa(data: Dict[str, Any]) -> List[Document]:
             question = qa.get('q', '')
             answer = qa.get('a', '')
             keywords = qa.get('keywords', [])
+            
+            # Smart categorization: detect work experience/internship questions
+            question_lower = question.lower()
+            answer_lower = answer.lower()
+            if any(kw in question_lower or kw in answer_lower for kw in ['work experience', 'internship', 'internships', 'employment', 'allianz', 'penn state', 'qingdao']):
+                if 'experience' in keywords or 'internship' in keywords or 'employment' in keywords:
+                    doc_category = 'experience'
+                    doc_type = 'experience'
 
             content = f"""
 Question: {question}

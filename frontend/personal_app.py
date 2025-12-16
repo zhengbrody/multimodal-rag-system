@@ -1,12 +1,19 @@
 """
 Streamlit Frontend for Personal RAG Q&A System
 
-Clean, professional interface for personal website Q&A
+Modern, interactive interface with:
+- Conversation-style UI
+- Real-time feedback
+- Visual analytics
+- Theme customization
 """
 
 import streamlit as st
 import requests
-from typing import Optional
+import time
+from typing import Optional, List, Dict
+import pandas as pd
+from datetime import datetime
 
 # Page configuration
 st.set_page_config(
@@ -18,16 +25,68 @@ st.set_page_config(
 
 # API configuration
 import os
-API_URL = os.getenv("API_URL", "http://localhost:8000")
+try:
+    API_URL = st.secrets.get("API_URL", os.getenv("API_URL", "http://localhost:8000"))
+except (FileNotFoundError, KeyError):
+    API_URL = os.getenv("API_URL", "http://localhost:8000")
 
-# Custom CSS for professional look
-st.markdown("""
+# Initialize session state
+if 'conversation_history' not in st.session_state:
+    st.session_state.conversation_history = []
+if 'current_result' not in st.session_state:
+    st.session_state.current_result = None
+if 'theme' not in st.session_state:
+    st.session_state.theme = 'light'
+
+# Custom CSS with theme support
+def get_css(theme='light'):
+    if theme == 'dark':
+        return """
+        <style>
+            .stApp {
+                background: linear-gradient(135deg, #1e1e2e 0%, #2d2d44 100%);
+            }
+            .main-header {
+                font-size: 2.8rem;
+                font-weight: bold;
+                text-align: center;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                margin-bottom: 0.5rem;
+            }
+            .message-user {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 20px 20px 5px 20px;
+                margin: 0.5rem 0;
+                margin-left: auto;
+                max-width: 70%;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            }
+            .message-assistant {
+                background: #2d2d44;
+                color: #e0e0e0;
+                padding: 1rem 1.5rem;
+                border-radius: 20px 20px 20px 5px;
+                margin: 0.5rem 0;
+                max-width: 70%;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+                border-left: 4px solid #667eea;
+            }
+        </style>
+        """
+    else:
+        return """
 <style>
     .main-header {
-        font-size: 2.5rem;
+                font-size: 2.8rem;
         font-weight: bold;
         text-align: center;
-        color: #2E86AB;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
         margin-bottom: 0.5rem;
     }
     .sub-header {
@@ -36,71 +95,90 @@ st.markdown("""
         color: #666;
         margin-bottom: 2rem;
     }
-    .answer-box {
+            .message-user {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
-        padding: 1.5rem;
-        border-radius: 15px;
-        margin: 1rem 0;
+                padding: 1rem 1.5rem;
+                border-radius: 20px 20px 5px 20px;
+                margin: 0.5rem 0;
+                margin-left: auto;
+                max-width: 70%;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
-    .source-card {
-        background-color: #f8f9fa;
-        padding: 1rem;
-        border-radius: 10px;
+            .message-assistant {
+                background: #f8f9fa;
+                color: #333;
+                padding: 1rem 1.5rem;
+                border-radius: 20px 20px 20px 5px;
+                margin: 0.5rem 0;
+                max-width: 70%;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                border-left: 4px solid #667eea;
+            }
+            .confidence-badge {
+                display: inline-block;
+                padding: 0.3rem 0.8rem;
+                border-radius: 20px;
+                font-size: 0.85rem;
+                font-weight: 600;
         margin: 0.5rem 0;
-        border-left: 4px solid #2E86AB;
     }
     .confidence-high {
         background-color: #28a745;
         color: white;
-        padding: 0.3rem 0.8rem;
-        border-radius: 20px;
-        font-size: 0.9rem;
-        display: inline-block;
     }
     .confidence-medium {
         background-color: #ffc107;
-        color: black;
-        padding: 0.3rem 0.8rem;
-        border-radius: 20px;
-        font-size: 0.9rem;
-        display: inline-block;
+                color: #333;
     }
     .confidence-low {
         background-color: #dc3545;
         color: white;
-        padding: 0.3rem 0.8rem;
-        border-radius: 20px;
-        font-size: 0.9rem;
-        display: inline-block;
-    }
-    .sample-question {
-        background-color: #e3f2fd;
-        padding: 0.5rem 1rem;
-        border-radius: 20px;
-        margin: 0.3rem;
-        cursor: pointer;
-        display: inline-block;
-        font-size: 0.9rem;
-    }
-    .sample-question:hover {
-        background-color: #bbdefb;
-    }
-    .stats-box {
-        background-color: #fff3cd;
+            }
+            .source-card {
+                background: #f8f9fa;
+                padding: 0.8rem;
+                border-radius: 10px;
+                margin: 0.5rem 0;
+                border-left: 3px solid #667eea;
+                transition: transform 0.2s;
+            }
+            .source-card:hover {
+                transform: translateX(5px);
+            }
+            .feedback-buttons {
+                display: flex;
+                gap: 0.5rem;
+                margin-top: 1rem;
+            }
+            .typewriter {
+                overflow: hidden;
+                border-right: 0.15em solid #667eea;
+                white-space: nowrap;
+                margin: 0 auto;
+                letter-spacing: 0.05em;
+                animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+            }
+            @keyframes typing {
+                from { width: 0; }
+                to { width: 100%; }
+            }
+            @keyframes blink-caret {
+                from, to { border-color: transparent; }
+                50% { border-color: #667eea; }
+            }
+            .stats-card {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
         padding: 1rem;
-        border-radius: 10px;
-        margin: 1rem 0;
+                border-radius: 15px;
+                text-align: center;
+                margin: 0.5rem 0;
     }
 </style>
-""", unsafe_allow_html=True)
+        """
 
-# Initialize session state
-if 'conversation_mode' not in st.session_state:
-    st.session_state.conversation_mode = False
-if 'question_input' not in st.session_state:
-    st.session_state.question_input = ""
+st.markdown(get_css(st.session_state.theme), unsafe_allow_html=True)
 
 
 def get_api_health() -> Optional[dict]:
@@ -114,9 +192,21 @@ def get_api_health() -> Optional[dict]:
     return None
 
 
+def get_metrics() -> Optional[dict]:
+    """Get system metrics"""
+    try:
+        response = requests.get(f"{API_URL}/metrics", timeout=5)
+        if response.status_code == 200:
+            return response.json()
+    except:
+        pass
+    return None
+
+
 def ask_question(question: str, k: int = 5, use_verification: bool = False, conversational: bool = False) -> Optional[dict]:
     """Send question to API"""
     try:
+        start_time = time.time()
         response = requests.post(
             f"{API_URL}/ask",
             json={
@@ -127,13 +217,36 @@ def ask_question(question: str, k: int = 5, use_verification: bool = False, conv
             },
             timeout=30
         )
+        latency = time.time() - start_time
+        
         if response.status_code == 200:
-            return response.json()
+            result = response.json()
+            result['latency'] = latency
+            return result
         else:
             st.error(f"API Error: {response.text}")
     except Exception as e:
         st.error(f"Request failed: {str(e)}")
     return None
+
+
+def submit_feedback(question: str, answer: str, rating: int, feedback_text: Optional[str] = None, helpful: Optional[bool] = None):
+    """Submit user feedback"""
+    try:
+        response = requests.post(
+            f"{API_URL}/feedback",
+            json={
+                "question": question,
+                "answer": answer,
+                "rating": rating,
+                "feedback_text": feedback_text,
+                "helpful": helpful
+            },
+            timeout=5
+        )
+        return response.status_code == 200
+    except:
+        return False
 
 
 def get_sample_questions() -> list:
@@ -145,10 +258,14 @@ def get_sample_questions() -> list:
     except:
         pass
     return [
-        "Who are you?",
+        "Who are you? Give me a brief introduction",
         "What technologies are you proficient in?",
-        "Tell me about your project experience",
-        "How can I contact you?"
+        "Tell me about your proudest project",
+        "What is your work experience?",
+        "What is your education background?",
+        "How can I contact you?",
+        "What do you know about RAG systems?",
+        "Why did you start writing a technical blog?"
     ]
 
 
@@ -156,56 +273,65 @@ def clear_conversation():
     """Clear conversation history"""
     try:
         requests.post(f"{API_URL}/clear-conversation", timeout=5)
+        st.session_state.conversation_history = []
+        st.session_state.current_result = None
+        st.success("Conversation cleared!")
     except:
         pass
 
 
-def display_confidence_badge(confidence: str):
-    """Display confidence level badge"""
-    if confidence == "high":
-        st.markdown('<span class="confidence-high">High Confidence</span>', unsafe_allow_html=True)
-    elif confidence == "medium":
-        st.markdown('<span class="confidence-medium">Medium Confidence</span>', unsafe_allow_html=True)
+def display_message(message: str, role: str = "assistant"):
+    """Display a message in conversation style"""
+    if role == "user":
+        st.markdown(f'<div class="message-user">{message}</div>', unsafe_allow_html=True)
     else:
-        st.markdown('<span class="confidence-low">Low Confidence</span>', unsafe_allow_html=True)
+        st.markdown(f'<div class="message-assistant">{message}</div>', unsafe_allow_html=True)
+
+
+def display_confidence(confidence: str):
+    """Display confidence badge"""
+    conf_class = f"confidence-{confidence}"
+    conf_text = confidence.title()
+    st.markdown(f'<span class="confidence-badge {conf_class}">🎯 {conf_text} Confidence</span>', unsafe_allow_html=True)
 
 
 # Header
 st.markdown('<h1 class="main-header">💬 Intelligent Q&A System</h1>', unsafe_allow_html=True)
-st.markdown('<p class="sub-header">Personal Knowledge Base Q&A powered by RAG - Ask me anything about myself!</p>', unsafe_allow_html=True)
+st.markdown('<p class="sub-header">Personal Knowledge Base Q&A powered by RAG with Anti-Hallucination Strategies</p>', unsafe_allow_html=True)
 
 # Sidebar
 with st.sidebar:
     st.markdown("### ⚙️ Settings")
 
-    # Number of documents to retrieve
+    # Theme toggle
+    theme = st.selectbox("Theme", ["light", "dark"], index=0 if st.session_state.theme == "light" else 1)
+    st.session_state.theme = theme
+    
+    # Number of documents
     k = st.slider(
-        "Number of documents to retrieve",
+        "Documents to retrieve",
         min_value=1,
         max_value=10,
         value=5,
-        help="More documents may provide more comprehensive answers but may also introduce noise"
+        help="More documents = more context, but may introduce noise"
     )
 
-    # Verification mode
+    # Advanced options
     use_verification = st.checkbox(
-        "Enable answer verification",
+        "🔍 Enable verification",
         value=False,
-        help="Double-check if answer accurately reflects source materials (increases response time)"
+        help="Double-check answer accuracy (slower but more reliable)"
     )
 
-    # Conversation mode
     conversation_mode = st.checkbox(
-        "Conversation mode",
-        value=st.session_state.conversation_mode,
-        help="Maintain conversation context for multi-turn dialogue"
+        "💬 Conversation mode",
+        value=len(st.session_state.conversation_history) > 0,
+        help="Maintain context across questions"
     )
-    st.session_state.conversation_mode = conversation_mode
-
-    if conversation_mode:
-        if st.button("Clear conversation history"):
-            clear_conversation()
-            st.success("Conversation history cleared")
+    
+    if st.button("🗑️ Clear History", use_container_width=True):
+        clear_conversation()
+        st.rerun()
 
     st.markdown("---")
 
@@ -213,59 +339,95 @@ with st.sidebar:
     st.markdown("### 📊 System Status")
     health = get_api_health()
     if health:
-        st.success(f"✅ System Online")
-        st.info(f"📚 Loaded {health['documents_loaded']} documents")
-
-        # Show category breakdown
-        with st.expander("View document categories"):
-            for cat, count in health['categories'].items():
-                st.write(f"- {cat}: {count}")
+        st.success("✅ Online")
+        st.metric("Documents", health['documents_loaded'])
+        
+        # Category breakdown
+        if health.get('categories'):
+            st.markdown("**Categories:**")
+            for cat, count in list(health['categories'].items())[:5]:
+                st.caption(f"• {cat}: {count}")
     else:
-        st.error("❌ API Offline")
-        st.warning("Please ensure API service is running")
+        st.error("❌ Offline")
+    
+    # Metrics
+    metrics = get_metrics()
+    if metrics:
+        st.markdown("---")
+        st.markdown("### 📈 Performance")
+        st.metric("Avg Latency", f"{metrics.get('average_latency_ms', 0):.0f}ms")
+        st.metric("Total Questions", metrics.get('questions_total', 0))
+        st.metric("Error Rate", f"{metrics.get('error_rate_percent', 0):.1f}%")
 
     st.markdown("---")
-
-    # About section
     st.markdown("### ℹ️ About")
     st.info("""
-    **Tech Stack:**
+    **Technologies:**
     - OpenAI Embeddings
     - GPT-3.5/4 LLM
     - FastAPI Backend
     - Streamlit Frontend
 
-    **Anti-Hallucination Strategies:**
-    - Low temperature generation
-    - Strict prompt engineering
-    - Confidence assessment
-    - Optional answer verification
+    **Anti-Hallucination:**
+    - Low temperature (0.3)
+    - Strict prompts
+    - Confidence scoring
+    - Optional verification
     """)
 
+# Main content area
+tab1, tab2, tab3 = st.tabs(["💬 Chat", "📊 Analytics", "ℹ️ About"])
 
-# Main content
-col1, col2 = st.columns([2, 1])
-
-with col1:
+with tab1:
+    # Conversation display
+    if st.session_state.conversation_history:
+        st.markdown("### 💭 Conversation")
+        for msg in st.session_state.conversation_history[-10:]:  # Show last 10 messages
+            display_message(msg['content'], msg['role'])
+    
     # Question input
-    st.markdown("### 💭 Ask Your Question")
+    st.markdown("### ✍️ Ask a Question")
+    
+    # Sample questions
+    sample_questions = get_sample_questions()
+    cols = st.columns(4)
+    for i, sq in enumerate(sample_questions[:4]):
+        with cols[i % 4]:
+            if st.button(sq[:30] + "..." if len(sq) > 30 else sq, key=f"sample_{i}", use_container_width=True):
+                st.session_state.question_input = sq
+                st.rerun()
+    
+    # Handle input clearing
+    if st.session_state.get('clear_input', False):
+        question_value = ''
+        st.session_state.clear_input = False
+        st.session_state.question_input = ''
+    else:
+        question_value = st.session_state.get('question_input', '')
 
     question = st.text_area(
-        "Question",
-        value=st.session_state.question_input,
-        placeholder="e.g., What technologies are you most proficient in? What projects have you worked on?",
+        "Your question",
+        value=question_value,
+        placeholder="e.g., What technologies are you most proficient in?",
         height=100,
-        label_visibility="collapsed"
+        label_visibility="collapsed",
+        key="question_input"
     )
-
-    # Ask button
-    col_btn1, col_btn2 = st.columns([1, 3])
-    with col_btn1:
-        ask_button = st.button("🔍 Ask", type="primary", use_container_width=True)
+    
+    col1, col2 = st.columns([1, 4])
+    with col1:
+        ask_btn = st.button("🚀 Ask", type="primary", use_container_width=True)
 
     # Process question
-    if ask_button and question:
-        with st.spinner("Thinking..."):
+    if ask_btn and question:
+        # Add user message to history
+        st.session_state.conversation_history.append({
+            'role': 'user',
+            'content': question,
+            'timestamp': datetime.now()
+        })
+        
+        with st.spinner("🤔 Thinking..."):
             result = ask_question(
                 question,
                 k=k,
@@ -274,84 +436,227 @@ with col1:
             )
 
         if result:
+            st.session_state.current_result = result
+            
+            # Add assistant response to history
+            st.session_state.conversation_history.append({
+                'role': 'assistant',
+                'content': result['answer'],
+                'timestamp': datetime.now(),
+                'confidence': result['confidence'],
+                'sources': result.get('sources', [])
+            })
+            
             # Display answer
-            st.markdown("### 💬 Answer")
-
-            # Format answer with proper paragraphs
-            answer_text = result['answer'].replace('\n\n', '<br><br>').replace('\n', '<br>')
+            display_message(result['answer'], "assistant")
+            
+            # Confidence and metadata
+            col1, col2, col3 = st.columns([2, 2, 2])
+            with col1:
+                display_confidence(result['confidence'])
+            with col2:
+                st.caption(f"⚡ {result.get('latency', 0)*1000:.0f}ms")
+            with col3:
+                st.caption(f"📚 {len(result.get('sources', []))} sources")
+            
+            # Sources
+            sources = result.get('sources', [])
+            if sources:
+                with st.expander(f"📖 View Sources ({len(sources)})"):
+                    for i, source in enumerate(sources, 1):
+                        # Handle both dict and object formats
+                        if isinstance(source, dict):
+                            score = source.get('score', 0)
+                            category = source.get('category', 'unknown')
+                            preview = source.get('preview', '')
+                        else:
+                            # Handle Pydantic model objects
+                            score = getattr(source, 'score', 0)
+                            category = getattr(source, 'category', 'unknown')
+                            preview = getattr(source, 'preview', '')
+                        
+                        score_pct = score * 100 if isinstance(score, (int, float)) else 0
+                        # Clean preview text: remove newlines and limit length
+                        preview_text = preview.replace('\n', ' ').strip()
+                        preview_text = preview_text[:200] + '...' if len(preview_text) > 200 else preview_text
+                        
+                        # Escape HTML special characters to prevent XSS
+                        preview_text = preview_text.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+                        category = str(category).replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
 
             st.markdown(f"""
-            <div class="answer-box">
-                {answer_text}
+                        <div class="source-card" style="margin-bottom: 10px; padding: 10px; background-color: #f0f0f0; border-radius: 5px;">
+                            <strong>Source {i}</strong> ({category}) - {score_pct:.0f}% relevant<br>
+                            <small style="color: #666;">{preview_text}</small>
             </div>
             """, unsafe_allow_html=True)
 
-            # Optional: Show technical details in a minimal expander (hidden by default)
-            # Users can click to see sources if they want verification
-            with st.expander("🔍 Technical Details (Optional)", expanded=False):
-                # Confidence
-                st.write(f"**Confidence Level:** {result['confidence'].title()}")
-
-                # Only show if user wants to verify sources
-                if result['sources'] and st.checkbox("Show information sources", value=False, key="show_sources"):
-                    st.markdown("**Information Sources:**")
-                    for i, source in enumerate(result['sources'], 1):
-                        st.markdown(f"- Source {i}: {source['category']} (relevance: {source['score']:.0%})")
-
-                # Retrieval stats (very minimal)
-                if st.checkbox("Show retrieval statistics", value=False, key="show_stats"):
-                    avg_score = sum(result['retrieval_scores']) / len(result['retrieval_scores'])
-                    st.write(f"Average Relevance: {avg_score:.2%}")
-
-    elif ask_button and not question:
+            # Feedback section
+            st.markdown("---")
+            st.markdown("### 💭 Was this helpful?")
+            col1, col2, col3, col4, col4 = st.columns(5)
+            
+            feedback_rating = None
+            with col1:
+                if st.button("👍", use_container_width=True, key="helpful"):
+                    feedback_rating = 5
+            with col2:
+                if st.button("😊", use_container_width=True, key="good"):
+                    feedback_rating = 4
+            with col3:
+                if st.button("😐", use_container_width=True, key="ok"):
+                    feedback_rating = 3
+            with col4:
+                if st.button("😕", use_container_width=True, key="bad"):
+                    feedback_rating = 2
+            with col4:
+                if st.button("👎", use_container_width=True, key="poor"):
+                    feedback_rating = 1
+            
+            if feedback_rating:
+                if submit_feedback(question, result['answer'], feedback_rating):
+                    st.success("Thank you for your feedback! 🙏")
+                else:
+                    st.error("Failed to submit feedback")
+            
+            # Clear input by using a flag instead of modifying session state directly
+            if 'clear_input' not in st.session_state:
+                st.session_state.clear_input = False
+            st.session_state.clear_input = True
+    
+    elif ask_btn and not question:
         st.warning("Please enter a question")
 
-with col2:
-    # Sample questions
-    st.markdown("### 💡 Suggested Questions")
-    st.markdown("Click on questions below for quick queries:")
+with tab2:
+    st.markdown("### 📊 System Analytics")
+    
+    health = get_api_health()
+    metrics_data = get_metrics()
+    
+    if health and metrics_data:
+        col1, col2, col3, col4 = st.columns(4)
+        
+        with col1:
+            st.metric("Total Documents", health['documents_loaded'])
+        with col2:
+            st.metric("Categories", len(health.get('categories', {})))
+        with col3:
+            st.metric("Avg Latency", f"{metrics_data.get('average_latency_ms', 0):.0f}ms")
+        with col4:
+            st.metric("Error Rate", f"{metrics_data.get('error_rate_percent', 0):.1f}%")
+        
+        # Category distribution - Use HTML table to avoid pyarrow issues
+        if health.get('categories'):
+            st.markdown("#### Document Categories")
+            categories = health['categories']
+            
+            # Create HTML table instead of using dataframe/chart
+            html_table = "<table style='width:100%; border-collapse: collapse;'>"
+            html_table += "<tr style='background-color: #667eea; color: white;'><th style='padding: 10px; text-align: left;'>Category</th><th style='padding: 10px; text-align: right;'>Count</th><th style='padding: 10px; width: 200px;'>Visual</th></tr>"
+            
+            max_count = max(categories.values()) if categories.values() else 1
+            
+            for cat, count in sorted(categories.items(), key=lambda x: x[1], reverse=True):
+                percentage = (count / max_count) * 100 if max_count > 0 else 0
+                html_table += f"""
+                <tr style='border-bottom: 1px solid #ddd;'>
+                    <td style='padding: 8px;'><strong>{cat}</strong></td>
+                    <td style='padding: 8px; text-align: right;'>{count}</td>
+                    <td style='padding: 8px;'>
+                        <div style='background-color: #667eea; height: 20px; width: {percentage}%; border-radius: 10px;'></div>
+                    </td>
+                </tr>
+                """
+            html_table += "</table>"
+            st.markdown(html_table, unsafe_allow_html=True)
+        
+        # Conversation stats
+        if st.session_state.conversation_history:
+            st.markdown("#### Conversation Statistics")
+            st.metric("Messages", len(st.session_state.conversation_history))
+            
+            # Confidence distribution - Use HTML to avoid pyarrow
+            confidences = [msg.get('confidence') for msg in st.session_state.conversation_history 
+                          if msg.get('confidence')]
+            if confidences:
+                from collections import Counter
+                conf_counts = Counter(confidences)
+                st.markdown("#### Confidence Distribution")
+                
+                html_conf = "<table style='width:100%; border-collapse: collapse;'>"
+                html_conf += "<tr style='background-color: #667eea; color: white;'><th style='padding: 10px; text-align: left;'>Confidence</th><th style='padding: 10px; text-align: right;'>Count</th><th style='padding: 10px; width: 200px;'>Visual</th></tr>"
+                
+                max_conf_count = max(conf_counts.values()) if conf_counts.values() else 1
+                
+                for conf_level in ['high', 'medium', 'low']:
+                    count = conf_counts.get(conf_level, 0)
+                    if count > 0:
+                        percentage = (count / max_conf_count) * 100 if max_conf_count > 0 else 0
+                        color = '#28a745' if conf_level == 'high' else '#ffc107' if conf_level == 'medium' else '#dc3545'
+                        html_conf += f"""
+                        <tr style='border-bottom: 1px solid #ddd;'>
+                            <td style='padding: 8px;'><strong>{conf_level.title()}</strong></td>
+                            <td style='padding: 8px; text-align: right;'>{count}</td>
+                            <td style='padding: 8px;'>
+                                <div style='background-color: {color}; height: 20px; width: {percentage}%; border-radius: 10px;'></div>
+                            </td>
+                        </tr>
+                        """
+                html_conf += "</table>"
+                st.markdown(html_conf, unsafe_allow_html=True)
 
-    sample_questions = get_sample_questions()
-
-    for sq in sample_questions[:8]:  # Show first 8 questions
-        if st.button(sq, key=f"sq_{sq}", use_container_width=True):
-            st.session_state.question_input = sq
-            st.rerun()
-
-    st.markdown("---")
-
-    # Quick stats
-    st.markdown("### 📊 Quick Stats")
-
-    if health:
-        st.metric("Total Documents", health['documents_loaded'])
-        st.metric("Document Categories", len(health['categories']))
-
+with tab3:
+    st.markdown("### 🎯 About This System")
+    
+    st.markdown("""
+    #### 🧠 RAG Pipeline Architecture
+    
+    This system implements a **Retrieval-Augmented Generation (RAG)** pipeline specifically designed for personal Q&A:
+    
+    1. **Knowledge Base Construction** 📚
+       - Structured personal data (projects, experience, skills, etc.)
+       - Document chunking and metadata tagging
+       - Category-based organization
+    
+    2. **Semantic Retrieval** 🔍
+       - OpenAI embeddings (text-embedding-3-small)
+       - Cosine similarity search
+       - Category-weighted scoring
+    
+    3. **Prompt Engineering** ✍️
+       - Low temperature (0.3) for factual responses
+       - Strict system prompts preventing fabrication
+       - Context-aware question answering
+    
+    4. **Anti-Hallucination Strategies** 🛡️
+       - **Low Temperature**: Reduces randomness, increases determinism
+       - **Strict Prompts**: Explicit instructions to only use provided context
+       - **Confidence Assessment**: Based on retrieval scores
+       - **Source Tracing**: Show where information comes from
+       - **Optional Verification**: Second-pass fact-checking
+    
+    #### 🚀 Key Features
+    
+    - **Conversation Mode**: Multi-turn dialogue with context retention
+    - **Confidence Scoring**: High/Medium/Low based on retrieval quality
+    - **Source Attribution**: See exactly where answers come from
+    - **Feedback Collection**: Help improve the system
+    - **Real-time Metrics**: Monitor system performance
+    
+    #### 💡 Best Practices
+    
+    - Ask specific questions for better results
+    - Check confidence levels for reliability
+    - Review sources to verify information
+    - Use conversation mode for follow-up questions
+    """)
 
 # Footer
 st.markdown("---")
 st.markdown("""
 <div style="text-align: center; color: #888; padding: 1rem;">
-    <p>🚀 Built with RAG Technology | Using OpenAI Embeddings and GPT Models</p>
-    <p>Personal RAG Q&A System v1.0</p>
+    <p>🚀 Built with RAG Technology | Anti-Hallucination Strategies | FastAPI + Streamlit</p>
+    <p>Personal RAG Q&A System v2.0</p>
 </div>
 """, unsafe_allow_html=True)
-
-# Tips section
-with st.expander("💡 Usage Tips"):
-    st.markdown("""
-    **How to Get the Best Answers:**
-
-    1. **Ask specific questions** - More specific questions yield more accurate answers
-    2. **Check confidence level** - High confidence indicates more reliable answers
-    3. **View sources** - Understand where the answer information comes from
-    4. **Adjust retrieval count** - Modify the number of retrieved documents as needed
-
-    **System Features:**
-
-    - All answers are generated based on personal knowledge base
-    - System clearly indicates when it cannot answer a question
-    - Multiple strategies employed to prevent AI fabrication
-    - Supports conversation mode for multi-turn Q&A
-    """)
     

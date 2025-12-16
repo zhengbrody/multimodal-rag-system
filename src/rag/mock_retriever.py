@@ -99,10 +99,13 @@ class MockRetriever:
 
         query_keywords = self._extract_keywords(query)
         query_intent = self._detect_query_intent(query)
+        query_lower = query.lower()
+        doc_content_lower = None  # Will be set in loop
 
         # Calculate scores for all documents
         scored_docs = []
         for doc in self.documents:
+            doc_content_lower = doc['content'].lower()
             base_score = self._calculate_score(query_keywords, doc['keywords'])
 
             # Boost score based on intent matching
@@ -110,21 +113,44 @@ class MockRetriever:
             doc_type = doc['metadata'].get('type', 'unknown')
 
             boost = 1.0
+            content_bonus = 0.0  # Additional score based on content matching
 
+            # Special handling for work experience queries
+            if query_intent == 'experience':
+                # Check if document contains work experience keywords
+                has_work_exp_keywords = any(kw in doc_content_lower for kw in ['work experience', 'professional internship', 'three professional', 'allianz', 'penn state', 'qingdao engineering'])
+                
+                # Add content-based bonus for work experience queries
+                if 'work experience' in query_lower:
+                    if 'work experience' in doc_content_lower:
+                        content_bonus += 0.3
+                    if 'three professional internships' in doc_content_lower or 'three professional' in doc_content_lower:
+                        content_bonus += 0.2
+                
+                if doc_category == 'experience' or doc_type == 'experience':
+                    boost = 3.5
+                    if has_work_exp_keywords:
+                        boost = 6.0  # Very strong boost for work experience content
+                        content_bonus += 0.2
+                elif has_work_exp_keywords:
+                    boost = 5.0  # Boost even if category doesn't match
+                    content_bonus += 0.15
+                elif doc_category == 'skills':
+                    boost = 0.15  # Strongly penalize skills docs for experience queries
+                else:
+                    boost = 1.0
             # Strong boost for category match
-            if query_intent == doc_category:
-                boost = 2.5
+            elif query_intent == doc_category:
+                boost = 3.0  # Increased boost for exact category match
             # Moderate boost for related categories
             elif query_intent == 'projects' and doc_type == 'project':
-                boost = 2.5
-            elif query_intent == 'experience' and doc_type == 'experience':
-                boost = 2.5
+                boost = 3.0
             elif query_intent == 'skills' and doc_type in ['skills', 'soft_skills']:
                 boost = 2.0
             elif query_intent == 'education' and doc_type == 'education':
-                boost = 2.5
+                boost = 3.0
             elif query_intent == 'contact' and doc_type == 'contact':
-                boost = 2.5
+                boost = 3.0
 
             # Penalize keyword_mapping documents slightly (prefer richer content)
             if doc_type == 'keyword_mapping':
@@ -140,7 +166,7 @@ class MockRetriever:
                     if question_overlap > 0:
                         boost *= (1 + question_overlap * 0.3)
 
-            final_score = base_score * boost
+            final_score = (base_score + content_bonus) * boost
             scored_docs.append((doc, final_score))
 
         # Sort by score

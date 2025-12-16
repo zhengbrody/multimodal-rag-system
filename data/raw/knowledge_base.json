@@ -5,10 +5,12 @@
     "email": "a13105129007@gmail.com",
     "phone": "(814) 826-8590",
     "location": "San Diego, CA",
-    "bio": "I'm a graduate student at UC San Diego pursuing M.S. in Electrical and Computer Engineering, with a strong foundation in machine learning and software engineering. With hands-on experience at Allianz Insurance and multiple successful Kaggle competitions, I specialize in building production-grade ML systems, distributed computing, and full-stack development. Currently seeking 2026 Summer internships in Machine Learning Engineering, with interests in MLOps, LLM applications, and scalable ML infrastructure."
+    "bio": "I'm a graduate student at UC San Diego pursuing M.S. in Electrical and Computer Engineering, specializing in Machine Learning Engineering. With proven production ML experience at Allianz Insurance (200K+ transactions/day) and Kaggle Silver Medal achievement, I excel at building end-to-end ML systems from research to production. My ECE background provides deep systems-level understanding essential for scalable ML infrastructure. Currently seeking 2026 Summer internships in Machine Learning Engineering, with strong interests in MLOps, LLM applications, distributed ML systems, and production ML infrastructure."
   },
   "keyword_mappings": {
-    "internship": "Seeking 2026 Summer internship in Machine Learning Engineering or Software Engineering roles, available May/June 2026 for 10-12 weeks",
+    "internship": "Three professional internships: 1) ML Engineer Intern at Allianz Insurance (Jun-Sep 2024) - fraud detection system processing 200K+ transactions/day, 2) ML Research Assistant at Penn State (Aug-Dec 2024) - multimodal NLP achieving 92% F1-score, 3) Software Engineer Intern at Qingdao Engineering Consulting Institute (Jun-Sep 2023) - real-time monitoring platform with 99.5% uptime. Currently seeking 2026 Summer internship in Machine Learning Engineering or Software Engineering roles, available May/June 2026 for 10-12 weeks",
+    "work experience": "Three professional internships: 1) Machine Learning Engineer Intern at Allianz Insurance (Jun-Sep 2024, Qingdao, China) - Built fraud detection ML pipeline processing 200K+ daily transactions, achieved 15% precision improvement, deployed production model with MLflow and Docker, implemented fairness monitoring, reduced API latency from 150ms to 105ms, migrated database from MySQL to PostgreSQL. 2) Machine Learning Engineer Research Assistant at Penn State University (Aug-Dec 2024) - Implemented multimodal NLP pipeline achieving 92% F1-score, built scalable document processing system handling 10K+ concurrent requests with 3× throughput gain and 99.9% uptime, created microservice with comprehensive test automation (92% code coverage). 3) Software Engineer Intern at Qingdao Engineering Consulting Institute (Jun-Sep 2023) - Developed real-time monitoring platform streaming 500+ sensor feeds, improved system reliability from 97% to 99.5% uptime, created predictive maintenance service with anomaly detection achieving 79% precision, built CI/CD pipeline and monitoring dashboard",
+    "employment": "Three professional internships: Allianz Insurance (ML Engineer Intern, Jun-Sep 2024), Penn State University (ML Research Assistant, Aug-Dec 2024), Qingdao Engineering Consulting Institute (Software Engineer Intern, Jun-Sep 2023)",
     "2026": "Available for Summer 2026 internship starting May/June 2026",
     "summer": "Seeking Summer 2026 internship, 10-12 weeks duration, open to relocation anywhere in US",
     "visa": "F-1 student visa with CPT/OPT eligibility, international student from China",
@@ -39,14 +41,14 @@
     "competition": "Kaggle Silver Medal winner - LLM inference optimization competition",
     "medal": "Won Silver Medal in Kaggle LLM competition by optimizing inference to 105ms (65% improvement)",
     
-    "allianz": "Machine Learning Engineer intern Jun-Sep 2024, built fraud detection system processing 200K+ transactions",
-    "penn state": "Research Assistant Aug-Dec 2024, built NLP pipeline with 92% F1-score, also completed B.Eng. 2021-2025",
-    "research": "ML Research Assistant at Penn State - NLP, document processing, entity extraction with BERT",
+    "allianz": "Machine Learning Engineer intern Jun-Sep 2024, built fraud detection system processing 200K+ transactions with privacy-preserving feature engineering, fairness monitoring, and encrypted data handling",
+    "penn state": "ML Engineer Research Assistant Aug-Dec 2024, built multimodal NLP pipeline with cross-modal attention achieving 92% F1-score, scalable document processing handling 10K+ concurrent requests, also completed B.Eng. 2021-2025",
+    "research": "ML Research Assistant at Penn State - Multimodal NLP, document processing, entity extraction with BERT and cross-modal attention, automated ML experiment tracking, fairness evaluation",
     
-    "project": "5 major projects: Multimodal RAG (92% accuracy), Recommendation System (10M events/day), LLM Inference (Kaggle Silver), Cloud E-commerce (8K transactions/day), Music Recommender",
-    "rag project": "Built end-to-end multimodal RAG with CLIP+OpenAI embeddings, 92% accuracy, sub-1s latency, deployed on AWS",
-    "recommendation": "Built collaborative filtering system with PySpark processing 10M+ daily interactions, 0.85 AUC, 2K+ QPS",
-    "llm project": "Kaggle Silver Medal - Fine-tuned LLaMA with LoRA, 65% latency reduction, 99.9% availability on K8s",
+    "project": "5 major projects: Multimodal RAG (92% Recall@5, microservices, K8s, comprehensive testing), Real-Time Recommendation with RL (10M events/day, contextual bandits), Distributed LLM Inference (Kaggle Silver, 40% cost reduction), Cloud E-commerce (8K transactions/day, 12 microservices), Music Recommender",
+    "rag project": "Built production-ready multimodal RAG (July-Oct 2025) with microservices architecture, FastAPI with 7 REST endpoints, Kubernetes orchestration, comprehensive test suite with JMeter load testing, 92% Recall@5, sub-1s latency for 500 concurrent users, 99.9% uptime",
+    "recommendation": "Built Real-Time Sequence Prediction with RL (Jan-May 2025) - hybrid system combining PySpark ALS collaborative filtering and contextual bandits with Thompson sampling, processing 10M+ daily interactions, 0.85 AUC, 2K+ QPS, 15% engagement increase with fairness constraints",
+    "llm project": "Kaggle Silver Medal (May-Aug 2024) - Distributed Signal Processing System, fine-tuned LLaMA-2 7B with LoRA and responsible AI safeguards, 8-bit quantization, 65% latency reduction, 40% cost reduction, 99.9% availability on K8s, handling 20K+ daily requests",
     
     "strength": "End-to-end ML systems, production deployment, performance optimization, both research and engineering",
     "skills": "Python, PyTorch, TensorFlow, LangChain, PySpark, Kafka, MLflow, Docker, K8s, AWS, FastAPI, PostgreSQL",
@@ -67,10 +69,14 @@
     "achievement": "Kaggle Silver Medal, 92% RAG accuracy, 65% latency reduction, 99.9% uptime, 15% precision improvement, 18% CTR increase",
     "metric": "Key metrics: 92% accuracy, 200K+ transactions/day, 10M+ events/day, sub-1s latency, 99.9% uptime",
     
-    "interest": "LLMs, RAG systems, MLOps, distributed ML, recommendation systems, model optimization, online learning",
-    "goal": "Become ML engineering leader building scalable ML platforms solving real-world problems",
+    "interest": "LLMs, RAG systems, MLOps, distributed ML, recommendation systems, model optimization, online learning, production ML systems, ML infrastructure",
+    "goal": "Become a Machine Learning Engineering leader building scalable ML platforms that solve real-world problems. Aspire to work on production ML systems at scale, combining deep ML knowledge with strong systems engineering skills.",
     
-    "prefer": "Interested in Big Tech, AI-first companies (OpenAI, Anthropic), ML infrastructure roles"
+    "prefer": "Interested in Big Tech (Google, Meta, Amazon, Microsoft), AI-first companies (OpenAI, Anthropic, Cohere), and ML infrastructure roles. Looking for opportunities to work on impactful ML systems, learn from senior engineers, and contribute to products used by millions.",
+    
+    "mle_focus": "Strong passion for Machine Learning Engineering - the intersection of ML algorithms and production systems. ECE background provides systems-level thinking essential for building scalable ML infrastructure. Proven ability to take models from research to production with measurable business impact.",
+    
+    "production_mindset": "Production-first mindset: always consider scalability, reliability, monitoring, and optimization. Built systems with 99.9% uptime, sub-1s latency, handling millions of requests. Understand that production ML is about more than just model accuracy - it's about building robust, maintainable systems."
   },
   "comprehensive_qa": {
     "basic_info": [
@@ -115,6 +121,11 @@
         "a": "Yes, seeking 2026 Summer internship in Machine Learning Engineering or Software Engineering"
       },
       {
+        "q": "What is your work experience?",
+        "keywords": ["work experience", "work history", "internships", "employment", "jobs", "experience", "professional experience"],
+        "a": "I have three professional internships: 1) Machine Learning Engineer Intern at Allianz Insurance (Jun-Sep 2024, Qingdao, China) - Built end-to-end fraud detection ML pipeline processing 200K+ daily transactions using Python and PySpark, achieved 15% precision improvement with privacy-preserving feature engineering, deployed gradient boosting model to production with MLflow and Docker, implemented automated fairness monitoring and bias mitigation, developed real-time model serving API with Flask and Redis caching reducing latency from 150ms to 105ms, migrated production database from MySQL to PostgreSQL reducing report generation time by 20%. 2) Machine Learning Engineer Research Assistant at Penn State University (Aug-Dec 2024) - Implemented multimodal NLP pipeline for entity extraction using spaCy and Transformers, processing 10K+ documents daily with Kafka streaming, achieved 92% F1-score through BERT fine-tuning with cross-modal attention, built automated ML experiment tracking system using MLflow and Airflow, developed scalable document processing system handling 10K+ concurrent requests achieving 3× throughput gain and 99.9% uptime, created microservice for entity extraction using Java and Python with comprehensive test automation (92% code coverage). 3) Software Engineer Intern at Qingdao Engineering Consulting Institute (Jun-Sep 2023) - Developed real-time monitoring platform streaming 500+ sensor feeds with RESTful APIs and WebSocket integration, improved system reliability from 97% to 99.5% uptime, created predictive maintenance service using time-series analysis with isolation forest and LSTM models achieving 79% precision in anomaly detection, built CI/CD deployment pipeline using GitHub Actions and containerization, created monitoring dashboard with Tableau for visualizing model performance metrics and data drift detection."
+      },
+      {
         "q": "When are you available?",
         "keywords": ["available", "when", "start"],
         "a": "Available Summer 2026, flexible May/June start date, 10-12 weeks duration"
@@ -144,7 +155,12 @@
       {
         "q": "What courses have you taken?",
         "keywords": ["courses", "coursework", "classes"],
-        "a": "Deep Learning, Machine Learning Systems, Distributed Computing, Natural Language Processing, Computer Vision, Data Structures, Algorithms"
+        "a": "At UC San Diego (ECE): Deep Learning and Neural Networks, Machine Learning Systems and MLOps, Distributed Computing and Systems, Natural Language Processing, Computer Vision and Image Processing, Advanced Algorithms and Data Structures, Computer Architecture, Parallel and Distributed Systems. At Penn State: Machine Learning and Data Mining, Statistical Methods, Database Systems, Software Engineering, Big Data Analytics. These courses provide strong foundation in both ML algorithms and systems engineering."
+      },
+      {
+        "q": "How does ECE help with ML Engineering?",
+        "keywords": ["ece ml", "ece advantage", "electrical engineering ml"],
+        "a": "ECE provides crucial systems-level understanding: 1) Distributed systems knowledge for scaling ML 2) Computer architecture understanding for optimization 3) Parallel computing for training/inference 4) Hardware-software tradeoffs for efficiency 5) Engineering rigor for production systems. This systems thinking is essential for production ML - understanding how models interact with infrastructure, databases, and distributed systems."
       },
       {
         "q": "When do you graduate?",
@@ -155,6 +171,21 @@
         "q": "Why did you choose your major?",
         "keywords": ["why major", "choose"],
         "a": "Passionate about applying machine learning to solve real-world problems. Data Science undergrad gave me strong foundation in ML algorithms and statistics, now pursuing ECE masters to deepen technical skills in ML systems and computer engineering."
+      },
+      {
+        "q": "Why ECE instead of CS for ML?",
+        "keywords": ["why ece", "ece vs cs", "electrical computer engineering"],
+        "a": "ECE provides deeper understanding of systems-level thinking, hardware-software interaction, and distributed systems - all crucial for production ML engineering. ECE curriculum covers ML systems, distributed computing, and computer architecture which directly apply to building scalable ML infrastructure. My goal is to become a production ML engineer, not just a researcher, so ECE's engineering focus aligns perfectly."
+      },
+      {
+        "q": "What makes you qualified for MLE roles?",
+        "keywords": ["qualified mle", "mle qualification", "why mle"],
+        "a": "Strong combination of ML expertise and production engineering: 1) Built production ML systems (fraud detection processing 200K+ transactions/day) 2) Deep ML knowledge (Kaggle Silver Medal, 92% F1-score research) 3) MLOps experience (Docker, K8s, MLflow, monitoring) 4) System design skills (99.9% uptime, sub-1s latency) 5) Full-stack capabilities (APIs, databases, deployment). ECE background provides systems thinking essential for production ML."
+      },
+      {
+        "q": "What's your passion for MLE?",
+        "keywords": ["passion mle", "why mle", "love mle"],
+        "a": "Passionate about bridging the gap between ML research and production. Love the challenge of taking models from notebooks to systems serving millions, optimizing for latency and scale, building robust MLOps pipelines. ECE studies deepen my understanding of distributed systems and computer architecture - essential for production ML. Excited about LLMs, RAG systems, and building ML infrastructure that enables other engineers."
       }
     ],
     "technical_skills": [
@@ -293,9 +324,14 @@
     ],
     "experience_deep_dive": [
       {
+        "q": "What are your internships?",
+        "keywords": ["internships", "internship", "work experience", "professional experience", "jobs", "employment"],
+        "a": "I have completed three professional internships: 1) Machine Learning Engineer Intern at Allianz Insurance (Jun-Sep 2024, Qingdao, China) - Built end-to-end fraud detection ML pipeline processing 200K+ daily transactions, achieved 15% precision improvement, deployed production model with MLflow and Docker, implemented fairness monitoring, developed real-time API reducing latency from 150ms to 105ms, migrated database from MySQL to PostgreSQL. 2) Machine Learning Engineer Research Assistant at Penn State University (Aug-Dec 2024) - Implemented multimodal NLP pipeline achieving 92% F1-score, built scalable document processing system handling 10K+ concurrent requests with 3× throughput gain and 99.9% uptime, created microservice with comprehensive test automation (92% code coverage). 3) Software Engineer Intern at Qingdao Engineering Consulting Institute (Jun-Sep 2023) - Developed real-time monitoring platform streaming 500+ sensor feeds, improved system reliability from 97% to 99.5% uptime, created predictive maintenance service with anomaly detection achieving 79% precision, built CI/CD pipeline and monitoring dashboard."
+      },
+      {
         "q": "Tell me about your Allianz experience",
         "keywords": ["allianz", "insurance"],
-        "a": "Machine Learning Engineer intern (Jun-Sep 2024) at Allianz Insurance in Qingdao, China. Built end-to-end fraud detection ML pipeline processing 200K+ daily transactions using PySpark. Achieved 15% precision improvement through feature engineering. Deployed gradient boosting model with MLflow and Docker, implemented A/B testing and model monitoring. Also built microservice-based prediction system with Redis caching, optimizing API response time from 150ms to 105ms. Migrated production DB from MySQL to PostgreSQL."
+        "a": "Machine Learning Engineer intern (Jun-Sep 2024) at Allianz Insurance in Qingdao, China. Built end-to-end fraud detection ML pipeline processing 200K+ daily transactions using Python and PySpark with privacy-preserving feature engineering, achieving 15% precision improvement while maintaining user privacy. Deployed gradient boosting model to production with MLflow and Docker, implementing automated fairness monitoring (demographic parity, equalized odds metrics) and bias mitigation. Developed real-time model serving API using Flask with encrypted data handling and Redis caching, optimizing batch inference to reduce latency from 150ms to 105ms while ensuring secure data processing. Migrated production database from MySQL to PostgreSQL for better JSON support and scalability, reducing report generation time by 20%."
       },
       {
         "q": "What did you learn at Allianz?",
@@ -310,12 +346,12 @@
       {
         "q": "Tell me about Penn State research",
         "keywords": ["penn state", "research assistant"],
-        "a": "ML Research Assistant (Aug-Dec 2024) at Penn State. Built NLP pipeline for entity extraction using spaCy and BERT Transformers, processing 10K+ documents daily with Kafka streaming. Achieved 92% F1-score on validation set. Developed automated ML experiment tracking with MLflow and Airflow DAGs, implemented hyperparameter tuning with Optuna reducing training time by 30%. Also built scalable document processing system achieving 3× throughput gain."
+        "a": "Machine Learning Engineer Research Assistant (Aug-Dec 2024) at Penn State University. Implemented multimodal NLP pipeline for entity extraction using spaCy and Transformers, processing 10K+ documents daily with Kafka streaming, achieving 92% F1-score through BERT fine-tuning with cross-modal attention mechanisms. Built automated ML experiment tracking system using MLflow and Airflow, integrating hyperparameter tuning with Optuna and developing custom metrics for model interpretability and fairness evaluation. Also built scalable document processing system using Kafka message streaming and Python multiprocessing on Linux, handling 10K+ concurrent requests, achieving 3× throughput gain and maintaining 99.9% system uptime. Developed RESTful APIs and asynchronous task pipeline, and created microservice for entity extraction using Java and Python with comprehensive test automation framework using pytest (92% code coverage) and CI/CD integration."
       },
       {
         "q": "What about the consulting institute internship?",
         "keywords": ["qingdao", "engineering consulting", "sensor"],
-        "a": "Software Engineer Intern (Jun-Sep 2023) at Qingdao Engineering Consulting Institute. Developed real-time monitoring platform streaming 500+ sensor feeds, built RESTful APIs with WebSocket and circuit breaker pattern, improved system reliability from 97% to 99.5% uptime. Created anomaly detection system using isolation forest and LSTM achieving 79% precision on time-series sensor data."
+        "a": "Software Engineer Intern (Jun-Sep 2023) at Qingdao Engineering Consulting Institute. Developed real-time monitoring platform on Linux streaming 500+ sensor feeds, with RESTful APIs and WebSocket integration, improving system reliability from 97% to 99.5% uptime. Created predictive maintenance service processing large-scale sensor data using time-series analysis, implementing anomaly detection system using isolation forest and LSTM models with feature engineering pipeline, achieving 79% precision in anomaly detection with explainable AI techniques. Created CI/CD deployment pipeline using GitHub Actions and containerization, building monitoring dashboard with Tableau for visualizing model performance metrics, data drift detection, and fairness indicators."
       },
       {
         "q": "What was your biggest challenge at Allianz?",
@@ -337,7 +373,7 @@
       {
         "q": "Explain your RAG system",
         "keywords": ["rag system", "multimodal rag", "product search"],
-        "a": "Built production-ready multimodal RAG system combining text (OpenAI embeddings) and image (CLIP) for product search. Pipeline: 1) Preprocessed 50K+ products 2) Generated embeddings 3) Stored in Pinecone vector DB 4) User query → embed → similarity search → retrieve top-K 5) LLM (GPT-4) generates contextual recommendations. FastAPI backend with Redis caching, Streamlit frontend, deployed on AWS EC2 with Docker. Achieved 92% top-5 accuracy, sub-1s latency, 18% CTR increase in A/B tests."
+        "a": "Built production-ready multimodal RAG system (July-Oct 2025) with microservices architecture using FastAPI, containerized with Docker and orchestrated using Kubernetes, handling 500 concurrent requests with sub-1s latency. Integrated CLIP and OpenAI embedding models using LangChain framework, deployed vector search with Pinecone processing 50K+ products achieving 92% Recall@5 against 1000 manually labeled queries. Built FastAPI backend with 7 REST endpoints and comprehensive test suite (unit, integration, load testing with JMeter). Deployed full-stack application on AWS EC2 using Docker and GitHub Actions CI/CD, implementing CloudWatch monitoring and health checks maintaining 99.9% uptime over a 30-day period. Achieved 18% CTR improvement through A/B testing."
       },
       {
         "q": "Why 92% accuracy for RAG?",
@@ -352,7 +388,7 @@
       {
         "q": "Tell me about your recommendation system",
         "keywords": ["recommendation", "recsys", "collaborative filtering"],
-        "a": "Built real-time recommendation engine processing 10M+ daily user interactions using PySpark. Implemented ALS collaborative filtering achieving 0.85 AUC. Created feature store with Feast managing 200+ features with hourly updates. Deployed with TorchServe handling 2K+ QPS, p99 latency under 50ms. Built online learning pipeline with Kafka for real-time updates. A/B testing showed 15% engagement increase."
+        "a": "Built Real-Time Sequence Prediction with Reinforcement Learning system (Jan-May 2025). Hybrid recommendation system combining collaborative filtering (PySpark ALS) and contextual bandits for exploration-exploitation tradeoffs, processing 10M+ user interactions daily and achieving 0.85 AUC on holdout set. Developed feature store using Feast managing 200+ user/item features with privacy-preserving aggregation, deployed model serving API using TorchServe handling 2K+ QPS with p99 latency under 50ms. Implemented online learning pipeline with Kafka streaming and incremental RL updates using Thompson sampling, building A/B testing framework showing 15% increase in user engagement with fairness constraints."
       },
       {
         "q": "What's ALS in your recommendation system?",
@@ -362,7 +398,7 @@
       {
         "q": "How did you win Kaggle Silver Medal?",
         "keywords": ["kaggle", "silver", "medal", "competition"],
-        "a": "Won Silver Medal (Top 5%) in distributed LLM inference competition. Key strategies: 1) Fine-tuned LLaMA with LoRA achieving 18% improvement 2) Implemented dynamic batching 3) Applied quantization reducing memory by 60% 4) Multi-GPU parallelization 5) Optimized inference pipeline reducing latency from 320ms to 105ms (65% improvement) 6) Deployed on Kubernetes with 99.9% availability"
+        "a": "Won Silver Medal (Top 5%) in Distributed Signal Processing System competition (May-Aug 2024). Implemented distributed training pipeline for LLaMA-2 7B with LoRA and responsible AI safeguards, achieving 18% performance improvement. Built scalable serving infrastructure handling 20K+ daily requests with 8-bit quantization and Kubernetes deployment, achieving 99.9% availability. Optimized inference pipeline with model quantization and batch processing, reducing serving costs by 40% while maintaining model quality. Key strategies: 1) Fine-tuned LLaMA with LoRA achieving 18% improvement 2) Implemented dynamic batching 3) Applied 8-bit quantization reducing memory by 60% 4) Multi-GPU parallelization with ThreadPoolExecutor 5) Optimized inference pipeline reducing latency from 320ms to 105ms (65% improvement) 6) Deployed on Kubernetes with 99.9% availability"
       },
       {
         "q": "What's LoRA fine-tuning?",
@@ -377,7 +413,7 @@
       {
         "q": "What was the cloud e-commerce project?",
         "keywords": ["ecommerce", "cloud-native", "serverless"],
-        "a": "Built serverless microservices platform on AWS serving 8,000+ daily transactions. Used Lambda, API Gateway, DynamoDB, SQS, EventBridge for event-driven architecture achieving 99.9% uptime. Implemented AWS CodePipeline for CI/CD across 12 microservices, CloudFormation for IaC, CloudWatch and X-Ray for monitoring/tracing, reducing debugging time by 30%."
+        "a": "Built Cloud-Native E-Commerce Platform (Aug-Oct 2025). Developed microservices platform using AWS Lambda, API Gateway, and DynamoDB, serving 8,000+ daily transactions with event-driven architecture (SQS/EventBridge), achieving 99.9% uptime. Built deployment automation using AWS CodePipeline with dependency mapping for 12 microservices, implemented CloudFormation templates, and integrated CloudWatch monitoring and X-Ray distributed tracing, reducing debugging time by 30%."
       },
       {
         "q": "Why use serverless architecture?",
@@ -388,6 +424,166 @@
         "q": "Tell me about music recommendation project",
         "keywords": ["music", "flask", "redis"],
         "a": "Built Flask RESTful API for music recommendations with Redis caching layer handling 1,200 concurrent requests. Achieved sub-80ms response latency through cache invalidation strategies and connection pooling. Optimized PostgreSQL queries (35% execution time reduction), implemented comprehensive pytest testing (88% coverage). Built A/B testing framework showing 12% user engagement improvement."
+      },
+      {
+        "q": "What technologies did you use at Allianz?",
+        "keywords": ["allianz tech stack", "allianz technologies"],
+        "a": "At Allianz, used Python and PySpark for data processing, MLflow for experiment tracking and model registry, Docker for containerization, Flask for real-time API serving, Redis for caching, PostgreSQL for production database (migrated from MySQL), and implemented automated fairness monitoring tools. Also used encrypted data handling and privacy-preserving feature engineering techniques."
+      },
+      {
+        "q": "What did you build at Penn State with Java and Python?",
+        "keywords": ["penn state java", "penn state python", "microservice"],
+        "a": "At Penn State, developed microservice for entity extraction using both Java and Python. Built comprehensive test automation framework using pytest achieving 92% code coverage, and integrated CI/CD pipeline. This microservice was part of the scalable document processing system handling 10K+ concurrent requests with Kafka streaming and Python multiprocessing."
+      },
+      {
+        "q": "How did you achieve 3× throughput gain at Penn State?",
+        "keywords": ["throughput", "3x", "penn state performance"],
+        "a": "Achieved 3× throughput gain through: 1) Kafka message streaming for efficient data pipeline 2) Python multiprocessing for parallel document processing across multiple CPU cores 3) Asynchronous task pipeline for non-blocking operations 4) Optimized RESTful API design 5) Efficient resource utilization. This allowed the system to handle 10K+ concurrent requests while maintaining 99.9% uptime."
+      },
+      {
+        "q": "What's demographic parity?",
+        "keywords": ["demographic parity", "fairness metric"],
+        "a": "Demographic parity is a fairness metric ensuring equal positive prediction rates across different demographic groups. At Allianz, I implemented automated fairness monitoring tracking demographic parity to ensure the fraud detection model doesn't disproportionately flag certain groups. This is crucial for building fair and ethical ML systems."
+      },
+      {
+        "q": "What's equalized odds?",
+        "keywords": ["equalized odds", "fairness"],
+        "a": "Equalized odds is a fairness metric ensuring equal true positive rates and false positive rates across different demographic groups. At Allianz, I tracked equalized odds alongside demographic parity to ensure the fraud detection model is fair. This means the model should have similar accuracy and error rates regardless of protected attributes."
+      },
+      {
+        "q": "How did you use Tableau at the consulting institute?",
+        "keywords": ["tableau", "monitoring", "dashboard"],
+        "a": "At Qingdao Engineering Consulting Institute, created monitoring dashboard with Tableau for visualizing model performance metrics, data drift detection, and fairness indicators. This dashboard helped track the anomaly detection system's performance over time, identify when model retraining was needed, and ensure the system maintained 79% precision in anomaly detection."
+      },
+      {
+        "q": "What's LLaMA-2 7B?",
+        "keywords": ["llama-2", "llama 7b", "large language model"],
+        "a": "LLaMA-2 7B is a 7-billion parameter large language model developed by Meta. In my Kaggle competition, I fine-tuned LLaMA-2 7B with LoRA (Low-Rank Adaptation) for parameter-efficient fine-tuning, achieving 18% performance improvement. Used 8-bit quantization to reduce memory usage and serving costs by 40% while maintaining model quality. Deployed on Kubernetes handling 20K+ daily requests with 99.9% availability."
+      },
+      {
+        "q": "How many REST endpoints did you build for RAG system?",
+        "keywords": ["rest endpoints", "api endpoints", "rag api"],
+        "a": "Built FastAPI backend with 7 REST endpoints for the RAG system, including: health check, question answering, sample questions, metrics, feedback, conversation management, and index rebuilding. Each endpoint was thoroughly tested with unit, integration, and load tests using JMeter to ensure production readiness."
+      },
+      {
+        "q": "What's dependency mapping?",
+        "keywords": ["dependency mapping", "microservices deployment"],
+        "a": "Dependency mapping tracks relationships between microservices to ensure correct deployment order. In the e-commerce project with 12 microservices, I built deployment automation using AWS CodePipeline with dependency mapping, ensuring services are deployed in the correct sequence (e.g., database before application services). This prevents deployment failures and reduced debugging time by 30%."
+      },
+      {
+        "q": "How did you handle 500 concurrent users in RAG system?",
+        "keywords": ["concurrent users", "rag scalability", "500 users"],
+        "a": "Handled 500 concurrent users through: 1) Microservices architecture with Kubernetes orchestration for auto-scaling 2) FastAPI async endpoints for non-blocking request handling 3) Redis caching for frequent queries 4) Efficient vector search with Pinecone 5) Load balancing across multiple pods 6) Comprehensive load testing with JMeter to verify performance. Achieved sub-1s latency and 99.9% uptime."
+      },
+      {
+        "q": "What's privacy-preserving feature engineering?",
+        "keywords": ["privacy preserving", "feature engineering", "data privacy"],
+        "a": "Privacy-preserving feature engineering involves creating ML features while protecting sensitive user information. At Allianz, I implemented techniques like aggregation, anonymization, and differential privacy to build fraud detection features without exposing individual user data. This ensures compliance with privacy regulations while maintaining model performance, achieving 15% precision improvement."
+      },
+      {
+        "q": "What's encrypted data handling?",
+        "keywords": ["encrypted data", "data encryption", "security"],
+        "a": "Encrypted data handling ensures data is encrypted both at rest and in transit. At Allianz, I implemented encrypted data handling in the real-time model serving API, ensuring sensitive insurance transaction data is protected throughout the ML pipeline. This is crucial for financial services and maintaining user trust while processing 200K+ daily transactions."
+      },
+      {
+        "q": "How did you reduce report generation time by 20%?",
+        "keywords": ["report generation", "database optimization", "postgresql"],
+        "a": "Reduced report generation time by 20% after migrating from MySQL to PostgreSQL at Allianz. PostgreSQL's better JSON support and scalability features, combined with query optimization (indexing, query plans), improved performance. The migration also enabled better handling of complex queries and improved overall database performance for the fraud detection system."
+      },
+      {
+        "q": "What's Python multiprocessing?",
+        "keywords": ["multiprocessing", "parallel processing", "python"],
+        "a": "Python multiprocessing allows parallel execution across multiple CPU cores. At Penn State, I used multiprocessing in the document processing system to process documents in parallel, significantly improving throughput. Combined with Kafka message streaming, this enabled handling 10K+ concurrent requests and achieving 3× throughput gain while maintaining 99.9% system uptime."
+      },
+      {
+        "q": "How did you test your RAG system with JMeter?",
+        "keywords": ["jmeter", "load testing", "performance testing"],
+        "a": "Used Apache JMeter for load testing the RAG system to verify it handles 500 concurrent requests with sub-1s latency. JMeter simulates multiple users making requests simultaneously, allowing me to test system performance under load. This comprehensive testing, combined with unit and integration tests, ensured production readiness and reliability."
+      },
+      {
+        "q": "What's incremental RL updates?",
+        "keywords": ["incremental rl", "reinforcement learning", "online learning"],
+        "a": "Incremental RL updates allow the model to learn continuously from new data without full retraining. In my recommendation system, I implemented incremental RL updates using Thompson sampling with Kafka streaming, enabling the system to adapt to user preferences in real-time. This online learning approach contributed to achieving 15% engagement increase with fairness constraints."
+      },
+      {
+        "q": "How did you ensure fairness in recommendation system?",
+        "keywords": ["fairness recommendation", "fairness constraints", "recommendation fairness"],
+        "a": "In the recommendation system, implemented fairness constraints to ensure recommendations don't favor certain groups unfairly. Combined with contextual bandits and Thompson sampling, this allowed exploration-exploitation tradeoffs while maintaining fairness. The A/B testing framework showed 15% engagement increase while ensuring fair treatment across different user groups."
+      },
+      {
+        "q": "What's Feast feature store?",
+        "keywords": ["feast", "feature store", "ml features"],
+        "a": "Feast is an open-source feature store for managing ML features. In my recommendation system, I developed feature store using Feast managing 200+ user/item features with hourly updates and privacy-preserving aggregation. This enabled real-time feature serving for the recommendation API, handling 2K+ QPS with p99 latency under 50ms."
+      },
+      {
+        "q": "How did you achieve 99.9% uptime across projects?",
+        "keywords": ["uptime", "availability", "reliability"],
+        "a": "Achieved 99.9% uptime through: 1) Kubernetes orchestration with auto-scaling and health checks 2) Redundancy with multiple replicas 3) Circuit breaker patterns for fault tolerance 4) Comprehensive monitoring (CloudWatch, Grafana) 5) Automated alerts and recovery 6) Load balancing 7) Graceful degradation. Examples: RAG system (30-day period), LLM inference (K8s deployment), Penn State document processing (10K+ concurrent requests)."
+      },
+      {
+        "q": "What did you do at Allianz with privacy and fairness?",
+        "keywords": ["privacy", "fairness", "bias", "allianz privacy"],
+        "a": "At Allianz, implemented privacy-preserving feature engineering techniques to protect user data while building fraud detection models. Deployed automated fairness monitoring system tracking demographic parity and equalized odds metrics to ensure model predictions are fair across different demographic groups. Implemented bias mitigation techniques to address any unfairness detected. Also used encrypted data handling in the real-time model serving API to ensure secure data processing throughout the ML pipeline."
+      },
+      {
+        "q": "Tell me about your multimodal NLP work at Penn State",
+        "keywords": ["multimodal nlp", "cross-modal", "attention", "penn state nlp"],
+        "a": "At Penn State, implemented multimodal NLP pipeline for entity extraction using spaCy and Transformers. Used BERT fine-tuning with cross-modal attention mechanisms, which allows the model to attend to information across different modalities (text, potentially other data types). This cross-modal attention helped achieve 92% F1-score by enabling the model to leverage relationships between different types of information in the documents."
+      },
+      {
+        "q": "What's cross-modal attention?",
+        "keywords": ["cross-modal attention", "multimodal attention"],
+        "a": "Cross-modal attention is a mechanism in neural networks that allows the model to attend to information across different modalities (e.g., text, images, audio). In my Penn State research, I used cross-modal attention in BERT fine-tuning for entity extraction, enabling the model to leverage relationships between different types of information in documents, which contributed to achieving 92% F1-score."
+      },
+      {
+        "q": "How did you ensure fairness in ML models?",
+        "keywords": ["fairness", "bias mitigation", "demographic parity", "equalized odds"],
+        "a": "At Allianz, implemented automated fairness monitoring tracking demographic parity (equal positive prediction rates across groups) and equalized odds (equal true/false positive rates across groups). When unfairness was detected, applied bias mitigation techniques. Also developed custom metrics for model interpretability and fairness evaluation at Penn State. This ensures ML models make fair predictions regardless of protected attributes like demographics."
+      },
+      {
+        "q": "What's responsible AI?",
+        "keywords": ["responsible ai", "ai ethics", "ai safety"],
+        "a": "Responsible AI involves building ML systems that are fair, transparent, explainable, and safe. In my Kaggle competition work, I implemented responsible AI safeguards when fine-tuning LLaMA-2 7B, ensuring the model maintains quality while being deployed responsibly. This includes fairness monitoring, bias mitigation, model interpretability, and ensuring models don't produce harmful outputs."
+      },
+      {
+        "q": "How did you reduce serving costs in LLM inference?",
+        "keywords": ["serving costs", "cost optimization", "llm cost"],
+        "a": "In the Kaggle competition, reduced serving costs by 40% while maintaining model quality through: 1) 8-bit quantization - reducing model size and memory requirements 2) Efficient batch processing - maximizing GPU utilization 3) Optimized inference pipeline - reducing compute time 4) Kubernetes auto-scaling - scaling down during low traffic. These optimizations allowed handling 20K+ daily requests cost-effectively while maintaining 99.9% availability."
+      },
+      {
+        "q": "What's 8-bit quantization?",
+        "keywords": ["8-bit quantization", "quantization", "model compression"],
+        "a": "8-bit quantization reduces model precision from 32-bit floats to 8-bit integers, reducing model size by ~75% and memory usage by ~60% while maintaining most of the model's accuracy. Used this in Kaggle competition to reduce serving costs by 40% while handling 20K+ daily requests. It's a key technique for deploying large models like LLaMA-2 7B efficiently in production."
+      },
+      {
+        "q": "What's contextual bandits?",
+        "keywords": ["contextual bandits", "bandits", "reinforcement learning"],
+        "a": "Contextual bandits are a type of reinforcement learning that balances exploration (trying new options) and exploitation (using known good options) based on context. In my recommendation system, I combined collaborative filtering with contextual bandits using Thompson sampling for exploration-exploitation tradeoffs. This allows the system to learn user preferences while exploring new recommendations, achieving 15% engagement increase with fairness constraints."
+      },
+      {
+        "q": "What's Thompson sampling?",
+        "keywords": ["thompson sampling", "bayesian", "exploration"],
+        "a": "Thompson sampling is a Bayesian approach to the multi-armed bandit problem that balances exploration and exploitation. In my recommendation system, I used Thompson sampling for incremental RL updates, allowing the system to explore new recommendations while exploiting known good ones. This contributed to achieving 15% engagement increase while maintaining fairness constraints."
+      },
+      {
+        "q": "How did you test your RAG system?",
+        "keywords": ["rag testing", "test suite", "jmeter", "load testing"],
+        "a": "Built comprehensive test suite for RAG system including: 1) Unit tests for individual components (retrieval, embedding, generation) 2) Integration tests for end-to-end pipeline 3) Load testing with JMeter to verify system handles 500 concurrent requests with sub-1s latency 4) Accuracy testing against 1000 manually labeled queries achieving 92% Recall@5. This thorough testing ensured production readiness and reliability."
+      },
+      {
+        "q": "What's dependency mapping in microservices?",
+        "keywords": ["dependency mapping", "microservices", "deployment"],
+        "a": "Dependency mapping tracks relationships between microservices to ensure correct deployment order. In the e-commerce project, I built deployment automation using AWS CodePipeline with dependency mapping for 12 microservices, ensuring services are deployed in the correct order (e.g., database services before application services). This prevents deployment failures and reduces debugging time by 30%."
+      },
+      {
+        "q": "How did you handle 10K+ concurrent requests at Penn State?",
+        "keywords": ["concurrent requests", "scalability", "penn state scalability"],
+        "a": "Built scalable document processing system using Kafka message streaming and Python multiprocessing on Linux. Kafka handles high-throughput message streaming, while Python multiprocessing enables parallel processing across multiple CPU cores. This architecture achieved 3× throughput gain and maintained 99.9% system uptime while handling 10K+ concurrent document processing requests."
+      },
+      {
+        "q": "What's explainable AI?",
+        "keywords": ["explainable ai", "xai", "model interpretability"],
+        "a": "Explainable AI (XAI) makes ML model decisions understandable to humans. At Penn State, I developed custom metrics for model interpretability and fairness evaluation. At the consulting institute, I created anomaly detection system with explainable AI techniques, achieving 79% precision while providing explanations for why anomalies were detected. This is crucial for building trust in ML systems, especially in critical applications like fraud detection and predictive maintenance."
       }
     ],
     "technical_depth": [
@@ -470,6 +666,36 @@
         "q": "What's your testing strategy for ML models?",
         "keywords": ["testing", "ml testing", "validation"],
         "a": "Multi-level approach: 1) Unit tests for preprocessing/feature engineering 2) Integration tests for pipeline 3) Model validation on holdout set 4) A/B testing in production 5) Monitor business metrics. Achieved 88% code coverage with pytest in music recommendation project. Test edge cases, data quality, model behavior."
+      },
+      {
+        "q": "How do you ensure model reliability in production?",
+        "keywords": ["reliability", "production reliability", "model reliability"],
+        "a": "Multiple strategies: 1) Comprehensive testing (unit, integration, validation) 2) Monitoring (performance metrics, data drift, latency) 3) Automated alerts for anomalies 4) Health checks and circuit breakers 5) Graceful degradation 6) Automated retraining triggers 7) A/B testing before full rollout. Achieved 99.9% uptime across projects through redundancy, monitoring, and proper error handling."
+      },
+      {
+        "q": "What's your approach to distributed ML training?",
+        "keywords": ["distributed training", "multi-gpu", "parallel training"],
+        "a": "Experience with distributed training in Kaggle competition: 1) Multi-GPU parallelization using PyTorch DDP 2) Gradient accumulation for large batches 3) Mixed precision training for efficiency 4) Proper synchronization and error handling 5) Monitoring training metrics across nodes. ECE coursework in parallel computing provides theoretical foundation. Understand challenges: communication overhead, load balancing, fault tolerance."
+      },
+      {
+        "q": "How do you handle model serving at scale?",
+        "keywords": ["model serving", "scale serving", "production serving"],
+        "a": "Built systems serving 2K+ QPS: 1) Use TorchServe or custom FastAPI servers 2) Implement batching for efficiency 3) Horizontal scaling with load balancers 4) Caching frequent predictions (Redis) 5) Async processing to avoid blocking 6) Health checks and auto-scaling (K8s) 7) Monitoring latency and throughput. Key: balance between latency and throughput, handle traffic spikes gracefully."
+      },
+      {
+        "q": "How do you ensure model reliability in production?",
+        "keywords": ["reliability", "production reliability", "model reliability"],
+        "a": "Multiple strategies: 1) Comprehensive testing (unit, integration, validation) 2) Monitoring (performance metrics, data drift, latency) 3) Automated alerts for anomalies 4) Health checks and circuit breakers 5) Graceful degradation 6) Automated retraining triggers 7) A/B testing before full rollout. Achieved 99.9% uptime across projects through redundancy, monitoring, and proper error handling."
+      },
+      {
+        "q": "What's your approach to distributed ML training?",
+        "keywords": ["distributed training", "multi-gpu", "parallel training"],
+        "a": "Experience with distributed training in Kaggle competition: 1) Multi-GPU parallelization using PyTorch DDP 2) Gradient accumulation for large batches 3) Mixed precision training for efficiency 4) Proper synchronization and error handling 5) Monitoring training metrics across nodes. ECE coursework in parallel computing provides theoretical foundation. Understand challenges: communication overhead, load balancing, fault tolerance."
+      },
+      {
+        "q": "How do you handle model serving at scale?",
+        "keywords": ["model serving", "scale serving", "production serving"],
+        "a": "Built systems serving 2K+ QPS: 1) Use TorchServe or custom FastAPI servers 2) Implement batching for efficiency 3) Horizontal scaling with load balancers 4) Caching frequent predictions (Redis) 5) Async processing to avoid blocking 6) Health checks and auto-scaling (K8s) 7) Monitoring latency and throughput. Key: balance between latency and throughput, handle traffic spikes gracefully."
       }
     ],
     "system_design": [
@@ -581,6 +807,16 @@
         "q": "What type of role are you looking for?",
         "keywords": ["role", "position", "type"],
         "a": "Primarily Machine Learning Engineer roles focusing on: 1) Production ML systems and MLOps 2) LLM applications and RAG 3) Recommendation systems 4) ML infrastructure. Also open to: Applied Scientist, ML Infrastructure Engineer, Software Engineer with ML focus. Want to work on end-to-end ML - from research to production deployment."
+      },
+      {
+        "q": "Why Machine Learning Engineer specifically?",
+        "keywords": ["why mle", "mle passion", "mle interest"],
+        "a": "MLE combines my two passions: ML algorithms and production engineering. I love taking models from research to systems serving real users, optimizing for performance and scale. My ECE background provides systems-level thinking essential for production ML. MLE roles let me work on cutting-edge ML while building robust, scalable infrastructure - perfect fit for my skills and interests."
+      },
+      {
+        "q": "What excites you about production ML?",
+        "keywords": ["production ml", "excited", "passion production"],
+        "a": "The challenge of building ML systems that work reliably at scale excites me. Taking a model from 90% accuracy in a notebook to 99.9% uptime serving millions requires deep systems knowledge, optimization skills, and engineering rigor. I love the problem-solving: optimizing latency, handling data drift, building monitoring systems, ensuring reliability. Production ML is where theory meets reality."
       },
       {
         "q": "Why should we hire you?",
@@ -768,9 +1004,15 @@
           "Distributed Computing and Systems",
           "Natural Language Processing",
           "Computer Vision and Image Processing",
-          "Advanced Algorithms and Data Structures"
+          "Advanced Algorithms and Data Structures",
+          "Computer Architecture",
+          "Parallel and Distributed Systems",
+          "Information Theory",
+          "Optimization Methods"
         ],
-        "research_interests": ["Large Language Models", "RAG Systems", "ML Infrastructure", "Model Optimization"]
+        "research_interests": ["Large Language Models", "RAG Systems", "ML Infrastructure", "Model Optimization", "Distributed ML Training", "Production ML Systems", "MLOps and Model Serving"],
+        "why_ece": "Chose ECE over CS because it provides deeper systems-level understanding crucial for production ML engineering. ECE curriculum covers distributed systems, computer architecture, and hardware-software interaction - all essential for building scalable ML infrastructure. The engineering focus aligns with my goal of becoming a production ML engineer who can optimize systems end-to-end.",
+        "ece_advantages": "ECE background provides: 1) Systems thinking for distributed ML 2) Understanding of hardware-software tradeoffs 3) Deep knowledge of parallel computing 4) Engineering rigor for production systems 5) Ability to optimize across the stack from algorithms to infrastructure"
       },
       "penn_state": {
         "program": "Bachelor of Engineering in Data Science",
