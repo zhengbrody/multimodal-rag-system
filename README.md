@@ -119,11 +119,8 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 
 3. **Install dependencies**
 ```bash
-# For Personal RAG (lightweight, recommended)
+# Install lightweight dependencies (recommended)
 pip install -r requirements_simple.txt
-
-# OR for full multimodal system
-pip install -r requirements.txt
 ```
 
 4. **Configure environment**
@@ -135,15 +132,10 @@ cp .env.example .env
 5. **Prepare knowledge base**
 ```bash
 # Edit data/raw/knowledge_base.json with your personal information
-# See PERSONAL_RAG_README.md for structure details
+# See docs/PERSONAL_RAG_README.md for structure details
 ```
 
-6. **Build knowledge base index**
-```bash
-python setup.py
-```
-
-7. **Start the system**
+6. **Start the system**
 ```bash
 # Option 1: Use the run script (starts both API and frontend)
 python run.py
@@ -232,12 +224,12 @@ multimodal-rag-system/
 │       └── mock_retriever.pkl     # Mock keyword index
 ├── src/
 │   ├── api/
-│   │   └── personal_api.py       # FastAPI backend
+│   │   └── personal_api.py        # FastAPI backend
 │   ├── rag/
 │   │   ├── knowledge_processor.py # Knowledge base builder
-│   │   ├── retriever.py          # OpenAI retriever
-│   │   ├── mock_retriever.py     # Mock retriever
-│   │   └── pipeline.py           # RAG pipeline with anti-hallucination
+│   │   ├── retriever.py           # OpenAI retriever
+│   │   ├── mock_retriever.py      # Mock retriever
+│   │   └── pipeline.py            # RAG pipeline with anti-hallucination
 │   └── utils/
 │       ├── config.py              # Configuration management
 │       └── logger.py              # Structured logging
@@ -246,10 +238,22 @@ multimodal-rag-system/
 ├── tests/
 │   ├── test_api.py                # API tests
 │   └── test_retriever.py          # Retriever tests
+├── docs/                          # Additional documentation
+│   ├── PERSONAL_RAG_README.md     # Detailed personal RAG doc
+│   ├── DEPLOYMENT.md              # Deployment guide
+│   ├── WORKFLOW.md                # Recommended workflow
+│   ├── TROUBLESHOOTING.md         # General troubleshooting
+│   └── TERMINAL_TROUBLESHOOTING.md# Terminal-specific tips
+├── scripts/                       # Helper scripts
+│   ├── run_simple.sh              # One-click local start
+│   ├── start_api.sh               # Start API only
+│   ├── restart.sh                 # Restart services
+│   ├── rebuild_index.sh           # Rebuild knowledge index
+│   └── quick_fix.sh               # Common terminal fixes
 ├── .env.example                   # Environment template
 ├── requirements_simple.txt        # Lightweight dependencies
-├── setup.py                       # Setup script
-├── run.py                         # Launch script
+├── requirements.txt               # Full dependencies (optional)
+├── run.py                         # Launch script (API + UI)
 └── README.md                      # This file
 ```
 
@@ -270,7 +274,7 @@ LOG_LEVEL=INFO
 
 ### Knowledge Base Structure
 
-See `PERSONAL_RAG_README.md` for detailed structure. Key sections:
+See `docs/PERSONAL_RAG_README.md` for detailed structure. Key sections:
 - `personal_info`: Basic information
 - `skills`: Technical skills
 - `projects`: Project experience
@@ -309,7 +313,7 @@ docker-compose up --build
 3. Set main file: `frontend/personal_app.py`
 4. Add secrets: `API_URL` (your backend URL)
 
-See `DEPLOYMENT.md` for detailed instructions.
+See `docs/DEPLOYMENT.md` for detailed instructions.
 
 ## 💼 Resume Highlights
 

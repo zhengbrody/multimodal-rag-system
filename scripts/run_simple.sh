@@ -28,12 +28,6 @@ if [ ! -f ".env" ]; then
     echo "✅ Please edit .env file if needed (USE_MOCK=true for no API costs)"
 fi
 
-# Check index
-if [ ! -f "data/processed/mock_retriever.pkl" ] && [ ! -f "data/processed/retriever.pkl" ]; then
-    echo "🔨 Building knowledge base index..."
-    python3 setup.py
-fi
-
 # Start system
 echo ""
 echo "✅ Starting Personal RAG System..."

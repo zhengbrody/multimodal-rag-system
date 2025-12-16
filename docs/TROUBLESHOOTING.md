@@ -109,7 +109,7 @@ Knowledge base index not found
 **Solution:**
 ```bash
 # Rebuild index
-python3 setup.py
+   ./scripts/rebuild_index.sh
 ```
 
 ### Issue 4: Environment Variables Not Configured
@@ -187,7 +187,7 @@ pkill -f streamlit
 pip install --upgrade -r requirements_simple.txt
 
 # 3. Rebuild index
-python3 setup.py
+   ./scripts/rebuild_index.sh
 
 # 4. Restart
 python3 run.py

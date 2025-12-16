@@ -55,7 +55,7 @@ Edit `data/raw/knowledge_base.json` and replace with your personal information:
 ### 3. Run Setup Script
 
 ```bash
-python setup.py
+./scripts/rebuild_index.sh
 ```
 
 This will:
@@ -282,7 +282,7 @@ multimodal-rag-system/
 │   └── personal_app.py            # Streamlit frontend
 ├── .env                           # Environment variables
 ├── requirements_simple.txt        # Dependencies
-├── setup.py                       # Setup script
+├── scripts/                      # Helper scripts
 └── run.py                         # Launch script
 ```
 

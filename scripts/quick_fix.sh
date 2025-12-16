@@ -19,7 +19,7 @@ INDEX_TIME=$(stat -f %m data/processed/mock_retriever.pkl 2>/dev/null || stat -c
 
 if [ "$KB_TIME" -gt "$INDEX_TIME" ]; then
     echo "   ⚠️  Index outdated - rebuilding..."
-    python3 setup.py
+    ./scripts/rebuild_index.sh
 else
     echo "   ✅ Index is up to date"
 fi

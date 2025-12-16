@@ -14,15 +14,8 @@ from pathlib import Path
 
 
 def check_setup():
-    """Verify setup is complete"""
+    """Verify basic setup is complete (env file)"""
     base_dir = Path(__file__).parent
-
-    # Check if retriever index exists
-    retriever_path = base_dir / "data" / "processed" / "retriever.pkl"
-    if not retriever_path.exists():
-        print("Error: Knowledge base index not found")
-        print("Please run 'python setup.py' first")
-        sys.exit(1)
 
     # Check .env
     env_path = base_dir / ".env"

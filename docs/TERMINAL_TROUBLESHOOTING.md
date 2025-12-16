@@ -151,7 +151,7 @@ FileNotFoundError: data/processed/mock_retriever.pkl
 **Solutions:**
 ```bash
 # Rebuild index
-python3 setup.py
+   ./scripts/rebuild_index.sh
 
 # Or manually rebuild
 python3 -m src.rag.knowledge_processor
@@ -239,7 +239,7 @@ rm -rf .pytest_cache
 pip3 install --upgrade -r requirements_simple.txt
 
 # 4. Rebuild index
-python3 setup.py
+   ./scripts/rebuild_index.sh
 
 # 5. Restart
 python3 run.py
@@ -258,6 +258,6 @@ If you encounter a specific error:
 **Note:** Most issues can be resolved by:
 1. Ensuring you're in the project root: `cd /Users/zhengdong/multimodal-rag-system`
 2. Stopping old processes: `pkill -f uvicorn && pkill -f streamlit`
-3. Rebuilding index: `python3 setup.py`
+3. Rebuilding index: `./scripts/rebuild_index.sh`
 4. Restarting: `python3 run.py`
 

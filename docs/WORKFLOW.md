@@ -44,7 +44,7 @@ If you modified `data/raw/knowledge_base.json`:
 
 ```bash
 # Rebuild index
-python3 setup.py
+   ./scripts/rebuild_index.sh
 
 # Or use API to rebuild (if API is running)
 curl -X POST "http://localhost:8000/rebuild-index"
@@ -127,7 +127,7 @@ pkill -f uvicorn
 pkill -f streamlit
 
 # 2. Rebuild index
-python3 setup.py
+   ./scripts/rebuild_index.sh
 
 # 3. Restart
 python3 run.py
