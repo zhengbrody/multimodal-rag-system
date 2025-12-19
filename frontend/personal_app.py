@@ -12,7 +12,6 @@ import streamlit as st
 import requests
 import time
 from typing import Optional, List, Dict
-import pandas as pd
 from datetime import datetime
 
 # Page configuration
