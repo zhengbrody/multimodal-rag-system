@@ -1,52 +1,11 @@
-#Core ML/AI Libraries
-torch==2.1.0
-torchvision==0.16.0
-transformers==4.35.0
-sentence-transformers==2.2.2
-openai==1.3.0
-anthropic==0.7.0
+# Frontend-only requirements for Streamlit deployment
+# No ML/AI libraries needed - frontend only makes API calls to backend
 
-# Computer Vision & Multimodal
-Pillow==10.1.0
-opencv-python==4.8.1.78
-clip-openai==1.0.1
-
-# Vector Databases & Search
-faiss-cpu==1.7.4
-pinecone-client==2.2.4
-chromadb==0.4.18
-
-# RAG & LLM Integration
-langchain==0.0.340
-langchain-openai==0.0.2
-langchain-community==0.0.10
-langgraph==0.0.20
-
-# API & Backend
-fastapi==0.104.1
-uvicorn==0.24.0
-pydantic==2.5.0
-python-multipart==0.0.6
-
-# Frontend
+# Core Frontend Framework
 streamlit==1.28.2
-gradio==4.7.1
 
-# Data Processing
-pandas==2.1.3
-numpy==1.24.3
-scikit-learn==1.3.2
-
-# Utilities
-python-dotenv==1.0.0
+# API Communication
 requests==2.31.0
-tqdm==4.66.1
-pyyaml==6.0.1
 
-# Evaluation
-nltk==3.8.1
-rouge-score==0.1.2
-
-# Deployment
-docker==6.1.3
-boto3==1.29.7
+# Configuration
+python-dotenv==1.0.0

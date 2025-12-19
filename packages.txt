@@ -1,8 +1,0 @@
-# Streamlit Cloud packages file
-# This file takes precedence over requirements.txt for Streamlit Cloud deployment
-# Only includes minimal frontend dependencies
-
-streamlit==1.28.2
-requests==2.31.0
-python-dotenv==1.0.0
-
