@@ -24,10 +24,21 @@ st.set_page_config(
 
 # API configuration
 import os
+# Detect if running on Streamlit Cloud
+IS_STREAMLIT_CLOUD = os.getenv("STREAMLIT_SERVER_PORT") is not None or os.getenv("STREAMLIT_SHARING_MODE") == "true"
+
 try:
     API_URL = st.secrets.get("API_URL", os.getenv("API_URL", "http://localhost:8000"))
 except (FileNotFoundError, KeyError):
     API_URL = os.getenv("API_URL", "http://localhost:8000")
+
+# For Streamlit Cloud, if API_URL is localhost, show configuration message
+if IS_STREAMLIT_CLOUD and API_URL.startswith("http://localhost"):
+    USE_MOCK_MODE = True
+    MOCK_MODE_MESSAGE = "⚠️ Running in demo mode (no backend API). Configure API_URL in Streamlit Cloud secrets to connect to your backend."
+else:
+    USE_MOCK_MODE = False
+    MOCK_MODE_MESSAGE = None
 
 # Initialize session state
 if 'conversation_history' not in st.session_state:
@@ -347,7 +358,12 @@ with st.sidebar:
             for cat, count in list(health['categories'].items())[:5]:
                 st.caption(f"• {cat}: {count}")
     else:
-        st.error("❌ Offline")
+        if USE_MOCK_MODE:
+            st.warning("⚠️ Demo Mode")
+            st.caption("Backend API not configured. Running in demo mode.")
+        else:
+            st.error("❌ Offline")
+            st.caption("Backend API is not reachable.")
     
     # Metrics
     metrics = get_metrics()
@@ -426,41 +442,65 @@ with tab1:
             'timestamp': datetime.now()
         })
         
-        with st.spinner("🤔 Thinking..."):
-            result = ask_question(
-                question,
-                k=k,
-                use_verification=use_verification,
-                conversational=conversation_mode
-            )
+        if USE_MOCK_MODE:
+            # Demo mode: show a friendly message
+            demo_answer = f"""I'm currently running in demo mode without a backend API connection. 
 
-        if result:
-            st.session_state.current_result = result
+To enable full functionality:
+1. Deploy the FastAPI backend (see README.md)
+2. Configure the API_URL secret in Streamlit Cloud settings
+3. Restart the app
+
+For now, here's a quick answer based on your question: "{question}"
+
+This is a demo of the Personal RAG Q&A System. The full system would retrieve relevant information from a knowledge base and generate accurate answers using RAG (Retrieval-Augmented Generation) technology."""
             
-            # Add assistant response to history
             st.session_state.conversation_history.append({
                 'role': 'assistant',
-                'content': result['answer'],
+                'content': demo_answer,
                 'timestamp': datetime.now(),
-                'confidence': result['confidence'],
-                'sources': result.get('sources', [])
+                'confidence': 'medium',
+                'sources': []
             })
-            
-            # Display answer
-            display_message(result['answer'], "assistant")
-            
-            # Confidence and metadata
-            col1, col2, col3 = st.columns([2, 2, 2])
-            with col1:
-                display_confidence(result['confidence'])
-            with col2:
-                st.caption(f"⚡ {result.get('latency', 0)*1000:.0f}ms")
-            with col3:
-                st.caption(f"📚 {len(result.get('sources', []))} sources")
-            
-            # Sources
-            sources = result.get('sources', [])
-            if sources:
+            display_message(demo_answer, "assistant")
+            if MOCK_MODE_MESSAGE:
+                st.info(MOCK_MODE_MESSAGE)
+        else:
+            with st.spinner("🤔 Thinking..."):
+                result = ask_question(
+                    question,
+                    k=k,
+                    use_verification=use_verification,
+                    conversational=conversation_mode
+                )
+
+            if result:
+                st.session_state.current_result = result
+                
+                # Add assistant response to history
+                st.session_state.conversation_history.append({
+                    'role': 'assistant',
+                    'content': result['answer'],
+                    'timestamp': datetime.now(),
+                    'confidence': result['confidence'],
+                    'sources': result.get('sources', [])
+                })
+                
+                # Display answer
+                display_message(result['answer'], "assistant")
+                
+                # Confidence and metadata
+                col1, col2, col3 = st.columns([2, 2, 2])
+                with col1:
+                    display_confidence(result['confidence'])
+                with col2:
+                    st.caption(f"⚡ {result.get('latency', 0)*1000:.0f}ms")
+                with col3:
+                    st.caption(f"📚 {len(result.get('sources', []))} sources")
+                
+                # Sources
+                sources = result.get('sources', [])
+                if sources:
                 with st.expander(f"📖 View Sources ({len(sources)})"):
                     for i, source in enumerate(sources, 1):
                         # Handle both dict and object formats
@@ -490,38 +530,41 @@ with tab1:
             </div>
             """, unsafe_allow_html=True)
 
-            # Feedback section
-            st.markdown("---")
-            st.markdown("### 💭 Was this helpful?")
-            col1, col2, col3, col4, col4 = st.columns(5)
-            
-            feedback_rating = None
-            with col1:
-                if st.button("👍", use_container_width=True, key="helpful"):
-                    feedback_rating = 5
-            with col2:
-                if st.button("😊", use_container_width=True, key="good"):
-                    feedback_rating = 4
-            with col3:
-                if st.button("😐", use_container_width=True, key="ok"):
-                    feedback_rating = 3
-            with col4:
-                if st.button("😕", use_container_width=True, key="bad"):
-                    feedback_rating = 2
-            with col4:
-                if st.button("👎", use_container_width=True, key="poor"):
-                    feedback_rating = 1
-            
-            if feedback_rating:
-                if submit_feedback(question, result['answer'], feedback_rating):
-                    st.success("Thank you for your feedback! 🙏")
-                else:
-                    st.error("Failed to submit feedback")
-            
-            # Clear input by using a flag instead of modifying session state directly
-            if 'clear_input' not in st.session_state:
-                st.session_state.clear_input = False
-            st.session_state.clear_input = True
+                # Feedback section
+                st.markdown("---")
+                st.markdown("### 💭 Was this helpful?")
+                col1, col2, col3, col4, col5 = st.columns(5)
+                
+                feedback_rating = None
+                with col1:
+                    if st.button("👍", use_container_width=True, key="helpful"):
+                        feedback_rating = 5
+                with col2:
+                    if st.button("😊", use_container_width=True, key="good"):
+                        feedback_rating = 4
+                with col3:
+                    if st.button("😐", use_container_width=True, key="ok"):
+                        feedback_rating = 3
+                with col4:
+                    if st.button("😕", use_container_width=True, key="bad"):
+                        feedback_rating = 2
+                with col5:
+                    if st.button("👎", use_container_width=True, key="poor"):
+                        feedback_rating = 1
+                
+                if feedback_rating:
+                    if submit_feedback(question, result['answer'], feedback_rating):
+                        st.success("Thank you for your feedback! 🙏")
+                    else:
+                        st.error("Failed to submit feedback")
+                
+                # Clear input by using a flag instead of modifying session state directly
+                if 'clear_input' not in st.session_state:
+                    st.session_state.clear_input = False
+                st.session_state.clear_input = True
+            else:
+                if not USE_MOCK_MODE:
+                    st.error("Failed to get answer from API. Please check your backend connection.")
     
     elif ask_btn and not question:
         st.warning("Please enter a question")
