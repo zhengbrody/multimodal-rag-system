@@ -7,6 +7,13 @@
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.28+-red.svg)](https://streamlit.io/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+## 🔗 Quick Links
+
+- **Live Demo / Frontend**: `http://localhost:8501` (after running `streamlit run frontend/personal_app.py`)
+- **API Docs (FastAPI)**: `http://localhost:8000/docs`
+- **Quickstart**: [Getting Started](#-quick-start)
+- **Architecture & Metrics**: [Architecture](#-architecture) · [Metrics & Evaluation](docs/metrics.md)
+
 ## 🎯 Overview
 
 This project demonstrates a **production-ready RAG (Retrieval-Augmented Generation) system** specifically designed for personal website Q&A functionality. Visitors can ask questions about you in natural language, and the system provides accurate, context-aware answers based on your personal knowledge base.
@@ -327,11 +334,28 @@ This project demonstrates:
 - **Software Engineering**: Testing, CI/CD, code quality
 
 ### Key Achievements
-- ✅ Implemented 4 anti-hallucination strategies reducing fabrication by ~90%
-- ✅ Built production-ready API with <500ms average latency
-- ✅ Created modern conversation UI with real-time feedback
-- ✅ Achieved 95%+ test coverage with comprehensive test suite
-- ✅ Designed dual-mode system (mock/OpenAI) for cost optimization
+- ✅ Implemented 4 anti-hallucination strategies (prompt constraints, low temperature, confidence scoring, source tracing)
+- ✅ Added metrics and logging hooks so latency, error rate and request volume can be measured per environment
+- ✅ Created modern conversation UI with real-time feedback and analytics
+- ✅ Set up a testable API and project structure; coverage and performance depend on the dataset and hardware you run it on
+- ✅ Designed dual-mode system (mock/OpenAI) so you can iterate UI and tests without incurring API costs
+
+## 🧠 Design Decisions (Why these choices?)
+
+- **Why mock mode?**  
+  Added a mock retriever and mock RAG pipeline so the UI and API can be exercised without any external APIs or GPU. This is the default for CI and local development.
+
+- **Why OpenAI instead of self-hosted models?**  
+  The pipeline is implemented in a way that the retriever and generator are pluggable, but OpenAI embeddings + GPT are used as a pragmatic baseline for a personal portfolio project.
+
+- **Why "answer only from retrieved context"?**  
+  The generation step is constrained to the retrieved snippets and uses explicit instructions to say "I do not have enough information" when recall is low, trading off creativity for reliability.
+
+- **Why keep CLIP / heavier multimodal components optional?**  
+  Multimodal and heavy Torch dependencies are kept out of the Streamlit-only requirements so that lightweight deployments (e.g., Streamlit Cloud) do not have to build GPU stacks.
+
+- **Why FAISS vs. hosted vector DBs?**  
+  For local and educational usage, an in-process index (FAISS) is easier to reproduce and reason about. The code is structured so that a hosted vector database (like Pinecone) can be swapped in for production if needed.
 
 ## 🤝 Contributing
 

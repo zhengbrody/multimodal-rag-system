@@ -138,3 +138,4 @@ def test_cors_headers():
     # CORS middleware should be configured
     assert response.status_code in [200, 405]  # OPTIONS may return 405
 
+

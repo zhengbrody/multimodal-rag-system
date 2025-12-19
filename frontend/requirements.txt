@@ -7,9 +7,6 @@ streamlit==1.28.2
 # API Communication
 requests==2.31.0
 
-# Image Processing (for display only)
-Pillow==10.1.0
-
 # Data Display
 pandas==2.1.3
 

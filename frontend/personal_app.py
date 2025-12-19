@@ -532,78 +532,73 @@ with tab2:
     
     health = get_api_health()
     metrics_data = get_metrics()
-    
-    if health and metrics_data:
+
+    if not (health and metrics_data):
+        st.warning("Analytics are temporarily unavailable. Make sure the backend API is running.")
+    else:
+        # Top summary metrics
         col1, col2, col3, col4 = st.columns(4)
-        
+
         with col1:
-            st.metric("Total Documents", health['documents_loaded'])
+            st.metric("Total Documents", health.get("documents_loaded", 0))
         with col2:
-            st.metric("Categories", len(health.get('categories', {})))
+            st.metric("Categories", len(health.get("categories", {})))
         with col3:
             st.metric("Avg Latency", f"{metrics_data.get('average_latency_ms', 0):.0f}ms")
         with col4:
             st.metric("Error Rate", f"{metrics_data.get('error_rate_percent', 0):.1f}%")
-        
-        # Category distribution - Use HTML table to avoid pyarrow issues
-        if health.get('categories'):
+
+        st.markdown("---")
+
+        # Document categories summary
+        categories = health.get("categories", {})
+        if categories:
             st.markdown("#### Document Categories")
-            categories = health['categories']
-            
-            # Create HTML table instead of using dataframe/chart
-            html_table = "<table style='width:100%; border-collapse: collapse;'>"
-            html_table += "<tr style='background-color: #667eea; color: white;'><th style='padding: 10px; text-align: left;'>Category</th><th style='padding: 10px; text-align: right;'>Count</th><th style='padding: 10px; width: 200px;'>Visual</th></tr>"
-            
-            max_count = max(categories.values()) if categories.values() else 1
-            
-            for cat, count in sorted(categories.items(), key=lambda x: x[1], reverse=True):
-                percentage = (count / max_count) * 100 if max_count > 0 else 0
-                html_table += f"""
-                <tr style='border-bottom: 1px solid #ddd;'>
-                    <td style='padding: 8px;'><strong>{cat}</strong></td>
-                    <td style='padding: 8px; text-align: right;'>{count}</td>
-                    <td style='padding: 8px;'>
-                        <div style='background-color: #667eea; height: 20px; width: {percentage}%; border-radius: 10px;'></div>
-                    </td>
-                </tr>
-                """
-            html_table += "</table>"
-            st.markdown(html_table, unsafe_allow_html=True)
-        
-        # Conversation stats
+            sorted_items = sorted(categories.items(), key=lambda x: x[1], reverse=True)
+            total_docs = sum(count for _, count in sorted_items) or 1
+
+            table_lines = [
+                "| Category | Count | Percentage |",
+                "| --- | ---: | ---: |",
+            ]
+            for cat, count in sorted_items:
+                pct = round(count / total_docs * 100, 1)
+                table_lines.append(f"| {cat} | {count} | {pct}% |")
+
+            st.markdown("\n".join(table_lines))
+
+        # Conversation + confidence statistics from current session
         if st.session_state.conversation_history:
-            st.markdown("#### Conversation Statistics")
+            st.markdown("---")
+            st.markdown("#### Conversation Statistics (Current Session)")
             st.metric("Messages", len(st.session_state.conversation_history))
-            
-            # Confidence distribution - Use HTML to avoid pyarrow
-            confidences = [msg.get('confidence') for msg in st.session_state.conversation_history 
-                          if msg.get('confidence')]
+
+            confidences = [
+                msg.get("confidence")
+                for msg in st.session_state.conversation_history
+                if msg.get("confidence")
+            ]
             if confidences:
                 from collections import Counter
+
                 conf_counts = Counter(confidences)
-                st.markdown("#### Confidence Distribution")
-                
-                html_conf = "<table style='width:100%; border-collapse: collapse;'>"
-                html_conf += "<tr style='background-color: #667eea; color: white;'><th style='padding: 10px; text-align: left;'>Confidence</th><th style='padding: 10px; text-align: right;'>Count</th><th style='padding: 10px; width: 200px;'>Visual</th></tr>"
-                
-                max_conf_count = max(conf_counts.values()) if conf_counts.values() else 1
-                
-                for conf_level in ['high', 'medium', 'low']:
-                    count = conf_counts.get(conf_level, 0)
-                    if count > 0:
-                        percentage = (count / max_conf_count) * 100 if max_conf_count > 0 else 0
-                        color = '#28a745' if conf_level == 'high' else '#ffc107' if conf_level == 'medium' else '#dc3545'
-                        html_conf += f"""
-                        <tr style='border-bottom: 1px solid #ddd;'>
-                            <td style='padding: 8px;'><strong>{conf_level.title()}</strong></td>
-                            <td style='padding: 8px; text-align: right;'>{count}</td>
-                            <td style='padding: 8px;'>
-                                <div style='background-color: {color}; height: 20px; width: {percentage}%; border-radius: 10px;'></div>
-                            </td>
-                        </tr>
-                        """
-                html_conf += "</table>"
-                st.markdown(html_conf, unsafe_allow_html=True)
+                st.markdown("##### Confidence Distribution")
+
+                levels = ["high", "medium", "low"]
+                total_conf = sum(conf_counts.get(lvl, 0) for lvl in levels) or 1
+
+                table_lines = [
+                    "| Confidence | Count | Percentage |",
+                    "| --- | ---: | ---: |",
+                ]
+                for lvl in levels:
+                    count = conf_counts.get(lvl, 0)
+                    if count == 0:
+                        continue
+                    pct = round(count / total_conf * 100, 1)
+                    table_lines.append(f"| {lvl.title()} | {count} | {pct}% |")
+
+                st.markdown("\n".join(table_lines))
 
 with tab3:
     st.markdown("### 🎯 About This System")
