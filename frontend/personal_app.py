@@ -24,21 +24,23 @@ st.set_page_config(
 
 # API configuration
 import os
-# Detect if running on Streamlit Cloud
-IS_STREAMLIT_CLOUD = os.getenv("STREAMLIT_SERVER_PORT") is not None or os.getenv("STREAMLIT_SHARING_MODE") == "true"
+# Detect if running on Streamlit Cloud (multiple methods for reliability)
+IS_STREAMLIT_CLOUD = (
+    os.getenv("STREAMLIT_SERVER_PORT") is not None 
+    or os.getenv("STREAMLIT_SHARING_MODE") == "true"
+    or os.getenv("STREAMLIT_SERVER_ADDRESS") is not None
+    or "streamlit.app" in os.getenv("_", "")
+)
 
 try:
     API_URL = st.secrets.get("API_URL", os.getenv("API_URL", "http://localhost:8000"))
 except (FileNotFoundError, KeyError):
     API_URL = os.getenv("API_URL", "http://localhost:8000")
 
-# For Streamlit Cloud, if API_URL is localhost, show configuration message
-if IS_STREAMLIT_CLOUD and API_URL.startswith("http://localhost"):
-    USE_MOCK_MODE = True
-    MOCK_MODE_MESSAGE = "⚠️ Running in demo mode (no backend API). Configure API_URL in Streamlit Cloud secrets to connect to your backend."
-else:
-    USE_MOCK_MODE = False
-    MOCK_MODE_MESSAGE = None
+# Enable demo mode if API_URL is localhost (likely Streamlit Cloud without backend)
+# This will be checked again after trying to connect
+USE_MOCK_MODE = API_URL.startswith("http://localhost") and IS_STREAMLIT_CLOUD
+MOCK_MODE_MESSAGE = "⚠️ Running in demo mode (no backend API). Configure API_URL in Streamlit Cloud secrets to connect to your backend." if USE_MOCK_MODE else None
 
 # Initialize session state
 if 'conversation_history' not in st.session_state:
@@ -347,7 +349,11 @@ with st.sidebar:
 
     # System status
     st.markdown("### 📊 System Status")
+    
+    # Check API health
     health = get_api_health()
+    
+    # Determine status display
     if health:
         st.success("✅ Online")
         st.metric("Documents", health['documents_loaded'])
@@ -357,13 +363,18 @@ with st.sidebar:
             st.markdown("**Categories:**")
             for cat, count in list(health['categories'].items())[:5]:
                 st.caption(f"• {cat}: {count}")
+    elif USE_MOCK_MODE:
+        # Demo mode (Streamlit Cloud without backend)
+        st.warning("⚠️ Demo Mode")
+        st.caption("Backend API not configured. Running in demo mode.")
+    elif API_URL.startswith("http://localhost"):
+        # Local development, backend not running
+        st.error("❌ Offline")
+        st.caption("Backend API is not reachable. Start the backend with: python3 -m uvicorn src.api.personal_api:app --host 0.0.0.0 --port 8000")
     else:
-        if USE_MOCK_MODE:
-            st.warning("⚠️ Demo Mode")
-            st.caption("Backend API not configured. Running in demo mode.")
-        else:
-            st.error("❌ Offline")
-            st.caption("Backend API is not reachable.")
+        # Remote API configured but not reachable
+        st.error("❌ Offline")
+        st.caption(f"Backend API at {API_URL} is not reachable.")
     
     # Metrics
     metrics = get_metrics()
