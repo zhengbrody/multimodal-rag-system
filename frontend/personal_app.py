@@ -512,34 +512,34 @@ This is a demo of the Personal RAG Q&A System. The full system would retrieve re
                 # Sources
                 sources = result.get('sources', [])
                 if sources:
-                with st.expander(f"📖 View Sources ({len(sources)})"):
-                    for i, source in enumerate(sources, 1):
-                        # Handle both dict and object formats
-                        if isinstance(source, dict):
-                            score = source.get('score', 0)
-                            category = source.get('category', 'unknown')
-                            preview = source.get('preview', '')
-                        else:
-                            # Handle Pydantic model objects
-                            score = getattr(source, 'score', 0)
-                            category = getattr(source, 'category', 'unknown')
-                            preview = getattr(source, 'preview', '')
-                        
-                        score_pct = score * 100 if isinstance(score, (int, float)) else 0
-                        # Clean preview text: remove newlines and limit length
-                        preview_text = preview.replace('\n', ' ').strip()
-                        preview_text = preview_text[:200] + '...' if len(preview_text) > 200 else preview_text
-                        
-                        # Escape HTML special characters to prevent XSS
-                        preview_text = preview_text.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
-                        category = str(category).replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+                    with st.expander(f"📖 View Sources ({len(sources)})"):
+                        for i, source in enumerate(sources, 1):
+                            # Handle both dict and object formats
+                            if isinstance(source, dict):
+                                score = source.get('score', 0)
+                                category = source.get('category', 'unknown')
+                                preview = source.get('preview', '')
+                            else:
+                                # Handle Pydantic model objects
+                                score = getattr(source, 'score', 0)
+                                category = getattr(source, 'category', 'unknown')
+                                preview = getattr(source, 'preview', '')
 
-            st.markdown(f"""
-                        <div class="source-card" style="margin-bottom: 10px; padding: 10px; background-color: #f0f0f0; border-radius: 5px;">
-                            <strong>Source {i}</strong> ({category}) - {score_pct:.0f}% relevant<br>
-                            <small style="color: #666;">{preview_text}</small>
-            </div>
-            """, unsafe_allow_html=True)
+                            score_pct = score * 100 if isinstance(score, (int, float)) else 0
+                            # Clean preview text: remove newlines and limit length
+                            preview_text = preview.replace('\n', ' ').strip()
+                            preview_text = preview_text[:200] + '...' if len(preview_text) > 200 else preview_text
+
+                            # Escape HTML special characters to prevent XSS
+                            preview_text = preview_text.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+                            category = str(category).replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+
+                            st.markdown(f"""
+                                <div class="source-card" style="margin-bottom: 10px; padding: 10px; background-color: #f0f0f0; border-radius: 5px;">
+                                    <strong>Source {i}</strong> ({category}) - {score_pct:.0f}% relevant<br>
+                                    <small style="color: #666;">{preview_text}</small>
+                                </div>
+                            """, unsafe_allow_html=True)
 
                 # Feedback section
                 st.markdown("---")
