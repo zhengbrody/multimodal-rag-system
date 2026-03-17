@@ -1,6 +1,6 @@
 # Multi-stage Dockerfile for Multimodal RAG System
 
-FROM python:3.9-slim as base
+FROM python:3.11-slim as base
 
 # Set working directory
 WORKDIR /app
@@ -14,10 +14,10 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements
-COPY requirements.txt .
+COPY requirements_simple.txt .
 
 # Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements_simple.txt
 
 # Copy application code
 COPY src/ ./src/
@@ -36,4 +36,4 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
     CMD curl -f http://localhost:8000/health || exit 1
 
 # Run the API
-CMD ["uvicorn", "src.api.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "src.api.personal_api:app", "--host", "0.0.0.0", "--port", "8000"]

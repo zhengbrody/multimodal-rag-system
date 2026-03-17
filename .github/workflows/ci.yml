@@ -55,9 +55,14 @@ jobs:
         pip install black ruff mypy
     
     - name: Run black
-      run: black --check src/ tests/ || true
-    
+      run: black --check src/ tests/
+
     - name: Run ruff
-      run: ruff check src/ tests/ || true
+      run: ruff check src/ tests/
+
+    - name: Run mypy (best-effort)
+      run: mypy --ignore-missing-imports src/ || true
+
+
 
 

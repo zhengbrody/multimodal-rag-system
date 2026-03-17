@@ -13,6 +13,8 @@
 - **API Docs (FastAPI)**: `http://localhost:8000/docs`
 - **Quickstart**: [Getting Started](#-quick-start)
 - **Architecture & Metrics**: [Architecture](#-architecture) · [Metrics & Evaluation](docs/metrics.md)
+- **Contributing**: [CONTRIBUTING.md](CONTRIBUTING.md)
+- **Data Quality & Monitoring**: [Observability Notes](docs/observability.md)
 
 ## 🎯 Overview
 
@@ -64,6 +66,21 @@ This project demonstrates a **production-ready RAG (Retrieval-Augmented Generati
     └──────────┘
 ```
 
+### Diagram (Mermaid)
+
+```mermaid
+flowchart TD
+  UI[Streamlit UI] --> API[FastAPI API]
+  API -->|Retrieval| Retriever{Retriever Mode}
+  Retriever --> Mock[Mock Retriever]
+  Retriever --> OpenAI[OpenAI Embeddings]
+  Mock --> KB[Knowledge Base]
+  OpenAI --> KB
+  API --> LLM[LLM Reasoning]
+  KB --> LLM
+  LLM --> Response[Answer + Confidence + Sources]
+```
+
 ## 🛡️ Anti-Hallucination Strategies
 
 This system implements **4 key strategies** to prevent AI fabrication:
@@ -104,13 +121,20 @@ This system implements **4 key strategies** to prevent AI fabrication:
 - **Feedback Collection**: Store user feedback for continuous improvement
 - **Category Weighting**: Boost important document categories (FAQ, personal info)
 
+## 🧭 Data Quality & Monitoring (Optional)
+
+This project does not ingest streaming wearable data by default, but extension
+points are documented for data validation and drift monitoring:
+
+- [Observability Notes](docs/observability.md)
+
 ## 🚀 Quick Start
 
 ### Prerequisites
 - Python 3.11-3.12
 - OpenAI API key (optional, for OpenAI mode)
 
-### Installation
+### Installation (Local)
 
 1. **Clone the repository**
 ```bash
@@ -155,10 +179,21 @@ uvicorn src.api.personal_api:app --reload --port 8000
 streamlit run frontend/personal_app.py
 ```
 
-8. **Access the application**
+7. **Access the application**
    - Frontend: http://localhost:8501
    - API Docs: http://localhost:8000/docs
    - Health Check: http://localhost:8000/health
+
+### Docker Quick Start
+
+```bash
+# Build and run API + frontend
+docker-compose up --build
+
+# Access
+# Frontend: http://localhost:8501
+# API Docs: http://localhost:8000/docs
+```
 
 ## 📖 Usage
 

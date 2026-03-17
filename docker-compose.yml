@@ -1,7 +1,6 @@
-version: '3.8'
+version: "3.9"
 
 services:
-  # FastAPI Backend
   api:
     build:
       context: .
@@ -10,12 +9,13 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
-      - PINECONE_API_KEY=${PINECONE_API_KEY}
-      - ENVIRONMENT=production
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - USE_MOCK=${USE_MOCK:-true}
+      - LLM_MODEL=${LLM_MODEL:-gpt-3.5-turbo}
+      - ENVIRONMENT=${ENVIRONMENT:-development}
     volumes:
       - ./data:/app/data
-      - ./src:/app/src
+      - ./logs:/app/logs
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
@@ -24,11 +24,10 @@ services:
       retries: 3
       start_period: 40s
 
-  # Streamlit Frontend
   frontend:
     build:
       context: .
-      dockerfile: docker/Dockerfile.frontend
+      dockerfile: frontend/Dockerfile
     container_name: multimodal-rag-frontend
     ports:
       - "8501:8501"
@@ -48,6 +47,3 @@ services:
   #     - "6333:6333"
   #   volumes:
   #     - qdrant_data:/qdrant/storage
-
-volumes:
-  qdrant_data:

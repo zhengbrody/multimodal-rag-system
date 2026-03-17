@@ -47,3 +47,5 @@ To keep things honest and reproducible, prefer wording like:
 Avoid claiming universal guarantees (for example “99.9% uptime” or “95%+ recall”) unless you have long‑running logs and a public script that others can run to reproduce them.
 
 
+
+
