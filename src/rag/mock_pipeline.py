@@ -26,7 +26,7 @@ class MockRAGPipeline:
         answer_parts = []
 
         for doc in retrieved_docs[:3]:
-            content = doc['content'].strip()
+            content = doc["content"].strip()
             # Add content directly without verbose source labels
             if content and content not in answer_parts:
                 answer_parts.append(content)
@@ -34,12 +34,7 @@ class MockRAGPipeline:
         # Join with line breaks for readability
         return "\n\n".join(answer_parts)
 
-    def query(
-        self,
-        question: str,
-        k: int = 5,
-        include_sources: bool = True
-    ) -> Dict[str, Any]:
+    def query(self, question: str, k: int = 5, include_sources: bool = True) -> Dict[str, Any]:
         """
         Process a question through the mock RAG pipeline
         """
@@ -48,42 +43,46 @@ class MockRAGPipeline:
 
         if not retrieved_docs:
             return {
-                'question': question,
-                'answer': 'Sorry, I could not find relevant information in the knowledge base for your question. You can try asking about skills, projects, education, or contact information.',
-                'sources': [],
-                'confidence': 'low',
-                'retrieval_scores': []
+                "question": question,
+                "answer": "Sorry, I could not find relevant information in the knowledge base for your question. You can try asking about skills, projects, education, or contact information.",
+                "sources": [],
+                "confidence": "low",
+                "retrieval_scores": [],
             }
 
         # Step 2: Generate mock answer
         answer = self._generate_mock_answer(question, retrieved_docs)
 
         # Step 3: Assess confidence based on retrieval scores
-        avg_score = sum(doc['score'] for doc in retrieved_docs) / len(retrieved_docs)
-        max_score = max(doc['score'] for doc in retrieved_docs)
+        avg_score = sum(doc["score"] for doc in retrieved_docs) / len(retrieved_docs)
+        max_score = max(doc["score"] for doc in retrieved_docs)
 
         if max_score > 0.5 and avg_score > 0.3:
-            confidence = 'high'
+            confidence = "high"
         elif max_score > 0.3 and avg_score > 0.2:
-            confidence = 'medium'
+            confidence = "medium"
         else:
-            confidence = 'low'
+            confidence = "low"
 
         # Step 4: Build response
         result = {
-            'question': question,
-            'answer': answer,
-            'confidence': confidence,
-            'retrieval_scores': [doc['score'] for doc in retrieved_docs]
+            "question": question,
+            "answer": answer,
+            "confidence": confidence,
+            "retrieval_scores": [doc["score"] for doc in retrieved_docs],
         }
 
         if include_sources:
-            result['sources'] = [
+            result["sources"] = [
                 {
-                    'type': doc['metadata'].get('type', 'unknown'),
-                    'category': doc['metadata'].get('category', 'unknown'),
-                    'score': round(doc['score'], 3),
-                    'preview': doc['content'][:200] + '...' if len(doc['content']) > 200 else doc['content']
+                    "type": doc["metadata"].get("type", "unknown"),
+                    "category": doc["metadata"].get("category", "unknown"),
+                    "score": round(doc["score"], 3),
+                    "preview": (
+                        doc["content"][:200] + "..."
+                        if len(doc["content"]) > 200
+                        else doc["content"]
+                    ),
                 }
                 for doc in retrieved_docs
             ]
@@ -93,7 +92,7 @@ class MockRAGPipeline:
     def query_with_verification(self, question: str, k: int = 5) -> Dict[str, Any]:
         """Mock verification - just return normal query result"""
         result = self.query(question, k=k, include_sources=True)
-        result['verification'] = '{"verified": true, "issues": [], "suggestion": ""}'
+        result["verification"] = '{"verified": true, "issues": [], "suggestion": ""}'
         return result
 
 
@@ -110,14 +109,11 @@ class MockConversationalPipeline(MockRAGPipeline):
         result = super().query(question, k=k, include_sources=include_sources)
 
         # Update conversation history
-        self.conversation_history.append({
-            'question': question,
-            'answer': result['answer']
-        })
+        self.conversation_history.append({"question": question, "answer": result["answer"]})
 
         # Keep only recent history
         if len(self.conversation_history) > self.memory_size:
-            self.conversation_history = self.conversation_history[-self.memory_size:]
+            self.conversation_history = self.conversation_history[-self.memory_size :]
 
         return result
 
@@ -146,7 +142,7 @@ if __name__ == "__main__":
     test_questions = [
         "What technologies are you proficient in?",
         "Tell me about your projects",
-        "What is your education?"
+        "What is your education?",
     ]
 
     for question in test_questions:

@@ -32,7 +32,7 @@ class SimpleRetriever:
                 - text-embedding-3-small: faster, cheaper, 1536 dims
                 - text-embedding-3-large: better quality, 3072 dims
         """
-        self.client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
+        self.client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
         self.embedding_model = embedding_model
 
         self.documents: List[Dict[str, Any]] = []
@@ -40,10 +40,7 @@ class SimpleRetriever:
 
     def _get_embedding(self, text: str) -> List[float]:
         """Get embedding for a single text"""
-        response = self.client.embeddings.create(
-            input=text,
-            model=self.embedding_model
-        )
+        response = self.client.embeddings.create(input=text, model=self.embedding_model)
         return response.data[0].embedding
 
     def _get_embeddings_batch(self, texts: List[str], batch_size: int = 100) -> List[List[float]]:
@@ -51,11 +48,8 @@ class SimpleRetriever:
         all_embeddings = []
 
         for i in range(0, len(texts), batch_size):
-            batch = texts[i:i + batch_size]
-            response = self.client.embeddings.create(
-                input=batch,
-                model=self.embedding_model
-            )
+            batch = texts[i : i + batch_size]
+            response = self.client.embeddings.create(input=batch, model=self.embedding_model)
             batch_embeddings = [item.embedding for item in response.data]
             all_embeddings.extend(batch_embeddings)
 
@@ -73,10 +67,7 @@ class SimpleRetriever:
         # Convert to internal format
         texts = []
         for doc in documents:
-            self.documents.append({
-                'content': doc.content,
-                'metadata': doc.metadata
-            })
+            self.documents.append({"content": doc.content, "metadata": doc.metadata})
             texts.append(doc.content)
 
         # Generate embeddings
@@ -92,7 +83,9 @@ class SimpleRetriever:
         print(f"Total documents: {len(self.documents)}")
         print(f"Embedding shape: {self.embeddings.shape}")
 
-    def _cosine_similarity(self, query_embedding: np.ndarray, doc_embeddings: np.ndarray) -> np.ndarray:
+    def _cosine_similarity(
+        self, query_embedding: np.ndarray, doc_embeddings: np.ndarray
+    ) -> np.ndarray:
         """Compute cosine similarity between query and all documents"""
         # Normalize vectors
         query_norm = query_embedding / np.linalg.norm(query_embedding)
@@ -131,11 +124,13 @@ class SimpleRetriever:
         for idx in top_indices:
             score = float(similarities[idx])
             if score >= threshold:
-                results.append({
-                    'content': self.documents[idx]['content'],
-                    'metadata': self.documents[idx]['metadata'],
-                    'score': score
-                })
+                results.append(
+                    {
+                        "content": self.documents[idx]["content"],
+                        "metadata": self.documents[idx]["metadata"],
+                        "score": score,
+                    }
+                )
 
         return results
 
@@ -145,24 +140,24 @@ class SimpleRetriever:
         save_path.parent.mkdir(parents=True, exist_ok=True)
 
         state = {
-            'documents': self.documents,
-            'embeddings': self.embeddings,
-            'embedding_model': self.embedding_model
+            "documents": self.documents,
+            "embeddings": self.embeddings,
+            "embedding_model": self.embedding_model,
         }
 
-        with open(save_path, 'wb') as f:
+        with open(save_path, "wb") as f:
             pickle.dump(state, f)
 
         print(f"Retriever saved to {path}")
 
     def load(self, path: str):
         """Load retriever state from disk"""
-        with open(path, 'rb') as f:
+        with open(path, "rb") as f:
             state = pickle.load(f)
 
-        self.documents = state['documents']
-        self.embeddings = state['embeddings']
-        self.embedding_model = state['embedding_model']
+        self.documents = state["documents"]
+        self.embeddings = state["embeddings"]
+        self.embedding_model = state["embedding_model"]
 
         print(f"Retriever loaded from {path}")
         print(f"Documents: {len(self.documents)}, Embedding shape: {self.embeddings.shape}")
@@ -176,14 +171,14 @@ class PersonalRAGRetriever(SimpleRetriever):
     def __init__(self, embedding_model: str = "text-embedding-3-small"):
         super().__init__(embedding_model)
         self.category_weights = {
-            'faq': 1.2,  # Boost FAQ answers
-            'about': 1.1,  # Personal info is important
-            'projects': 1.0,
-            'blog': 1.0,
-            'experience': 1.0,
-            'education': 1.0,
-            'skills': 1.1,
-            'contact': 1.0
+            "faq": 1.2,  # Boost FAQ answers
+            "about": 1.1,  # Personal info is important
+            "projects": 1.0,
+            "blog": 1.0,
+            "experience": 1.0,
+            "education": 1.0,
+            "skills": 1.1,
+            "contact": 1.0,
         }
 
     def retrieve(self, query: str, k: int = 5, threshold: float = 0.3) -> List[Dict[str, Any]]:
@@ -202,7 +197,7 @@ class PersonalRAGRetriever(SimpleRetriever):
         # Apply category weights
         weighted_similarities = similarities.copy()
         for i, doc in enumerate(self.documents):
-            category = doc['metadata'].get('category', 'other')
+            category = doc["metadata"].get("category", "other")
             weight = self.category_weights.get(category, 1.0)
             weighted_similarities[i] *= weight
 
@@ -216,12 +211,14 @@ class PersonalRAGRetriever(SimpleRetriever):
             weighted_score = float(weighted_similarities[idx])
 
             if score >= threshold:
-                results.append({
-                    'content': self.documents[idx]['content'],
-                    'metadata': self.documents[idx]['metadata'],
-                    'score': score,
-                    'weighted_score': weighted_score
-                })
+                results.append(
+                    {
+                        "content": self.documents[idx]["content"],
+                        "metadata": self.documents[idx]["metadata"],
+                        "score": score,
+                        "weighted_score": weighted_score,
+                    }
+                )
 
         return results
 
@@ -229,7 +226,7 @@ class PersonalRAGRetriever(SimpleRetriever):
         """Get document count by category"""
         stats = {}
         for doc in self.documents:
-            category = doc['metadata'].get('category', 'other')
+            category = doc["metadata"].get("category", "other")
             stats[category] = stats.get(category, 0) + 1
         return stats
 
@@ -254,7 +251,7 @@ if __name__ == "__main__":
         "What technologies are you proficient in?",
         "Tell me about your RAG project",
         "What is your education background?",
-        "How can I contact you?"
+        "How can I contact you?",
     ]
 
     for query in test_queries:

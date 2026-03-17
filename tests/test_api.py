@@ -73,7 +73,7 @@ def test_ask_question_invalid():
     # Empty question
     response = client.post("/ask", json={"question": ""})
     assert response.status_code == 422  # Validation error
-    
+
     # Missing question
     response = client.post("/ask", json={"k": 5})
     assert response.status_code == 422
@@ -87,12 +87,12 @@ def test_ask_question_valid():
             "question": "What technologies are you proficient in?",
             "k": 3,
             "use_verification": False,
-            "conversational": False
-        }
+            "conversational": False,
+        },
     )
     # May be 503 if not initialized, or 200 if initialized
     assert response.status_code in [200, 503]
-    
+
     if response.status_code == 200:
         data = response.json()
         assert "question" in data
@@ -111,8 +111,8 @@ def test_feedback_submission():
             "answer": "Test answer",
             "rating": 5,
             "feedback_text": "Great answer!",
-            "helpful": True
-        }
+            "helpful": True,
+        },
     )
     assert response.status_code == 200
     data = response.json()
@@ -123,11 +123,7 @@ def test_feedback_invalid_rating():
     """Test feedback with invalid rating"""
     response = client.post(
         "/feedback",
-        json={
-            "question": "Test",
-            "answer": "Test",
-            "rating": 10  # Invalid: should be 1-5
-        }
+        json={"question": "Test", "answer": "Test", "rating": 10},  # Invalid: should be 1-5
     )
     assert response.status_code == 422
 
@@ -137,7 +133,3 @@ def test_cors_headers():
     response = client.options("/health")
     # CORS middleware should be configured
     assert response.status_code in [200, 405]  # OPTIONS may return 405
-
-
-
-

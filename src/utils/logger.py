@@ -8,11 +8,7 @@ from pathlib import Path
 from typing import Optional
 
 
-def setup_logger(
-    name: str,
-    level: str = "INFO",
-    log_file: Optional[str] = None
-) -> logging.Logger:
+def setup_logger(name: str, level: str = "INFO", log_file: Optional[str] = None) -> logging.Logger:
     """
     Setup logger with console and file handlers
 
@@ -32,8 +28,7 @@ def setup_logger(
 
     # Create formatter
     formatter = logging.Formatter(
-        '%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-        datefmt='%Y-%m-%d %H:%M:%S'
+        "%(asctime)s - %(name)s - %(levelname)s - %(message)s", datefmt="%Y-%m-%d %H:%M:%S"
     )
 
     # Console handler

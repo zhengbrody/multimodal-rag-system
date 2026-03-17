@@ -27,7 +27,7 @@ class Config:
         if not self.config_path.exists():
             raise FileNotFoundError(f"Config file not found: {self.config_path}")
 
-        with open(self.config_path, 'r') as f:
+        with open(self.config_path, "r") as f:
             return yaml.safe_load(f)
 
     def get(self, key: str, default: Any = None) -> Any:
@@ -35,7 +35,7 @@ class Config:
         Get configuration value using dot notation
         Example: config.get('models.embedding.model_name')
         """
-        keys = key.split('.')
+        keys = key.split(".")
         value = self._config
 
         for k in keys:
@@ -53,17 +53,17 @@ class Config:
     @property
     def openai_api_key(self) -> str:
         """Get OpenAI API key from environment"""
-        return os.getenv('OPENAI_API_KEY', '')
+        return os.getenv("OPENAI_API_KEY", "")
 
     @property
     def anthropic_api_key(self) -> str:
         """Get Anthropic API key from environment"""
-        return os.getenv('ANTHROPIC_API_KEY', '')
+        return os.getenv("ANTHROPIC_API_KEY", "")
 
     @property
     def pinecone_api_key(self) -> str:
         """Get Pinecone API key from environment"""
-        return os.getenv('PINECONE_API_KEY', '')
+        return os.getenv("PINECONE_API_KEY", "")
 
 
 # Global config instance

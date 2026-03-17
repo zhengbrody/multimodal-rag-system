@@ -27,60 +27,60 @@ def test_mock_retriever_initialization():
 def test_mock_retriever_add_documents():
     """Test adding documents to mock retriever"""
     retriever = MockRetriever()
-    
+
     doc1 = Document(
         content="I am proficient in Python and machine learning",
-        metadata={"type": "skills", "category": "skills"}
+        metadata={"type": "skills", "category": "skills"},
     )
     doc2 = Document(
         content="I worked on a RAG project using FastAPI",
-        metadata={"type": "project", "category": "projects"}
+        metadata={"type": "project", "category": "projects"},
     )
-    
+
     retriever.add_documents([doc1, doc2])
-    
+
     assert len(retriever.documents) == 2
-    assert len(retriever.documents[0]['keywords']) > 0
+    assert len(retriever.documents[0]["keywords"]) > 0
 
 
 def test_mock_retriever_retrieve():
     """Test retrieval functionality"""
     retriever = MockRetriever()
-    
+
     doc1 = Document(
         content="I am proficient in Python, machine learning, and deep learning",
-        metadata={"type": "skills", "category": "skills"}
+        metadata={"type": "skills", "category": "skills"},
     )
     doc2 = Document(
         content="I worked on a recommendation system project",
-        metadata={"type": "project", "category": "projects"}
+        metadata={"type": "project", "category": "projects"},
     )
-    
+
     retriever.add_documents([doc1, doc2])
-    
+
     # Query about skills
     results = retriever.retrieve("What technologies do you know?", k=2)
-    
+
     assert len(results) > 0
-    assert results[0]['score'] > 0
-    assert 'content' in results[0]
-    assert 'metadata' in results[0]
+    assert results[0]["score"] > 0
+    assert "content" in results[0]
+    assert "metadata" in results[0]
 
 
 def test_mock_retriever_category_stats():
     """Test category statistics"""
     retriever = MockRetriever()
-    
+
     docs = [
         Document("Python skills", {"category": "skills"}),
         Document("RAG project", {"category": "projects"}),
         Document("More Python", {"category": "skills"}),
     ]
-    
+
     retriever.add_documents(docs)
-    
+
     stats = retriever.get_category_stats()
-    
+
     assert stats["skills"] == 2
     assert stats["projects"] == 1
 
@@ -88,25 +88,18 @@ def test_mock_retriever_category_stats():
 def test_mock_retriever_save_load(tmp_path):
     """Test saving and loading retriever"""
     retriever = MockRetriever()
-    
-    doc = Document(
-        content="Test document",
-        metadata={"type": "test", "category": "test"}
-    )
+
+    doc = Document(content="Test document", metadata={"type": "test", "category": "test"})
     retriever.add_documents([doc])
-    
+
     # Save
     save_path = tmp_path / "test_retriever.pkl"
     retriever.save(str(save_path))
     assert save_path.exists()
-    
+
     # Load
     new_retriever = MockRetriever()
     new_retriever.load(str(save_path))
-    
+
     assert len(new_retriever.documents) == 1
-    assert new_retriever.documents[0]['content'] == "Test document"
-
-
-
-
+    assert new_retriever.documents[0]["content"] == "Test document"

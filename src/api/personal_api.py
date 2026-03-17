@@ -35,6 +35,7 @@ from utils.logger import setup_logger
 # Setup structured logging
 logger = setup_logger("personal_rag_api", level="INFO", log_file="logs/api.log")
 
+
 # Metrics tracking
 class Metrics:
     def __init__(self):
@@ -44,19 +45,19 @@ class Metrics:
         self.questions_asked = 0
         self.feedback_count = 0
         self.start_time = datetime.now()
-    
+
     def record_request(self, latency: float, success: bool = True):
         self.request_count += 1
         self.total_latency += latency
         if not success:
             self.error_count += 1
-    
+
     def record_question(self):
         self.questions_asked += 1
-    
+
     def record_feedback(self):
         self.feedback_count += 1
-    
+
     def get_stats(self) -> Dict[str, Any]:
         avg_latency = self.total_latency / self.request_count if self.request_count > 0 else 0
         uptime = (datetime.now() - self.start_time).total_seconds()
@@ -67,8 +68,13 @@ class Metrics:
             "error_count": self.error_count,
             "average_latency_ms": round(avg_latency * 1000, 2),
             "uptime_seconds": round(uptime, 2),
-            "error_rate": round(self.error_count / self.request_count * 100, 2) if self.request_count > 0 else 0
+            "error_rate": (
+                round(self.error_count / self.request_count * 100, 2)
+                if self.request_count > 0
+                else 0
+            ),
         }
+
 
 metrics = Metrics()
 
@@ -192,18 +198,19 @@ async def lifespan(app: FastAPI):
             extra={
                 "documents": len(retriever.documents),
                 "categories": retriever.get_category_stats(),
-                "mode": "mock" if use_mock else "openai"
-            }
+                "mode": "mock" if use_mock else "openai",
+            },
         )
 
     except Exception as e:
         logger.error(f"Error during startup: {e}", exc_info=True)
         raise
-    
+
     yield
-    
+
     # Shutdown
     logger.info("Shutting down Personal RAG System...")
+
 
 # Initialize FastAPI app with lifespan
 app = FastAPI(
@@ -212,7 +219,7 @@ app = FastAPI(
     version="2.0.0",
     docs_url="/docs",
     redoc_url="/redoc",
-    lifespan=lifespan
+    lifespan=lifespan,
 )
 
 # CORS middleware for frontend access
@@ -224,38 +231,36 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 # Request logging middleware
 @app.middleware("http")
 async def log_requests(request: Request, call_next):
     """Log all requests with structured format"""
     start_time = time.time()
-    
+
     # Log request
     logger.info(
         f"Request: {request.method} {request.url.path}",
         extra={
             "method": request.method,
             "path": request.url.path,
-            "client": request.client.host if request.client else None
-        }
+            "client": request.client.host if request.client else None,
+        },
     )
-    
+
     try:
         response = await call_next(request)
         latency = time.time() - start_time
-        
+
         # Record metrics
         metrics.record_request(latency, success=response.status_code < 400)
-        
+
         # Log response
         logger.info(
             f"Response: {request.method} {request.url.path} - {response.status_code}",
-            extra={
-                "status_code": response.status_code,
-                "latency_ms": round(latency * 1000, 2)
-            }
+            extra={"status_code": response.status_code, "latency_ms": round(latency * 1000, 2)},
         )
-        
+
         return response
     except Exception as e:
         latency = time.time() - start_time
@@ -263,7 +268,7 @@ async def log_requests(request: Request, call_next):
         logger.error(
             f"Error in {request.method} {request.url.path}: {str(e)}",
             extra={"error": str(e), "latency_ms": round(latency * 1000, 2)},
-            exc_info=True
+            exc_info=True,
         )
         raise
 
@@ -273,17 +278,14 @@ async def root():
     """Root endpoint - system status"""
     if retriever is None:
         return HealthResponse(
-            status="error",
-            message="System not initialized",
-            documents_loaded=0,
-            categories={}
+            status="error", message="System not initialized", documents_loaded=0, categories={}
         )
 
     return HealthResponse(
         status="healthy",
         message="Personal RAG System is running",
         documents_loaded=len(retriever.documents),
-        categories=retriever.get_category_stats()
+        categories=retriever.get_category_stats(),
     )
 
 
@@ -318,8 +320,8 @@ async def ask_question(request: QuestionRequest):
                 "question": request.question,
                 "k": request.k,
                 "conversational": request.conversational,
-                "verification": request.use_verification
-            }
+                "verification": request.use_verification,
+            },
         )
 
         # Choose pipeline based on request
@@ -332,46 +334,42 @@ async def ask_question(request: QuestionRequest):
                     request.question, k=request.k
                 )
             else:
-                result = conversational_pipeline.query(
-                    request.question, k=request.k
-                )
+                result = conversational_pipeline.query(request.question, k=request.k)
         else:
             if request.use_verification:
-                result = pipeline.query_with_verification(
-                    request.question, k=request.k
-                )
+                result = pipeline.query_with_verification(request.question, k=request.k)
             else:
-                result = pipeline.query(
-                    request.question, k=request.k
-                )
+                result = pipeline.query(request.question, k=request.k)
 
         # Convert sources to response model
         sources = []
-        for source in result.get('sources', []):
-            sources.append(SourceInfo(
-                type=source['type'],
-                category=source['category'],
-                score=source['score'],
-                preview=source['preview']
-            ))
+        for source in result.get("sources", []):
+            sources.append(
+                SourceInfo(
+                    type=source["type"],
+                    category=source["category"],
+                    score=source["score"],
+                    preview=source["preview"],
+                )
+            )
 
         latency = time.time() - start_time
         logger.info(
             f"Question answered successfully",
             extra={
                 "question": request.question,
-                "confidence": result['confidence'],
+                "confidence": result["confidence"],
                 "sources_count": len(sources),
-                "latency_ms": round(latency * 1000, 2)
-            }
+                "latency_ms": round(latency * 1000, 2),
+            },
         )
 
         return AnswerResponse(
-            question=result['question'],
-            answer=result['answer'],
-            confidence=result['confidence'],
+            question=result["question"],
+            answer=result["answer"],
+            confidence=result["confidence"],
             sources=sources,
-            retrieval_scores=result['retrieval_scores']
+            retrieval_scores=result["retrieval_scores"],
         )
 
     except Exception as e:
@@ -381,9 +379,9 @@ async def ask_question(request: QuestionRequest):
             extra={
                 "question": request.question,
                 "error": str(e),
-                "latency_ms": round(latency * 1000, 2)
+                "latency_ms": round(latency * 1000, 2),
             },
-            exc_info=True
+            exc_info=True,
         )
         raise HTTPException(status_code=500, detail=f"Error processing question: {str(e)}")
 
@@ -409,7 +407,7 @@ async def get_stats():
         categories=retriever.get_category_stats(),
         embedding_model=retriever.embedding_model,
         llm_model=os.getenv("LLM_MODEL", "gpt-3.5-turbo"),
-        metrics=metrics.get_stats()
+        metrics=metrics.get_stats(),
     )
 
 
@@ -424,7 +422,7 @@ async def get_metrics():
         "errors_total": stats["error_count"],
         "average_latency_ms": stats["average_latency_ms"],
         "uptime_seconds": stats["uptime_seconds"],
-        "error_rate_percent": stats["error_rate"]
+        "error_rate_percent": stats["error_rate"],
     }
 
 
@@ -432,7 +430,7 @@ async def get_metrics():
 async def submit_feedback(feedback: FeedbackRequest):
     """
     Submit user feedback on answers
-    
+
     Collects feedback to improve the system and track answer quality.
     This helps identify hallucination issues and improve prompt engineering.
     """
@@ -441,34 +439,27 @@ async def submit_feedback(feedback: FeedbackRequest):
         feedback_dir = BASE_DIR / "logs"
         feedback_dir.mkdir(exist_ok=True)
         feedback_file = feedback_dir / "feedback.jsonl"
-        
+
         feedback_data = {
             "timestamp": datetime.now().isoformat(),
             "question": feedback.question,
             "answer": feedback.answer,
             "rating": feedback.rating,
             "feedback_text": feedback.feedback_text,
-            "helpful": feedback.helpful
+            "helpful": feedback.helpful,
         }
-        
+
         with open(feedback_file, "a", encoding="utf-8") as f:
             f.write(json.dumps(feedback_data, ensure_ascii=False) + "\n")
-        
+
         metrics.record_feedback()
-        
+
         logger.info(
-            "Feedback submitted",
-            extra={
-                "rating": feedback.rating,
-                "helpful": feedback.helpful
-            }
+            "Feedback submitted", extra={"rating": feedback.rating, "helpful": feedback.helpful}
         )
-        
-        return {
-            "message": "Feedback submitted successfully",
-            "rating": feedback.rating
-        }
-    
+
+        return {"message": "Feedback submitted successfully", "rating": feedback.rating}
+
     except Exception as e:
         logger.error(f"Error saving feedback: {str(e)}", exc_info=True)
         raise HTTPException(status_code=500, detail=f"Error saving feedback: {str(e)}")
@@ -488,7 +479,7 @@ async def get_sample_questions():
             "What technical blogs have you written?",
             "How can I contact you?",
             "What do you know about RAG systems?",
-            "Why did you start writing a technical blog?"
+            "Why did you start writing a technical blog?",
         ]
     }
 
@@ -536,7 +527,7 @@ async def rebuild_index():
             "message": "Knowledge base rebuilt successfully",
             "documents": len(retriever.documents),
             "categories": retriever.get_category_stats(),
-            "mode": "mock" if use_mock else "openai"
+            "mode": "mock" if use_mock else "openai",
         }
 
     except Exception as e:
@@ -545,9 +536,5 @@ async def rebuild_index():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(
-        app,
-        host="0.0.0.0",
-        port=8000,
-        reload=True
-    )
+
+    uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)

@@ -25,7 +25,7 @@ class PersonalRAGPipeline:
         retriever,
         llm_model: str = "gpt-3.5-turbo",
         temperature: float = 0.3,  # Lower temperature for more factual responses
-        max_tokens: int = 1000
+        max_tokens: int = 1000,
     ):
         """
         Initialize RAG pipeline
@@ -37,7 +37,7 @@ class PersonalRAGPipeline:
             max_tokens: Maximum response length
         """
         self.retriever = retriever
-        self.client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
+        self.client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
         self.llm_model = llm_model
         self.temperature = temperature
         self.max_tokens = max_tokens
@@ -65,10 +65,9 @@ Your answers should:
         context_parts = []
 
         for i, doc in enumerate(retrieved_docs, 1):
-            relevance = "High" if doc['score'] > 0.7 else "Medium" if doc['score'] > 0.5 else "Low"
+            relevance = "High" if doc["score"] > 0.7 else "Medium" if doc["score"] > 0.5 else "Low"
             context_parts.append(
-                f"[Information Snippet {i}] (Relevance: {relevance})\n"
-                f"{doc['content']}\n"
+                f"[Information Snippet {i}] (Relevance: {relevance})\n" f"{doc['content']}\n"
             )
 
         return "\n".join(context_parts)
@@ -85,12 +84,7 @@ User Question: {question}
 
 Please provide an accurate and concise answer based on the above information. If the information is insufficient to fully answer the question, please indicate so."""
 
-    def query(
-        self,
-        question: str,
-        k: int = 5,
-        include_sources: bool = True
-    ) -> Dict[str, Any]:
+    def query(self, question: str, k: int = 5, include_sources: bool = True) -> Dict[str, Any]:
         """
         Process a question through the RAG pipeline
 
@@ -107,11 +101,11 @@ Please provide an accurate and concise answer based on the above information. If
 
         if not retrieved_docs:
             return {
-                'question': question,
-                'answer': 'Sorry, I could not find relevant information in the knowledge base for your question. You can try asking about my skills, project experience, education background, or contact information.',
-                'sources': [],
-                'confidence': 'low',
-                'retrieval_scores': []
+                "question": question,
+                "answer": "Sorry, I could not find relevant information in the knowledge base for your question. You can try asking about my skills, project experience, education background, or contact information.",
+                "sources": [],
+                "confidence": "low",
+                "retrieval_scores": [],
             }
 
         # Step 2: Build context
@@ -125,60 +119,60 @@ Please provide an accurate and concise answer based on the above information. If
                 model=self.llm_model,
                 messages=[
                     {"role": "system", "content": self.system_prompt},
-                    {"role": "user", "content": user_prompt}
+                    {"role": "user", "content": user_prompt},
                 ],
                 temperature=self.temperature,
-                max_tokens=self.max_tokens
+                max_tokens=self.max_tokens,
             )
 
             answer = response.choices[0].message.content
 
         except Exception as e:
             return {
-                'question': question,
-                'answer': f'Error generating answer: {str(e)}',
-                'sources': [],
-                'confidence': 'error',
-                'retrieval_scores': []
+                "question": question,
+                "answer": f"Error generating answer: {str(e)}",
+                "sources": [],
+                "confidence": "error",
+                "retrieval_scores": [],
             }
 
         # Step 4: Assess confidence based on retrieval scores
-        avg_score = sum(doc['score'] for doc in retrieved_docs) / len(retrieved_docs)
-        max_score = max(doc['score'] for doc in retrieved_docs)
+        avg_score = sum(doc["score"] for doc in retrieved_docs) / len(retrieved_docs)
+        max_score = max(doc["score"] for doc in retrieved_docs)
 
         if max_score > 0.75 and avg_score > 0.6:
-            confidence = 'high'
+            confidence = "high"
         elif max_score > 0.5 and avg_score > 0.4:
-            confidence = 'medium'
+            confidence = "medium"
         else:
-            confidence = 'low'
+            confidence = "low"
 
         # Step 5: Build response
         result = {
-            'question': question,
-            'answer': answer,
-            'confidence': confidence,
-            'retrieval_scores': [doc['score'] for doc in retrieved_docs]
+            "question": question,
+            "answer": answer,
+            "confidence": confidence,
+            "retrieval_scores": [doc["score"] for doc in retrieved_docs],
         }
 
         if include_sources:
-            result['sources'] = [
+            result["sources"] = [
                 {
-                    'type': doc['metadata'].get('type', 'unknown'),
-                    'category': doc['metadata'].get('category', 'unknown'),
-                    'score': round(doc['score'], 3),
-                    'preview': doc['content'][:200] + '...' if len(doc['content']) > 200 else doc['content']
+                    "type": doc["metadata"].get("type", "unknown"),
+                    "category": doc["metadata"].get("category", "unknown"),
+                    "score": round(doc["score"], 3),
+                    "preview": (
+                        doc["content"][:200] + "..."
+                        if len(doc["content"]) > 200
+                        else doc["content"]
+                    ),
                 }
                 for doc in retrieved_docs
             ]
 
         return result
 
-    def query_with_verification(
-        self,
-        question: str,
-        k: int = 5
-    ) -> Dict[str, Any]:
+    def query_with_verification(self, question: str, k: int = 5) -> Dict[str, Any]:
         """
         Enhanced query with additional verification step to reduce hallucination
 
@@ -187,7 +181,7 @@ Please provide an accurate and concise answer based on the above information. If
         # First pass: get answer
         initial_result = self.query(question, k=k, include_sources=True)
 
-        if initial_result['confidence'] == 'error' or not initial_result['sources']:
+        if initial_result["confidence"] == "error" or not initial_result["sources"]:
             return initial_result
 
         # Second pass: verify answer
@@ -212,24 +206,32 @@ Please reply in JSON format:
             verification_response = self.client.chat.completions.create(
                 model=self.llm_model,
                 messages=[
-                    {"role": "system", "content": "You are a fact-checking assistant specialized in verifying whether answers are consistent with source materials."},
-                    {"role": "user", "content": verification_prompt}
+                    {
+                        "role": "system",
+                        "content": "You are a fact-checking assistant specialized in verifying whether answers are consistent with source materials.",
+                    },
+                    {"role": "user", "content": verification_prompt},
                 ],
                 temperature=0.1,
-                max_tokens=500
+                max_tokens=500,
             )
 
             # Parse verification (simplified - in production use proper JSON parsing)
             verification_text = verification_response.choices[0].message.content
-            initial_result['verification'] = verification_text
+            initial_result["verification"] = verification_text
 
             # If verification finds issues, add warning
-            if '"verified": false' in verification_text.lower() or '"verified":false' in verification_text.lower():
-                initial_result['answer'] += "\n\n[Note: Some content in this answer may need further verification]"
-                initial_result['confidence'] = 'low'
+            if (
+                '"verified": false' in verification_text.lower()
+                or '"verified":false' in verification_text.lower()
+            ):
+                initial_result[
+                    "answer"
+                ] += "\n\n[Note: Some content in this answer may need further verification]"
+                initial_result["confidence"] = "low"
 
         except Exception as e:
-            initial_result['verification_error'] = str(e)
+            initial_result["verification_error"] = str(e)
 
         return initial_result
 
@@ -250,7 +252,7 @@ class ConversationalRAGPipeline(PersonalRAGPipeline):
             return ""
 
         history_text = "\n=== Conversation History ===\n"
-        for turn in self.conversation_history[-self.memory_size:]:
+        for turn in self.conversation_history[-self.memory_size :]:
             history_text += f"User: {turn['question']}\n"
             history_text += f"Assistant: {turn['answer'][:200]}...\n\n"
 
@@ -269,13 +271,10 @@ class ConversationalRAGPipeline(PersonalRAGPipeline):
 
         # Get answer using parent method
         result = super().query(enhanced_question, k=k, include_sources=include_sources)
-        result['question'] = question  # Keep original question
+        result["question"] = question  # Keep original question
 
         # Update conversation history
-        self.conversation_history.append({
-            'question': question,
-            'answer': result['answer']
-        })
+        self.conversation_history.append({"question": question, "answer": result["answer"]})
 
         return result
 
@@ -303,7 +302,7 @@ if __name__ == "__main__":
         test_questions = [
             "What technologies are you most proficient in?",
             "Tell me about your proudest project",
-            "What are your contact details?"
+            "What are your contact details?",
         ]
 
         for question in test_questions:

@@ -31,4 +31,3 @@ def test_end_to_end_question_flow():
     assert data["answer"]
     assert data["confidence"] in {"high", "medium", "low"}
     assert isinstance(data.get("sources", []), list)
-
