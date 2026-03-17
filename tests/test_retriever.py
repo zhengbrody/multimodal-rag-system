@@ -58,8 +58,8 @@ def test_mock_retriever_retrieve():
 
     retriever.add_documents([doc1, doc2])
 
-    # Query about skills
-    results = retriever.retrieve("What technologies do you know?", k=2)
+    # Query about skills - use keywords that overlap with document content
+    results = retriever.retrieve("What Python and machine learning skills do you have?", k=2)
 
     assert len(results) > 0
     assert results[0]["score"] > 0
