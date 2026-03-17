@@ -8,11 +8,16 @@ Modern, interactive interface with:
 - Theme customization
 """
 
+import sys
 import streamlit as st
 import requests
 import time
+from pathlib import Path
 from typing import Optional, List, Dict
 from datetime import datetime
+
+# Make src/ importable for local pipeline fallback
+sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 # Page configuration
 st.set_page_config(
@@ -24,23 +29,40 @@ st.set_page_config(
 
 # API configuration
 import os
-# Detect if running on Streamlit Cloud (multiple methods for reliability)
-IS_STREAMLIT_CLOUD = (
-    os.getenv("STREAMLIT_SERVER_PORT") is not None 
-    or os.getenv("STREAMLIT_SHARING_MODE") == "true"
-    or os.getenv("STREAMLIT_SERVER_ADDRESS") is not None
-    or "streamlit.app" in os.getenv("_", "")
-)
 
 try:
     API_URL = st.secrets.get("API_URL", os.getenv("API_URL", "http://localhost:8000"))
 except (FileNotFoundError, KeyError):
     API_URL = os.getenv("API_URL", "http://localhost:8000")
 
-# Enable demo mode if API_URL is localhost (likely Streamlit Cloud without backend)
-# This will be checked again after trying to connect
-USE_MOCK_MODE = API_URL.startswith("http://localhost") and IS_STREAMLIT_CLOUD
-MOCK_MODE_MESSAGE = "⚠️ Running in demo mode (no backend API). Configure API_URL in Streamlit Cloud secrets to connect to your backend." if USE_MOCK_MODE else None
+
+def _check_api_available() -> bool:
+    """Probe the backend API once and cache the result for the session."""
+    if "api_available" not in st.session_state:
+        try:
+            resp = requests.get(f"{API_URL}/health", timeout=3)
+            st.session_state.api_available = resp.status_code == 200
+        except Exception:
+            st.session_state.api_available = False
+    return st.session_state.api_available
+
+
+# Determine demo mode dynamically: fall back when the API is unreachable
+USE_MOCK_MODE = not _check_api_available()
+
+
+@st.cache_resource
+def get_local_pipeline():
+    """Initialize local mock pipeline directly (no backend needed)."""
+    from rag.mock_retriever import MockRetriever
+    from rag.mock_pipeline import MockRAGPipeline
+    from rag.knowledge_processor import build_knowledge_base
+
+    kb_path = Path(__file__).parent.parent / "data" / "raw" / "knowledge_base.json"
+    retriever = MockRetriever()
+    documents = build_knowledge_base(str(kb_path))
+    retriever.add_documents(documents)
+    return MockRAGPipeline(retriever)
 
 # Initialize session state
 if 'conversation_history' not in st.session_state:
@@ -364,17 +386,11 @@ with st.sidebar:
             for cat, count in list(health['categories'].items())[:5]:
                 st.caption(f"• {cat}: {count}")
     elif USE_MOCK_MODE:
-        # Demo mode (Streamlit Cloud without backend)
-        st.warning("⚠️ Demo Mode")
-        st.caption("Backend API not configured. Running in demo mode.")
-    elif API_URL.startswith("http://localhost"):
-        # Local development, backend not running
-        st.error("❌ Offline")
-        st.caption("Backend API is not reachable. Start the backend with: python3 -m uvicorn src.api.personal_api:app --host 0.0.0.0 --port 8000")
-    else:
-        # Remote API configured but not reachable
-        st.error("❌ Offline")
-        st.caption(f"Backend API at {API_URL} is not reachable.")
+        st.info("🔌 Local Mode")
+        st.caption("Running with local knowledge base (no backend needed).")
+        if st.button("Retry backend", use_container_width=True):
+            st.session_state.pop("api_available", None)
+            st.rerun()
     
     # Metrics
     metrics = get_metrics()
@@ -454,28 +470,27 @@ with tab1:
         })
         
         if USE_MOCK_MODE:
-            # Demo mode: show a friendly message
-            demo_answer = f"""I'm currently running in demo mode without a backend API connection. 
+            with st.spinner("🤔 Thinking..."):
+                local_pipeline = get_local_pipeline()
+                result = local_pipeline.query(question, k=k)
 
-To enable full functionality:
-1. Deploy the FastAPI backend (see README.md)
-2. Configure the API_URL secret in Streamlit Cloud settings
-3. Restart the app
-
-For now, here's a quick answer based on your question: "{question}"
-
-This is a demo of the Personal RAG Q&A System. The full system would retrieve relevant information from a knowledge base and generate accurate answers using RAG (Retrieval-Augmented Generation) technology."""
-            
+            st.session_state.current_result = result
             st.session_state.conversation_history.append({
                 'role': 'assistant',
-                'content': demo_answer,
+                'content': result['answer'],
                 'timestamp': datetime.now(),
-                'confidence': 'medium',
-                'sources': []
+                'confidence': result['confidence'],
+                'sources': result.get('sources', [])
             })
-            display_message(demo_answer, "assistant")
-            if MOCK_MODE_MESSAGE:
-                st.info(MOCK_MODE_MESSAGE)
+            display_message(result['answer'], "assistant")
+
+            col1, col2, col3 = st.columns([2, 2, 2])
+            with col1:
+                display_confidence(result['confidence'])
+            with col2:
+                st.caption("⚡ Local mode")
+            with col3:
+                st.caption(f"📚 {len(result.get('sources', []))} sources")
         else:
             with st.spinner("🤔 Thinking..."):
                 result = ask_question(

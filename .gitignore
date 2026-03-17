@@ -79,6 +79,14 @@ logs/
 # Docker
 *.env.docker
 
+# Pytest
+.pytest_cache/
+
+# Coverage
+.coverage
+.coverage.*
+htmlcov/
+
 # Temporary files
 tmp/
 temp/

@@ -5,7 +5,6 @@ Uses simple keyword matching instead of embeddings
 No API costs - runs completely locally
 """
 
-import numpy as np
 from typing import List, Dict, Any
 import pickle
 from pathlib import Path

@@ -7,7 +7,6 @@ No heavy dependencies like FAISS or Torch needed
 
 import numpy as np
 from typing import List, Dict, Any, Optional
-import json
 import pickle
 from pathlib import Path
 from openai import OpenAI

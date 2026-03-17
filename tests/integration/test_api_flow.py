@@ -12,6 +12,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
 
 from api.personal_api import app
 
+
 def test_end_to_end_question_flow():
     with TestClient(app) as client:
         response = client.post(

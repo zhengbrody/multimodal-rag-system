@@ -1,4 +1,4 @@
-n#!/bin/bash
+#!/bin/bash
 # Quick restart script
 
 echo "🔄 Restarting Personal RAG System..."

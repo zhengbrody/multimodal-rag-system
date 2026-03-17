@@ -7,7 +7,7 @@ Core RAG pipeline that:
 3. Implements strategies to prevent hallucination
 """
 
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any
 from openai import OpenAI
 import os
 from dotenv import load_dotenv

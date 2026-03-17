@@ -11,7 +11,6 @@ Professional RAG API with:
 
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 from typing import List, Optional, Dict, Any
 import os
@@ -355,7 +354,7 @@ async def ask_question(request: QuestionRequest):
 
         latency = time.time() - start_time
         logger.info(
-            f"Question answered successfully",
+            "Question answered successfully",
             extra={
                 "question": request.question,
                 "confidence": result["confidence"],

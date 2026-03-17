@@ -8,7 +8,6 @@ Tests cover:
 - Metrics collection
 """
 
-import pytest
 from fastapi.testclient import TestClient
 import sys
 from pathlib import Path
