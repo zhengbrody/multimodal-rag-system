@@ -14,20 +14,27 @@ from pathlib import Path
 
 
 def check_setup():
-    """Verify basic setup is complete (env file)"""
+    """Verify setup for the selected runtime mode."""
     base_dir = Path(__file__).parent
 
-    # Check .env
+    use_mock = os.getenv("USE_MOCK", "true").lower() == "true"
     env_path = base_dir / ".env"
+
+    if use_mock:
+        if not env_path.exists():
+            print("No .env file found; continuing in mock mode (no OpenAI key needed).")
+        return
+
     if not env_path.exists():
         print("Error: .env file not found")
-        print("Please configure your environment variables")
+        print("Please configure OPENAI_API_KEY or run with USE_MOCK=true")
         sys.exit(1)
 
-    with open(env_path, 'r') as f:
-        if "your_openai_api_key_here" in f.read():
-            print("Error: OpenAI API key not configured")
-            print("Please edit .env and add your API key")
+    with open(env_path, "r") as f:
+        env_text = f.read()
+        if "your_openai_api_key_here" in env_text or "OPENAI_API_KEY=" not in env_text:
+            print("Error: OpenAI API key not configured while USE_MOCK=false")
+            print("Please edit .env and add your API key, or run with USE_MOCK=true")
             sys.exit(1)
 
 

@@ -13,6 +13,7 @@
 - **API Docs (FastAPI)**: `http://localhost:8000/docs`
 - **Quickstart**: [Getting Started](#-quick-start)
 - **Architecture & Metrics**: [Architecture](#-architecture) · [Metrics & Evaluation](docs/metrics.md)
+- **Portfolio Positioning**: [Project Positioning & Job-Search Roadmap](docs/PROJECT_POSITIONING.md)
 - **Contributing**: [CONTRIBUTING.md](CONTRIBUTING.md)
 - **Data Quality & Monitoring**: [Observability Notes](docs/observability.md)
 
@@ -353,7 +354,11 @@ docker-compose up --build
 1. Push code to GitHub
 2. Connect to Streamlit Cloud
 3. Set main file: `frontend/personal_app.py`
-4. Add secrets: `API_URL` (your backend URL)
+4. *(Optional)* Add secret `API_URL` if you have a deployed backend
+
+> **No backend needed:** The app automatically uses the local knowledge base
+> (`data/raw/knowledge_base.json`) when no backend is reachable, so it works
+> out-of-the-box on Streamlit Cloud without any extra setup.
 
 See `docs/DEPLOYMENT.md` for detailed instructions.
 
@@ -413,7 +418,6 @@ MIT License - see [LICENSE](LICENSE) file for details.
 ## 📧 Contact
 
 For questions or feedback, please open an issue on GitHub.
-
 ---
 
 **Built with ❤️ for demonstrating production-ready RAG systems with anti-hallucination strategies**

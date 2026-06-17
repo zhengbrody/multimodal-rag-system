@@ -21,7 +21,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 # Page configuration
 st.set_page_config(
-    page_title="Intelligent Q&A - Personal Website",
+    page_title="Ask Zheng Dong - AI Portfolio",
     page_icon="💬",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -40,7 +40,7 @@ def _check_api_available() -> bool:
     """Probe the backend API once and cache the result for the session."""
     if "api_available" not in st.session_state:
         try:
-            resp = requests.get(f"{API_URL}/health", timeout=3)
+            resp = requests.get(f"{API_URL}/health", timeout=1.5)
             st.session_state.api_available = resp.status_code == 200
         except Exception:
             st.session_state.api_available = False
@@ -63,6 +63,22 @@ def get_local_pipeline():
     documents = build_knowledge_base(str(kb_path))
     retriever.add_documents(documents)
     return MockRAGPipeline(retriever)
+
+
+@st.cache_data
+def get_local_stats():
+    """Return local knowledge-base stats for Streamlit-only deployment."""
+    from rag.mock_retriever import MockRetriever
+    from rag.knowledge_processor import build_knowledge_base
+
+    kb_path = Path(__file__).parent.parent / "data" / "raw" / "knowledge_base.json"
+    retriever = MockRetriever()
+    documents = build_knowledge_base(str(kb_path))
+    retriever.add_documents(documents)
+    return {
+        "documents_loaded": len(retriever.documents),
+        "categories": retriever.get_category_stats(),
+    }
 
 # Initialize session state
 if 'conversation_history' not in st.session_state:
@@ -218,10 +234,10 @@ st.markdown(get_css(st.session_state.theme), unsafe_allow_html=True)
 def get_api_health() -> Optional[dict]:
     """Check API health status"""
     try:
-        response = requests.get(f"{API_URL}/health", timeout=5)
+        response = requests.get(f"{API_URL}/health", timeout=1.5)
         if response.status_code == 200:
             return response.json()
-    except:
+    except Exception:
         pass
     return None
 
@@ -229,10 +245,10 @@ def get_api_health() -> Optional[dict]:
 def get_metrics() -> Optional[dict]:
     """Get system metrics"""
     try:
-        response = requests.get(f"{API_URL}/metrics", timeout=5)
+        response = requests.get(f"{API_URL}/metrics", timeout=1.5)
         if response.status_code == 200:
             return response.json()
-    except:
+    except Exception:
         pass
     return None
 
@@ -279,27 +295,28 @@ def submit_feedback(question: str, answer: str, rating: int, feedback_text: Opti
             timeout=5
         )
         return response.status_code == 200
-    except:
+    except Exception:
         return False
 
 
 def get_sample_questions() -> list:
     """Get sample questions from API"""
     try:
-        response = requests.get(f"{API_URL}/sample-questions", timeout=5)
+        response = requests.get(f"{API_URL}/sample-questions", timeout=1.5)
         if response.status_code == 200:
             return response.json().get("questions", [])
-    except:
+    except Exception:
         pass
     return [
-        "Who are you? Give me a brief introduction",
-        "What technologies are you proficient in?",
-        "Tell me about your proudest project",
+        "Why are you a strong fit for Machine Learning Engineer roles?",
+        "Tell me about your Allianz fraud detection work",
+        "How should this RAG project be presented to recruiters?",
+        "What is your strongest production ML project?",
+        "What is your work authorization and availability?",
+        "How do you build reliable ML systems?",
+        "What evidence supports your RAG project claims?",
         "What is your work experience?",
-        "What is your education background?",
-        "How can I contact you?",
-        "What do you know about RAG systems?",
-        "Why did you start writing a technical blog?"
+        "How can I contact you?"
     ]
 
 
@@ -310,7 +327,7 @@ def clear_conversation():
         st.session_state.conversation_history = []
         st.session_state.current_result = None
         st.success("Conversation cleared!")
-    except:
+    except Exception:
         pass
 
 
@@ -330,12 +347,16 @@ def display_confidence(confidence: str):
 
 
 # Header
-st.markdown('<h1 class="main-header">💬 Intelligent Q&A System</h1>', unsafe_allow_html=True)
-st.markdown('<p class="sub-header">Personal Knowledge Base Q&A powered by RAG with Anti-Hallucination Strategies</p>', unsafe_allow_html=True)
+st.markdown('<h1 class="main-header">Ask Zheng Dong</h1>', unsafe_allow_html=True)
+st.markdown(
+    '<p class="sub-header">AI portfolio search for recruiters and interviewers. '
+    'Ask about experience, ML systems projects, availability, and evidence-backed accomplishments.</p>',
+    unsafe_allow_html=True,
+)
 
 # Sidebar
 with st.sidebar:
-    st.markdown("### ⚙️ Settings")
+    st.markdown("### Portfolio Q&A")
 
     # Theme toggle
     theme = st.selectbox("Theme", ["light", "dark"], index=0 if st.session_state.theme == "light" else 1)
@@ -343,7 +364,7 @@ with st.sidebar:
     
     # Number of documents
     k = st.slider(
-        "Documents to retrieve",
+        "Evidence snippets",
         min_value=1,
         max_value=10,
         value=5,
@@ -370,7 +391,7 @@ with st.sidebar:
     st.markdown("---")
 
     # System status
-    st.markdown("### 📊 System Status")
+    st.markdown("### Knowledge Base")
     
     # Check API health
     health = get_api_health()
@@ -386,8 +407,14 @@ with st.sidebar:
             for cat, count in list(health['categories'].items())[:5]:
                 st.caption(f"• {cat}: {count}")
     elif USE_MOCK_MODE:
-        st.info("🔌 Local Mode")
-        st.caption("Running with local knowledge base (no backend needed).")
+        local_stats = get_local_stats()
+        st.info("Portfolio demo mode")
+        st.metric("Documents", local_stats["documents_loaded"])
+        if local_stats.get("categories"):
+            st.markdown("**Categories:**")
+            for cat, count in list(local_stats["categories"].items())[:5]:
+                st.caption(f"• {cat}: {count}")
+        st.caption("Running from the bundled knowledge base. No external API is required.")
         if st.button("Retry backend", use_container_width=True):
             st.session_state.pop("api_available", None)
             st.rerun()
@@ -402,23 +429,17 @@ with st.sidebar:
         st.metric("Error Rate", f"{metrics.get('error_rate_percent', 0):.1f}%")
 
     st.markdown("---")
-    st.markdown("### ℹ️ About")
+    st.markdown("### What This Shows")
     st.info("""
-    **Technologies:**
-    - OpenAI Embeddings
-    - GPT-3.5/4 LLM
-    - FastAPI Backend
-    - Streamlit Frontend
-
-    **Anti-Hallucination:**
-    - Low temperature (0.3)
-    - Strict prompts
-    - Confidence scoring
-    - Optional verification
+    **Zheng's positioning:**
+    - Production ML engineering
+    - RAG / LLM applications
+    - Backend and MLOps systems
+    - Evidence-backed portfolio Q&A
     """)
 
 # Main content area
-tab1, tab2, tab3 = st.tabs(["💬 Chat", "📊 Analytics", "ℹ️ About"])
+tab1, tab2, tab3 = st.tabs(["Ask", "Evidence", "System Design"])
 
 with tab1:
     # Conversation display
@@ -428,13 +449,13 @@ with tab1:
             display_message(msg['content'], msg['role'])
     
     # Question input
-    st.markdown("### ✍️ Ask a Question")
+    st.markdown("### Ask a recruiter-style question")
     
     # Sample questions
     sample_questions = get_sample_questions()
-    cols = st.columns(4)
-    for i, sq in enumerate(sample_questions[:4]):
-        with cols[i % 4]:
+    cols = st.columns(3)
+    for i, sq in enumerate(sample_questions[:6]):
+        with cols[i % 3]:
             if st.button(sq[:30] + "..." if len(sq) > 30 else sq, key=f"sample_{i}", use_container_width=True):
                 st.session_state.question_input = sq
                 st.rerun()
@@ -450,7 +471,7 @@ with tab1:
     question = st.text_area(
         "Your question",
         value=question_value,
-        placeholder="e.g., What technologies are you most proficient in?",
+        placeholder="e.g., Why are you a strong fit for Machine Learning Engineer roles?",
         height=100,
         label_visibility="collapsed",
         key="question_input"
@@ -596,14 +617,15 @@ with tab1:
         st.warning("Please enter a question")
 
 with tab2:
-    st.markdown("### 📊 System Analytics")
+    st.markdown("### Evidence and Coverage")
     
     health = get_api_health()
     metrics_data = get_metrics()
 
-    if not (health and metrics_data):
-        st.warning("Analytics are temporarily unavailable. Make sure the backend API is running.")
-    else:
+    if not health and USE_MOCK_MODE:
+        health = get_local_stats()
+
+    if health:
         # Top summary metrics
         col1, col2, col3, col4 = st.columns(4)
 
@@ -612,9 +634,15 @@ with tab2:
         with col2:
             st.metric("Categories", len(health.get("categories", {})))
         with col3:
-            st.metric("Avg Latency", f"{metrics_data.get('average_latency_ms', 0):.0f}ms")
+            if metrics_data:
+                st.metric("Avg Latency", f"{metrics_data.get('average_latency_ms', 0):.0f}ms")
+            else:
+                st.metric("Mode", "Local")
         with col4:
-            st.metric("Error Rate", f"{metrics_data.get('error_rate_percent', 0):.1f}%")
+            if metrics_data:
+                st.metric("Error Rate", f"{metrics_data.get('error_rate_percent', 0):.1f}%")
+            else:
+                st.metric("External API", "Off")
 
         st.markdown("---")
 
@@ -667,12 +695,20 @@ with tab2:
                     table_lines.append(f"| {lvl.title()} | {count} | {pct}% |")
 
                 st.markdown("\n".join(table_lines))
+    else:
+        st.warning("Evidence stats are temporarily unavailable.")
 
 with tab3:
-    st.markdown("### 🎯 About This System")
+    st.markdown("### Why this project matters")
     
     st.markdown("""
-    #### 🧠 RAG Pipeline Architecture
+    #### Portfolio goal
+
+    This is a recruiter-facing AI portfolio. Instead of asking visitors to read
+    a static resume, it lets them ask direct questions about Zheng's experience,
+    projects, availability, and technical depth.
+
+    #### RAG pipeline architecture
     
     This system implements a **Retrieval-Augmented Generation (RAG)** pipeline specifically designed for personal Q&A:
     
@@ -698,28 +734,28 @@ with tab3:
        - **Source Tracing**: Show where information comes from
        - **Optional Verification**: Second-pass fact-checking
     
-    #### 🚀 Key Features
+    #### Engineering signals for interviews
     
-    - **Conversation Mode**: Multi-turn dialogue with context retention
-    - **Confidence Scoring**: High/Medium/Low based on retrieval quality
-    - **Source Attribution**: See exactly where answers come from
-    - **Feedback Collection**: Help improve the system
-    - **Real-time Metrics**: Monitor system performance
+    - Retriever and pipeline abstractions for mock, OpenAI, Pinecone, and CLIP-backed modes
+    - FastAPI service with typed request/response models, health checks, metrics, and feedback
+    - Streamlit deployment that can run without a backend for low-friction public demos
+    - Source attribution and confidence scoring so claims can be checked instead of guessed
+    - Docker, Kubernetes manifests, CI tests, and load-test scaffolding for production discussion
     
-    #### 💡 Best Practices
+    #### Best questions to try
     
-    - Ask specific questions for better results
-    - Check confidence levels for reliability
-    - Review sources to verify information
-    - Use conversation mode for follow-up questions
+    - Why are you a strong fit for Machine Learning Engineer roles?
+    - Tell me about your Allianz fraud detection work.
+    - How should this RAG project be presented to recruiters?
+    - How would you scale this system beyond a personal website?
     """)
 
 # Footer
 st.markdown("---")
 st.markdown("""
 <div style="text-align: center; color: #888; padding: 1rem;">
-    <p>🚀 Built with RAG Technology | Anti-Hallucination Strategies | FastAPI + Streamlit</p>
-    <p>Personal RAG Q&A System v2.0</p>
+    <p>AI Portfolio Q&A | RAG, FastAPI, Streamlit, source-backed answers</p>
+    <p>Zheng Dong · Machine Learning Engineer / Software Engineer</p>
 </div>
 """, unsafe_allow_html=True)
     

@@ -31,6 +31,28 @@ from rag.mock_retriever import MockRetriever
 from rag.mock_pipeline import MockRAGPipeline, MockConversationalPipeline
 from utils.logger import setup_logger
 
+# Optional advanced components
+try:
+    from rag.clip_retriever import CLIPRetriever
+    CLIP_AVAILABLE = True
+except ImportError:
+    CLIP_AVAILABLE = False
+
+try:
+    from rag.pinecone_retriever import PineconeRetriever
+    PINECONE_AVAILABLE = True
+except ImportError:
+    PINECONE_AVAILABLE = False
+
+try:
+    from rag.langchain_pipeline import LangChainRAGPipeline, LangChainConversationalPipeline
+    LANGCHAIN_AVAILABLE = True
+except ImportError:
+    LANGCHAIN_AVAILABLE = False
+
+from utils.cache import SemanticCache
+from utils.monitoring import CloudWatchMonitor, LocalMonitor
+
 # Setup structured logging
 logger = setup_logger("personal_rag_api", level="INFO", log_file="logs/api.log")
 
@@ -87,6 +109,8 @@ RAW_DIR = DATA_DIR / "raw"
 retriever: Optional[PersonalRAGRetriever] = None
 pipeline: Optional[PersonalRAGPipeline] = None
 conversational_pipeline: Optional[ConversationalRAGPipeline] = None
+cache = None
+monitor = None
 
 
 # Pydantic models
@@ -117,6 +141,10 @@ class HealthResponse(BaseModel):
     message: str
     documents_loaded: int
     categories: Dict[str, int]
+    retriever_mode: Optional[str] = None
+    pipeline_mode: Optional[str] = None
+    cache_enabled: Optional[bool] = None
+    monitoring: Optional[str] = None
 
 
 class StatsResponse(BaseModel):
@@ -139,24 +167,71 @@ class FeedbackRequest(BaseModel):
 async def lifespan(app: FastAPI):
     """Lifespan context manager for startup and shutdown"""
     # Startup
-    global retriever, pipeline, conversational_pipeline
+    global retriever, pipeline, conversational_pipeline, cache, monitor
 
     try:
         logger.info("Initializing Personal RAG System...")
 
+        # Initialize semantic cache
+        redis_url = os.getenv("REDIS_URL", "redis://localhost:6379")
+        cache = SemanticCache(redis_url=redis_url) if os.getenv("ENABLE_CACHE", "false").lower() == "true" else None
+
+        # Initialize monitoring
+        enable_cloudwatch = os.getenv("ENABLE_CLOUDWATCH", "false").lower() == "true"
+        if enable_cloudwatch:
+            monitor = CloudWatchMonitor(namespace="RAGSystem", region=os.getenv("AWS_REGION", "us-east-1"))
+        else:
+            monitor = LocalMonitor()
+
         # Check if we should use mock mode (no API needed)
         use_mock = os.getenv("USE_MOCK", "true").lower() == "true"
+        retriever_mode = os.getenv("RETRIEVER_MODE", "auto")  # auto, mock, openai, pinecone, clip
+        pipeline_mode = os.getenv("PIPELINE_MODE", "default")  # default, langchain
 
         mock_retriever_path = PROCESSED_DIR / "mock_retriever.pkl"
         retriever_path = PROCESSED_DIR / "retriever.pkl"
         knowledge_path = RAW_DIR / "knowledge_base.json"
+        force_rebuild = os.getenv("FORCE_REBUILD_INDEX", "false").lower() == "true"
 
-        if use_mock:
+        def index_is_fresh(index_path: Path) -> bool:
+            """Return whether a saved index is newer than the knowledge base."""
+            if force_rebuild or not index_path.exists() or not knowledge_path.exists():
+                return False
+            return index_path.stat().st_mtime >= knowledge_path.stat().st_mtime
+
+        if retriever_mode == "pinecone" and PINECONE_AVAILABLE:
+            logger.info("Using Pinecone retriever mode")
+            retriever = PineconeRetriever()
+
+            if knowledge_path.exists():
+                logger.info("Building knowledge base with Pinecone...")
+                documents = build_knowledge_base(str(knowledge_path))
+                retriever.add_documents(documents)
+            else:
+                logger.info("No knowledge base file found; using existing Pinecone index")
+
+        elif retriever_mode == "clip" and CLIP_AVAILABLE:
+            logger.info("Using CLIP retriever mode")
+            retriever = CLIPRetriever()
+
+            clip_retriever_path = PROCESSED_DIR / "clip_retriever.pkl"
+            if clip_retriever_path.exists():
+                logger.info("Loading existing CLIP retriever...")
+                retriever.load(str(clip_retriever_path))
+            elif knowledge_path.exists():
+                logger.info("Building knowledge base with CLIP...")
+                documents = build_knowledge_base(str(knowledge_path))
+                retriever.add_documents(documents)
+                retriever.save(str(clip_retriever_path))
+            else:
+                raise FileNotFoundError(f"Knowledge base not found at {knowledge_path}")
+
+        elif use_mock or retriever_mode == "mock":
             logger.info("Using MOCK mode (no API costs)")
             # Use mock retriever
             retriever = MockRetriever()
 
-            if mock_retriever_path.exists():
+            if index_is_fresh(mock_retriever_path):
                 logger.info("Loading existing mock retriever...")
                 retriever.load(str(mock_retriever_path))
             elif knowledge_path.exists():
@@ -166,17 +241,13 @@ async def lifespan(app: FastAPI):
                 retriever.save(str(mock_retriever_path))
             else:
                 raise FileNotFoundError(f"Knowledge base not found at {knowledge_path}")
-
-            # Use mock pipelines
-            pipeline = MockRAGPipeline(retriever)
-            conversational_pipeline = MockConversationalPipeline(retriever)
         else:
             logger.info("Using OpenAI API mode")
             # Initialize real retriever
             retriever = PersonalRAGRetriever(embedding_model="text-embedding-3-small")
 
             # Try to load existing retriever, otherwise build new one
-            if retriever_path.exists():
+            if index_is_fresh(retriever_path):
                 logger.info("Loading existing retriever...")
                 retriever.load(str(retriever_path))
             elif knowledge_path.exists():
@@ -187,7 +258,18 @@ async def lifespan(app: FastAPI):
             else:
                 raise FileNotFoundError(f"Knowledge base not found at {knowledge_path}")
 
-            # Initialize pipelines
+        # Initialize pipelines based on pipeline_mode
+        if pipeline_mode == "langchain" and LANGCHAIN_AVAILABLE:
+            logger.info("Using LangChain pipeline mode")
+            llm_model = os.getenv("LLM_MODEL", "gpt-3.5-turbo")
+            pipeline = LangChainRAGPipeline(retriever, llm_model=llm_model)
+            conversational_pipeline = LangChainConversationalPipeline(retriever, llm_model=llm_model)
+        elif use_mock or retriever_mode == "mock":
+            # Use mock pipelines
+            pipeline = MockRAGPipeline(retriever)
+            conversational_pipeline = MockConversationalPipeline(retriever)
+        else:
+            # Initialize standard pipelines
             llm_model = os.getenv("LLM_MODEL", "gpt-3.5-turbo")
             pipeline = PersonalRAGPipeline(retriever, llm_model=llm_model)
             conversational_pipeline = ConversationalRAGPipeline(retriever, llm_model=llm_model)
@@ -197,7 +279,8 @@ async def lifespan(app: FastAPI):
             extra={
                 "documents": len(retriever.documents),
                 "categories": retriever.get_category_stats(),
-                "mode": "mock" if use_mock else "openai",
+                "retriever_mode": retriever_mode,
+                "pipeline_mode": pipeline_mode,
             },
         )
 
@@ -222,10 +305,11 @@ app = FastAPI(
 )
 
 # CORS middleware for frontend access
+# allow_credentials must be False when allow_origins is ["*"] per CORS spec
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_credentials=True,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -253,6 +337,12 @@ async def log_requests(request: Request, call_next):
 
         # Record metrics
         metrics.record_request(latency, success=response.status_code < 400)
+
+        # Record monitoring metrics
+        if monitor:
+            monitor.record_latency(request.url.path, latency * 1000)
+            if response.status_code >= 400:
+                monitor.record_error(request.url.path, str(response.status_code))
 
         # Log response
         logger.info(
@@ -285,6 +375,10 @@ async def root():
         message="Personal RAG System is running",
         documents_loaded=len(retriever.documents),
         categories=retriever.get_category_stats(),
+        retriever_mode=os.getenv("RETRIEVER_MODE", "auto"),
+        pipeline_mode=os.getenv("PIPELINE_MODE", "default"),
+        cache_enabled=cache is not None,
+        monitoring="cloudwatch" if isinstance(monitor, CloudWatchMonitor) and monitor.enabled else "local",
     )
 
 
@@ -311,6 +405,17 @@ async def ask_question(request: QuestionRequest):
 
     start_time = time.time()
     metrics.record_question()
+
+    # Check cache first
+    if cache:
+        cached_result = cache.get(request.question)
+        if cached_result:
+            logger.info("Cache hit", extra={"question": request.question[:100]})
+            if monitor:
+                monitor.record_cache_hit(True)
+            return AnswerResponse(**cached_result)
+        if monitor:
+            monitor.record_cache_hit(False)
 
     try:
         logger.info(
@@ -363,13 +468,19 @@ async def ask_question(request: QuestionRequest):
             },
         )
 
-        return AnswerResponse(
+        response = AnswerResponse(
             question=result["question"],
             answer=result["answer"],
             confidence=result["confidence"],
             sources=sources,
             retrieval_scores=result["retrieval_scores"],
         )
+
+        # Cache the result
+        if cache:
+            cache.set(request.question, response.model_dump())
+
+        return response
 
     except Exception as e:
         latency = time.time() - start_time
@@ -469,16 +580,15 @@ async def get_sample_questions():
     """Get sample questions users can ask"""
     return {
         "questions": [
-            "Who are you? Give me a brief introduction",
-            "What technologies are you proficient in?",
-            "Tell me about your proudest project",
+            "Why are you a strong fit for Machine Learning Engineer roles?",
+            "Tell me about your Allianz fraud detection work",
+            "How should this RAG project be presented to recruiters?",
+            "What is your strongest production ML project?",
+            "What is your work authorization and availability?",
+            "How do you build reliable ML systems?",
+            "What evidence supports your RAG project claims?",
             "What is your work experience?",
-            "What is your education background?",
-            "What job opportunities interest you?",
-            "What technical blogs have you written?",
             "How can I contact you?",
-            "What do you know about RAG systems?",
-            "Why did you start writing a technical blog?",
         ]
     }
 
@@ -496,6 +606,10 @@ async def rebuild_index():
             raise HTTPException(status_code=404, detail="Knowledge base file not found")
 
         print("Rebuilding knowledge base...")
+
+        # Invalidate cache on rebuild
+        if cache:
+            cache.invalidate_all()
 
         # Build new knowledge base
         documents = build_knowledge_base(str(knowledge_path))

@@ -268,6 +268,7 @@ def process_comprehensive_qa(data: Dict[str, Any]) -> List[Document]:
         "technical_depth": ("skills", "skills"),
         "tools_and_technologies": ("skills", "skills"),
         "metrics_and_impact": ("achievement", "about"),
+        "portfolio_project_strategy": ("project", "projects"),
         "miscellaneous": ("faq", "faq"),
     }
 

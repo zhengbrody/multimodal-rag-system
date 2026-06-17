@@ -6,6 +6,7 @@ No API costs - runs completely locally
 """
 
 from typing import List, Dict, Any
+import re
 
 
 class MockRAGPipeline:
@@ -22,17 +23,34 @@ class MockRAGPipeline:
         if not retrieved_docs:
             return "Sorry, I could not find relevant information for your question."
 
-        # Combine content from top retrieved documents
+        # Combine clean answer text from top retrieved documents. The knowledge
+        # base stores many Q&A documents as "Question/Answer/Keywords"; exposing
+        # that raw format in the Streamlit-only demo feels unpolished.
         answer_parts = []
 
         for doc in retrieved_docs[:3]:
-            content = doc["content"].strip()
-            # Add content directly without verbose source labels
+            content = self._extract_answer_text(doc["content"])
             if content and content not in answer_parts:
                 answer_parts.append(content)
 
-        # Join with line breaks for readability
         return "\n\n".join(answer_parts)
+
+    def _extract_answer_text(self, content: str) -> str:
+        """Return display-ready answer text from a retrieved document."""
+        content = content.strip()
+        answer_match = re.search(
+            r"Answer:\s*(.*?)(?:\nKeywords:|\nQuestion:|\Z)",
+            content,
+            flags=re.DOTALL,
+        )
+        if answer_match:
+            return answer_match.group(1).strip()
+
+        quick_match = re.search(r"Quick Answer:\s*(.*)", content, flags=re.DOTALL)
+        if quick_match:
+            return quick_match.group(1).strip()
+
+        return content
 
     def query(self, question: str, k: int = 5, include_sources: bool = True) -> Dict[str, Any]:
         """

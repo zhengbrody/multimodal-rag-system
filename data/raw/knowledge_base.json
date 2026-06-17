@@ -2,15 +2,17 @@
   "personal_info": {
     "name": "Zheng Dong",
     "title": "Machine Learning Engineer / Software Engineer",
-    "email": "a13105129007@gmail.com",
+    "email": "zhengdong0317@gmail.com",
     "phone": "(814) 826-8590",
     "location": "San Diego, CA",
-    "bio": "I'm a graduate student at UC San Diego pursuing M.S. in Electrical and Computer Engineering, specializing in Machine Learning Engineering. With proven production ML experience at Allianz Insurance (200K+ transactions/day) and Kaggle Silver Medal achievement, I excel at building end-to-end ML systems from research to production. My ECE background provides deep systems-level understanding essential for scalable ML infrastructure. Currently seeking 2026 Summer internships in Machine Learning Engineering, with strong interests in MLOps, LLM applications, distributed ML systems, and production ML infrastructure."
+    "bio": "I'm a graduate student at UC San Diego pursuing M.S. in Electrical and Computer Engineering, specializing in Machine Learning Engineering. With proven production ML experience at Allianz Insurance (200K+ transactions/day) and Kaggle Silver Medal achievement, I excel at building end-to-end ML systems from research to production. My ECE background provides deep systems-level understanding essential for scalable ML infrastructure. Currently seeking 2026 Summer internships in Machine Learning Engineering, with strong interests in MLOps, LLM applications, distributed ML systems, and production ML infrastructure.",
+    "linkedin": "https://linkedin.com/in/zhengdong17",
+    "github": "https://github.com/zhengbrody"
   },
   "keyword_mappings": {
-    "internship": "Three professional internships: 1) ML Engineer Intern at Allianz Insurance (Jun-Sep 2024) - fraud detection system processing 200K+ transactions/day, 2) ML Research Assistant at Penn State (Aug-Dec 2024) - multimodal NLP achieving 92% F1-score, 3) Software Engineer Intern at Qingdao Engineering Consulting Institute (Jun-Sep 2023) - real-time monitoring platform with 99.5% uptime. Currently seeking 2026 Summer internship in Machine Learning Engineering or Software Engineering roles, available May/June 2026 for 10-12 weeks",
-    "work experience": "Three professional internships: 1) Machine Learning Engineer Intern at Allianz Insurance (Jun-Sep 2024, Qingdao, China) - Built fraud detection ML pipeline processing 200K+ daily transactions, achieved 15% precision improvement, deployed production model with MLflow and Docker, implemented fairness monitoring, reduced API latency from 150ms to 105ms, migrated database from MySQL to PostgreSQL. 2) Machine Learning Engineer Research Assistant at Penn State University (Aug-Dec 2024) - Implemented multimodal NLP pipeline achieving 92% F1-score, built scalable document processing system handling 10K+ concurrent requests with 3× throughput gain and 99.9% uptime, created microservice with comprehensive test automation (92% code coverage). 3) Software Engineer Intern at Qingdao Engineering Consulting Institute (Jun-Sep 2023) - Developed real-time monitoring platform streaming 500+ sensor feeds, improved system reliability from 97% to 99.5% uptime, created predictive maintenance service with anomaly detection achieving 79% precision, built CI/CD pipeline and monitoring dashboard",
-    "employment": "Three professional internships: Allianz Insurance (ML Engineer Intern, Jun-Sep 2024), Penn State University (ML Research Assistant, Aug-Dec 2024), Qingdao Engineering Consulting Institute (Software Engineer Intern, Jun-Sep 2023)",
+    "internship": "Three professional internships: 1) ML Engineer Intern at Allianz Insurance (Jun-Aug 2024) - fraud detection system processing 200K+ transactions/day, 2) ML Research Assistant at Penn State (Sep 2024-Jan 2025) - multimodal NLP achieving 92% F1-score, 3) Software Engineer Intern at Qingdao Engineering Consulting Institute (Jun-Sep 2023) - real-time monitoring platform with 99.5% uptime. Currently seeking 2026 Summer internship in Machine Learning Engineering or Software Engineering roles, available May/June 2026 for 10-12 weeks",
+    "work experience": "Three professional internships: 1) Machine Learning Engineer Intern at Allianz Insurance (Jun-Aug 2024, Qingdao, China) - Built fraud detection ML pipeline processing 200K+ daily transactions, achieved 15% precision improvement, deployed production model with MLflow and Docker, implemented fairness monitoring, reduced API latency from 150ms to 105ms, migrated database from MySQL to PostgreSQL. 2) Machine Learning Engineer Research Assistant at Penn State University (Sep 2024-Jan 2025) - Implemented multimodal NLP pipeline achieving 92% F1-score, built scalable document processing system handling 10K+ concurrent requests with 3× throughput gain and 99.9% uptime, created microservice with comprehensive test automation (92% code coverage). 3) Software Engineer Intern at Qingdao Engineering Consulting Institute (Jun-Sep 2023) - Developed real-time monitoring platform streaming 500+ sensor feeds, improved system reliability from 97% to 99.5% uptime, created predictive maintenance service with anomaly detection achieving 79% precision, built CI/CD pipeline and monitoring dashboard",
+    "employment": "Three professional internships: Allianz Insurance (ML Engineer Intern, Jun-Aug 2024), Penn State University (ML Research Assistant, Sep 2024-Jan 2025), Qingdao Engineering Consulting Institute (Software Engineer Intern, Jun-Sep 2023)",
     "2026": "Available for Summer 2026 internship starting May/June 2026",
     "summer": "Seeking Summer 2026 internship, 10-12 weeks duration, open to relocation anywhere in US",
     "visa": "F-1 student visa with CPT/OPT eligibility, international student from China",
@@ -41,8 +43,8 @@
     "competition": "Kaggle Silver Medal winner - LLM inference optimization competition",
     "medal": "Won Silver Medal in Kaggle LLM competition by optimizing inference to 105ms (65% improvement)",
     
-    "allianz": "Machine Learning Engineer intern Jun-Sep 2024, built fraud detection system processing 200K+ transactions with privacy-preserving feature engineering, fairness monitoring, and encrypted data handling",
-    "penn state": "ML Engineer Research Assistant Aug-Dec 2024, built multimodal NLP pipeline with cross-modal attention achieving 92% F1-score, scalable document processing handling 10K+ concurrent requests, also completed B.Eng. 2021-2025",
+    "allianz": "Machine Learning Engineer intern Jun-Aug 2024, built fraud detection system processing 200K+ transactions with privacy-preserving feature engineering, fairness monitoring, and encrypted data handling",
+    "penn state": "ML Engineer Research Assistant Sep 2024-Jan 2025, built multimodal NLP pipeline with cross-modal attention achieving 92% F1-score, scalable document processing handling 10K+ concurrent requests, also completed B.Eng. 2021-2025",
     "research": "ML Research Assistant at Penn State - Multimodal NLP, document processing, entity extraction with BERT and cross-modal attention, automated ML experiment tracking, fairness evaluation",
     
     "project": "5 major projects: Multimodal RAG (92% Recall@5, microservices, K8s, comprehensive testing), Real-Time Recommendation with RL (10M events/day, contextual bandits), Distributed LLM Inference (Kaggle Silver, 40% cost reduction), Cloud E-commerce (8K transactions/day, 12 microservices), Music Recommender",
@@ -62,8 +64,8 @@
     "duration": "10-12 weeks for summer 2026 internship",
     
     "github": "https://github.com/zhengbrody - featured repos: multimodal-rag-system, llm-inference-optimization",
-    "linkedin": "https://linkedin.com/in/zheng-dong-25492029a",
-    "email": "a13105129007@gmail.com",
+    "linkedin": "https://linkedin.com/in/zhengdong17",
+    "email": "zhengdong0317@gmail.com",
     "phone": "(814) 826-8590",
     
     "achievement": "Kaggle Silver Medal, 92% RAG accuracy, 65% latency reduction, 99.9% uptime, 15% precision improvement, 18% CTR increase",
@@ -76,7 +78,16 @@
     
     "mle_focus": "Strong passion for Machine Learning Engineering - the intersection of ML algorithms and production systems. ECE background provides systems-level thinking essential for building scalable ML infrastructure. Proven ability to take models from research to production with measurable business impact.",
     
-    "production_mindset": "Production-first mindset: always consider scalability, reliability, monitoring, and optimization. Built systems with 99.9% uptime, sub-1s latency, handling millions of requests. Understand that production ML is about more than just model accuracy - it's about building robust, maintainable systems."
+    "production_mindset": "Production-first mindset: always consider scalability, reliability, monitoring, and optimization. Built systems with 99.9% uptime, sub-1s latency, handling millions of requests. Understand that production ML is about more than just model accuracy - it's about building robust, maintainable systems.",
+
+    "canonical contact": "Authoritative contact for resumes and portfolio: Zheng Dong, San Diego, CA, (814) 826-8590, zhengdong0317@gmail.com, linkedin.com/in/zhengdong17, github.com/zhengbrody.",
+    "resume rules": "Authoritative resume rules: Allianz Insurance internship is Jun-Aug 2024; Penn State Research Assistant is Sep 2024-Jan 2025; Qingdao Engineering Consulting Institute is Jun-Sep 2023. Use ML Engineer title for pure MLE/AI roles and Software Engineer title for SDE roles. Keep bullets metric-based and do not invent new numbers.",
+    "target roles": "Primary target roles are Machine Learning Engineer, AI/ML Engineer, ML Systems Engineer, Software Engineer with AI/ML focus, and backend/data infrastructure roles that value production ML systems.",
+    "portfolio narrative": "Best project narrative: Zheng builds production-grade ML systems, not just notebooks. This RAG project demonstrates FastAPI backend design, retrieval pipeline design, anti-hallucination controls, observability, testing, Docker/Kubernetes deployment paths, and a personal knowledge base that answers recruiter-style questions with sources.",
+    "project positioning": "Position this project as a recruiter-facing personal AI search engine and an engineering case study. Lead with the problem: visitors need accurate answers about Zheng’s experience. Then show the architecture: knowledge processing, retriever abstraction, RAG pipeline, confidence scoring, source tracing, feedback, metrics, and deployability.",
+    "rag improvement roadmap": "Highest-value improvements for job-search impact: add a reproducible evaluation script with a 50-100 question career QA set; publish measured Recall@K/MRR/latency; add an admin ingestion workflow for resumes/project READMEs; improve UI from generic Streamlit demo to recruiter portfolio experience; add screenshots/demo video; add deployment proof with public URL and monitoring snapshot.",
+    "evidence policy": "For public-facing claims, prefer verified or reproducible numbers. If a metric comes from load testing or a labeled evaluation set, cite the dataset size, tool, hardware, date, and configuration. Avoid claiming 99.9% uptime or fixed Recall@5 unless backed by logs or scripts.",
+    "interview demo": "Best interview demo flow: ask Who are you?, What is your strongest ML systems project?, Tell me about Allianz, Why are you qualified for MLE?, What evidence supports your RAG answer?, and How would you scale this beyond a personal site?. This demonstrates product thinking, RAG grounding, system design, and self-awareness."
   },
   "comprehensive_qa": {
     "basic_info": [
@@ -93,7 +104,7 @@
       {
         "q": "How to contact you?",
         "keywords": ["contact", "email", "phone", "reach"],
-        "a": "Email: a13105129007@gmail.com, Phone: (814) 826-8590, LinkedIn: linkedin.com/in/zheng-dong-25492029a, GitHub: github.com/zhengbrody"
+        "a": "Email: zhengdong0317@gmail.com, Phone: (814) 826-8590, LinkedIn: linkedin.com/in/zhengdong17, GitHub: github.com/zhengbrody"
       },
       {
         "q": "What's your current status?",
@@ -108,7 +119,7 @@
       {
         "q": "When did you graduate from undergrad?",
         "keywords": ["undergraduate", "bachelor", "graduation"],
-        "a": "May 2025 from Pennsylvania State University with B.Eng. in Data Science"
+        "a": "May 2025 from Pennsylvania State University with Data Science degree; ML resume uses BEng in Data Science and SDE/mixed resume variants use B.S. Data Science"
       },
       {
         "q": "What's your age?",
@@ -123,7 +134,7 @@
       {
         "q": "What is your work experience?",
         "keywords": ["work experience", "work history", "internships", "employment", "jobs", "experience", "professional experience"],
-        "a": "I have three professional internships: 1) Machine Learning Engineer Intern at Allianz Insurance (Jun-Sep 2024, Qingdao, China) - Built end-to-end fraud detection ML pipeline processing 200K+ daily transactions using Python and PySpark, achieved 15% precision improvement with privacy-preserving feature engineering, deployed gradient boosting model to production with MLflow and Docker, implemented automated fairness monitoring and bias mitigation, developed real-time model serving API with Flask and Redis caching reducing latency from 150ms to 105ms, migrated production database from MySQL to PostgreSQL reducing report generation time by 20%. 2) Machine Learning Engineer Research Assistant at Penn State University (Aug-Dec 2024) - Implemented multimodal NLP pipeline for entity extraction using spaCy and Transformers, processing 10K+ documents daily with Kafka streaming, achieved 92% F1-score through BERT fine-tuning with cross-modal attention, built automated ML experiment tracking system using MLflow and Airflow, developed scalable document processing system handling 10K+ concurrent requests achieving 3× throughput gain and 99.9% uptime, created microservice for entity extraction using Java and Python with comprehensive test automation (92% code coverage). 3) Software Engineer Intern at Qingdao Engineering Consulting Institute (Jun-Sep 2023) - Developed real-time monitoring platform streaming 500+ sensor feeds with RESTful APIs and WebSocket integration, improved system reliability from 97% to 99.5% uptime, created predictive maintenance service using time-series analysis with isolation forest and LSTM models achieving 79% precision in anomaly detection, built CI/CD deployment pipeline using GitHub Actions and containerization, created monitoring dashboard with Tableau for visualizing model performance metrics and data drift detection."
+        "a": "I have three professional internships: 1) Machine Learning Engineer Intern at Allianz Insurance (Jun-Aug 2024, Qingdao, China) - Built end-to-end fraud detection ML pipeline processing 200K+ daily transactions using Python and PySpark, achieved 15% precision improvement with privacy-preserving feature engineering, deployed gradient boosting model to production with MLflow and Docker, implemented automated fairness monitoring and bias mitigation, developed real-time model serving API with Flask and Redis caching reducing latency from 150ms to 105ms, migrated production database from MySQL to PostgreSQL reducing report generation time by 20%. 2) Machine Learning Engineer Research Assistant at Penn State University (Sep 2024-Jan 2025) - Implemented multimodal NLP pipeline for entity extraction using spaCy and Transformers, processing 10K+ documents daily with Kafka streaming, achieved 92% F1-score through BERT fine-tuning with cross-modal attention, built automated ML experiment tracking system using MLflow and Airflow, developed scalable document processing system handling 10K+ concurrent requests achieving 3× throughput gain and 99.9% uptime, created microservice for entity extraction using Java and Python with comprehensive test automation (92% code coverage). 3) Software Engineer Intern at Qingdao Engineering Consulting Institute (Jun-Sep 2023) - Developed real-time monitoring platform streaming 500+ sensor feeds with RESTful APIs and WebSocket integration, improved system reliability from 97% to 99.5% uptime, created predictive maintenance service using time-series analysis with isolation forest and LSTM models achieving 79% precision in anomaly detection, built CI/CD deployment pipeline using GitHub Actions and containerization, created monitoring dashboard with Tableau for visualizing model performance metrics and data drift detection."
       },
       {
         "q": "When are you available?",
@@ -326,12 +337,12 @@
       {
         "q": "What are your internships?",
         "keywords": ["internships", "internship", "work experience", "professional experience", "jobs", "employment"],
-        "a": "I have completed three professional internships: 1) Machine Learning Engineer Intern at Allianz Insurance (Jun-Sep 2024, Qingdao, China) - Built end-to-end fraud detection ML pipeline processing 200K+ daily transactions, achieved 15% precision improvement, deployed production model with MLflow and Docker, implemented fairness monitoring, developed real-time API reducing latency from 150ms to 105ms, migrated database from MySQL to PostgreSQL. 2) Machine Learning Engineer Research Assistant at Penn State University (Aug-Dec 2024) - Implemented multimodal NLP pipeline achieving 92% F1-score, built scalable document processing system handling 10K+ concurrent requests with 3× throughput gain and 99.9% uptime, created microservice with comprehensive test automation (92% code coverage). 3) Software Engineer Intern at Qingdao Engineering Consulting Institute (Jun-Sep 2023) - Developed real-time monitoring platform streaming 500+ sensor feeds, improved system reliability from 97% to 99.5% uptime, created predictive maintenance service with anomaly detection achieving 79% precision, built CI/CD pipeline and monitoring dashboard."
+        "a": "I have completed three professional internships: 1) Machine Learning Engineer Intern at Allianz Insurance (Jun-Aug 2024, Qingdao, China) - Built end-to-end fraud detection ML pipeline processing 200K+ daily transactions, achieved 15% precision improvement, deployed production model with MLflow and Docker, implemented fairness monitoring, developed real-time API reducing latency from 150ms to 105ms, migrated database from MySQL to PostgreSQL. 2) Machine Learning Engineer Research Assistant at Penn State University (Sep 2024-Jan 2025) - Implemented multimodal NLP pipeline achieving 92% F1-score, built scalable document processing system handling 10K+ concurrent requests with 3× throughput gain and 99.9% uptime, created microservice with comprehensive test automation (92% code coverage). 3) Software Engineer Intern at Qingdao Engineering Consulting Institute (Jun-Sep 2023) - Developed real-time monitoring platform streaming 500+ sensor feeds, improved system reliability from 97% to 99.5% uptime, created predictive maintenance service with anomaly detection achieving 79% precision, built CI/CD pipeline and monitoring dashboard."
       },
       {
         "q": "Tell me about your Allianz experience",
         "keywords": ["allianz", "insurance"],
-        "a": "Machine Learning Engineer intern (Jun-Sep 2024) at Allianz Insurance in Qingdao, China. Built end-to-end fraud detection ML pipeline processing 200K+ daily transactions using Python and PySpark with privacy-preserving feature engineering, achieving 15% precision improvement while maintaining user privacy. Deployed gradient boosting model to production with MLflow and Docker, implementing automated fairness monitoring (demographic parity, equalized odds metrics) and bias mitigation. Developed real-time model serving API using Flask with encrypted data handling and Redis caching, optimizing batch inference to reduce latency from 150ms to 105ms while ensuring secure data processing. Migrated production database from MySQL to PostgreSQL for better JSON support and scalability, reducing report generation time by 20%."
+        "a": "Machine Learning Engineer intern (Jun-Aug 2024) at Allianz Insurance in Qingdao, China. Built end-to-end fraud detection ML pipeline processing 200K+ daily transactions using Python and PySpark with privacy-preserving feature engineering, achieving 15% precision improvement while maintaining user privacy. Deployed gradient boosting model to production with MLflow and Docker, implementing automated fairness monitoring (demographic parity, equalized odds metrics) and bias mitigation. Developed real-time model serving API using Flask with encrypted data handling and Redis caching, optimizing batch inference to reduce latency from 150ms to 105ms while ensuring secure data processing. Migrated production database from MySQL to PostgreSQL for better JSON support and scalability, reducing report generation time by 20%."
       },
       {
         "q": "What did you learn at Allianz?",
@@ -346,7 +357,7 @@
       {
         "q": "Tell me about Penn State research",
         "keywords": ["penn state", "research assistant"],
-        "a": "Machine Learning Engineer Research Assistant (Aug-Dec 2024) at Penn State University. Implemented multimodal NLP pipeline for entity extraction using spaCy and Transformers, processing 10K+ documents daily with Kafka streaming, achieving 92% F1-score through BERT fine-tuning with cross-modal attention mechanisms. Built automated ML experiment tracking system using MLflow and Airflow, integrating hyperparameter tuning with Optuna and developing custom metrics for model interpretability and fairness evaluation. Also built scalable document processing system using Kafka message streaming and Python multiprocessing on Linux, handling 10K+ concurrent requests, achieving 3× throughput gain and maintaining 99.9% system uptime. Developed RESTful APIs and asynchronous task pipeline, and created microservice for entity extraction using Java and Python with comprehensive test automation framework using pytest (92% code coverage) and CI/CD integration."
+        "a": "Machine Learning Engineer Research Assistant (Sep 2024-Jan 2025) at Penn State University. Implemented multimodal NLP pipeline for entity extraction using spaCy and Transformers, processing 10K+ documents daily with Kafka streaming, achieving 92% F1-score through BERT fine-tuning with cross-modal attention mechanisms. Built automated ML experiment tracking system using MLflow and Airflow, integrating hyperparameter tuning with Optuna and developing custom metrics for model interpretability and fairness evaluation. Also built scalable document processing system using Kafka message streaming and Python multiprocessing on Linux, handling 10K+ concurrent requests, achieving 3× throughput gain and maintaining 99.9% system uptime. Developed RESTful APIs and asynchronous task pipeline, and created microservice for entity extraction using Java and Python with comprehensive test automation framework using pytest (92% code coverage) and CI/CD integration."
       },
       {
         "q": "What about the consulting institute internship?",
@@ -989,6 +1000,28 @@
         "keywords": ["unique", "different", "special"],
         "a": "Unique combination: 1) Both ML research (Penn State, 92% F1) and production experience (Allianz, 200K+ transactions) 2) Proven competition success (Kaggle Silver Medal) 3) Full-stack skills from data to deployment 4) International experience (US education, China internships) 5) Strong optimization mindset (65% latency reduction) 6) Can bridge gap between research and engineering"
       }
+    ],
+    "portfolio_project_strategy": [
+      {
+        "q": "How should this RAG project be presented to recruiters?",
+        "keywords": ["portfolio", "recruiter", "project positioning", "showcase"],
+        "a": "Present it as a recruiter-facing personal AI search engine plus a production ML systems case study. The strongest story is: I built a RAG system that lets visitors ask natural-language questions about my experience, retrieves grounded evidence from a structured knowledge base, and returns source-backed answers with confidence scoring. Emphasize FastAPI, retriever abstraction, anti-hallucination prompt design, metrics, feedback collection, tests, Docker, and optional OpenAI/Pinecone/CLIP extensions."
+      },
+      {
+        "q": "What should be improved next to make the project more job-search ready?",
+        "keywords": ["improve", "roadmap", "job search", "resume project"],
+        "a": "Highest-impact improvements: 1) add a reproducible evaluation set of 50-100 recruiter/interview questions and report Recall@K, MRR, answer faithfulness, and latency; 2) add an ingestion workflow for resumes, project READMEs, and interview notes; 3) redesign the first screen as a polished portfolio Q&A experience rather than a generic demo; 4) publish screenshots, a short demo video, and a public deployment URL; 5) make metrics honest by tying every claim to a script, dataset, hardware, and date."
+      },
+      {
+        "q": "What is the strongest professional narrative for Zheng Dong?",
+        "keywords": ["professional narrative", "personal brand", "strength", "positioning"],
+        "a": "Zheng Dong’s strongest narrative is production ML engineering: he combines ML modeling, backend systems, and MLOps to move models from research or notebooks into reliable services. Evidence includes Allianz fraud detection at 200K+ daily transactions, Penn State NLP/entity extraction work, Kaggle Silver Medal LLM inference optimization, and this RAG project with retrieval, grounding, monitoring, and deployment-oriented engineering."
+      },
+      {
+        "q": "Which information should the RAG knowledge base treat as authoritative?",
+        "keywords": ["authoritative", "resume rules", "contact", "timeline"],
+        "a": "Authoritative contact: zhengdong0317@gmail.com, linkedin.com/in/zhengdong17, github.com/zhengbrody, San Diego, CA, (814) 826-8590. Authoritative timeline: Qingdao Engineering Consulting Institute Jun-Sep 2023; Allianz Insurance Jun-Aug 2024; Penn State Research Assistant Sep 2024-Jan 2025; UC San Diego M.S. ECE expected June 2027. Resume variants may use MLE or SDE title depending on job family, but should not invent new metrics."
+      }
     ]
   },
   "detailed_info": {
@@ -1020,7 +1053,7 @@
         "gpa_note": "Strong academic performance",
         "focus_areas": ["Machine Learning", "Statistical Analysis", "Data Engineering", "Software Development"],
         "achievements": [
-          "Worked as ML Research Assistant (Aug-Dec 2024)",
+          "Worked as ML Research Assistant (Sep 2024-Jan 2025)",
           "Completed comprehensive ML and data science curriculum",
           "Built strong foundation in algorithms and system design",
           "Participated in research projects on NLP and document processing"
