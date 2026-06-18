@@ -13,6 +13,7 @@
 - **API Docs (FastAPI)**: `http://localhost:8000/docs`
 - **Quickstart**: [Getting Started](#-quick-start)
 - **Architecture & Metrics**: [Architecture](#-architecture) · [Metrics & Evaluation](docs/metrics.md)
+- **Technical Guide**: [Project Startup, Architecture, CI/CD, and Interview Notes](docs/TECHNICAL_GUIDE.md)
 - **Portfolio Positioning**: [Project Positioning & Job-Search Roadmap](docs/PROJECT_POSITIONING.md)
 - **Contributing**: [CONTRIBUTING.md](CONTRIBUTING.md)
 - **Data Quality & Monitoring**: [Observability Notes](docs/observability.md)
@@ -283,6 +284,7 @@ multimodal-rag-system/
 │   └── test_retriever.py          # Retriever tests
 ├── docs/                          # Additional documentation
 │   ├── PERSONAL_RAG_README.md     # Detailed personal RAG doc
+│   ├── TECHNICAL_GUIDE.md         # Startup, architecture, CI/CD, interview notes
 │   ├── DEPLOYMENT.md              # Deployment guide
 │   ├── WORKFLOW.md                # Recommended workflow
 │   ├── TROUBLESHOOTING.md         # General troubleshooting
@@ -359,8 +361,13 @@ docker-compose up --build
 > **No backend needed:** The app automatically uses the local knowledge base
 > (`data/raw/knowledge_base.json`) when no backend is reachable, so it works
 > out-of-the-box on Streamlit Cloud without any extra setup.
+>
+> **Public access:** If the deployed URL redirects to
+> `share.streamlit.io/-/auth/app`, update the Streamlit Cloud app visibility to
+> public/anyone with the link before sharing it with recruiters.
 
-See `docs/DEPLOYMENT.md` for detailed instructions.
+See `docs/DEPLOYMENT.md` for deployment details and
+`docs/TECHNICAL_GUIDE.md` for the full technical walkthrough.
 
 ## 💼 Resume Highlights
 

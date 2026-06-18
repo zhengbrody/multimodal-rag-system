@@ -46,23 +46,25 @@ git push origin main
 3. Configure your app:
    - **Repository**: Your GitHub repo
    - **Branch**: `main`
-   - **Main file path**: `frontend/app.py`
+   - **Main file path**: `frontend/personal_app.py`
 
 4. Click "Advanced settings":
    - **Python version**: Select `3.11` (or leave empty to use `.python-version`)
    - **Requirements file**: Enter `frontend/requirements.txt`
 
-5. Add Secrets (click "Secrets" section):
+5. Add Secrets only if you have a deployed FastAPI backend:
    ```toml
    API_URL = "https://your-backend-api-url.com"
    ```
 
-   For local testing (API offline mode):
-   ```toml
-   API_URL = "http://localhost:8000"
-   ```
+   If you do not have a deployed backend, leave `API_URL` unset. The Streamlit
+   app will automatically use the local knowledge base fallback.
 
 6. Click "Deploy!"
+
+7. Confirm the app is public. If visitors are redirected to
+   `share.streamlit.io/-/auth/app`, update the app visibility/access setting in
+   Streamlit Cloud before sharing the URL with recruiters.
 
 #### 4. Wait for Deployment
 
@@ -77,8 +79,6 @@ git push origin main
 # Minimal dependencies for frontend-only deployment
 streamlit==1.28.2
 requests==2.31.0
-Pillow==10.1.0
-pandas==2.1.3
 python-dotenv==1.0.0
 ```
 
@@ -122,17 +122,18 @@ Customizes Streamlit appearance and behavior.
 2. Verify Python version is 3.11
 3. Check that `.python-version` contains `3.11`
 
-#### Issue: "API Offline" error in the app
+#### Issue: App falls back to local mode
 
-**Cause:** Backend API URL not configured or incorrect
+**Cause:** `API_URL` is not configured or the backend is unreachable.
 
 **Solution:**
-1. Go to app settings → Secrets
-2. Add or update:
+1. This is expected for a frontend-only portfolio demo.
+2. If you want full API mode, go to app settings → Secrets and add:
    ```toml
    API_URL = "https://your-backend-api-url.com"
    ```
-3. Reboot the app
+3. Reboot the app.
+4. Confirm the backend health endpoint is reachable from the public internet.
 
 #### Issue: App keeps crashing during startup
 
@@ -140,8 +141,21 @@ Customizes Streamlit appearance and behavior.
 
 **Solution:**
 1. Check deployment logs for specific error
-2. Verify `frontend/app.py` exists at specified path
-3. Ensure all imports in `app.py` are in `frontend/requirements.txt`
+2. Verify `frontend/personal_app.py` is configured as the main file path
+3. Ensure all imports in `personal_app.py` are in `frontend/requirements.txt`
+
+#### Issue: Public URL asks visitors to sign in
+
+**Cause:** The Streamlit Cloud app is private or restricted to your account.
+
+**Solution:**
+1. Open the app settings in Streamlit Cloud.
+2. Change visibility/access to public or anyone with the link.
+3. Test in an incognito browser or with:
+   ```bash
+   curl -I https://your-app.streamlit.app/
+   ```
+4. A recruiter-facing app should not redirect to `share.streamlit.io/-/auth/app`.
 
 ### Auto-Deployment
 
@@ -381,4 +395,4 @@ pip install -r requirements.txt  # or frontend/requirements.txt
 
 ---
 
-**Last Updated:** November 2024
+**Last Updated:** June 2026
