@@ -130,9 +130,7 @@ class LocalMonitor:
                     "count": len(values),
                     "mean_ms": round(sum(values) / len(values), 2),
                     "p50_ms": round(sorted_vals[len(sorted_vals) // 2], 2),
-                    "p99_ms": round(
-                        sorted_vals[int(len(sorted_vals) * 0.99)], 2
-                    ),
+                    "p99_ms": round(sorted_vals[int(len(sorted_vals) * 0.99)], 2),
                     "max_ms": round(max(values), 2),
                 }
 
@@ -150,9 +148,7 @@ class LocalMonitor:
             "cache": {
                 "hits": self._cache_hits,
                 "misses": self._cache_misses,
-                "hit_rate": (
-                    round(self._cache_hits / total_cache, 4) if total_cache > 0 else 0.0
-                ),
+                "hit_rate": (round(self._cache_hits / total_cache, 4) if total_cache > 0 else 0.0),
             },
             "retrieval_quality": {
                 "total_queries": len(self._retrieval_quality),
@@ -188,7 +184,6 @@ class CloudWatchMonitor:
 
         try:
             import boto3
-            from botocore.exceptions import BotoCoreError, NoCredentialsError
 
             self._client = boto3.client(
                 "cloudwatch",
@@ -205,9 +200,7 @@ class CloudWatchMonitor:
             logger.warning("boto3 is not installed; falling back to local metrics.")
             self._client = None
         except Exception as exc:
-            logger.warning(
-                "CloudWatch unavailable (%s); falling back to local metrics.", exc
-            )
+            logger.warning("CloudWatch unavailable (%s); falling back to local metrics.", exc)
             self._client = None
 
     # ------------------------------------------------------------------
@@ -253,9 +246,7 @@ class CloudWatchMonitor:
             "Unit": unit,
         }
         if dimensions:
-            datum["Dimensions"] = [
-                {"Name": d["Name"], "Value": d["Value"]} for d in dimensions
-            ]
+            datum["Dimensions"] = [{"Name": d["Name"], "Value": d["Value"]} for d in dimensions]
 
         self._safe_put([datum])
 
@@ -457,9 +448,7 @@ class CloudWatchMonitor:
                 self._client.put_metric_alarm(**put_kwargs)
                 logger.info("Created CloudWatch alarm: %s", cfg["AlarmName"])
             except Exception as exc:
-                logger.warning(
-                    "Failed to create alarm %s: %s", cfg["AlarmName"], exc
-                )
+                logger.warning("Failed to create alarm %s: %s", cfg["AlarmName"], exc)
 
     def get_dashboard_url(self) -> str:
         """Return the CloudWatch dashboard URL for this namespace."""

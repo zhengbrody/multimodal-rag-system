@@ -34,18 +34,21 @@ from utils.logger import setup_logger
 # Optional advanced components
 try:
     from rag.clip_retriever import CLIPRetriever
+
     CLIP_AVAILABLE = True
 except ImportError:
     CLIP_AVAILABLE = False
 
 try:
     from rag.pinecone_retriever import PineconeRetriever
+
     PINECONE_AVAILABLE = True
 except ImportError:
     PINECONE_AVAILABLE = False
 
 try:
     from rag.langchain_pipeline import LangChainRAGPipeline, LangChainConversationalPipeline
+
     LANGCHAIN_AVAILABLE = True
 except ImportError:
     LANGCHAIN_AVAILABLE = False
@@ -174,12 +177,18 @@ async def lifespan(app: FastAPI):
 
         # Initialize semantic cache
         redis_url = os.getenv("REDIS_URL", "redis://localhost:6379")
-        cache = SemanticCache(redis_url=redis_url) if os.getenv("ENABLE_CACHE", "false").lower() == "true" else None
+        cache = (
+            SemanticCache(redis_url=redis_url)
+            if os.getenv("ENABLE_CACHE", "false").lower() == "true"
+            else None
+        )
 
         # Initialize monitoring
         enable_cloudwatch = os.getenv("ENABLE_CLOUDWATCH", "false").lower() == "true"
         if enable_cloudwatch:
-            monitor = CloudWatchMonitor(namespace="RAGSystem", region=os.getenv("AWS_REGION", "us-east-1"))
+            monitor = CloudWatchMonitor(
+                namespace="RAGSystem", region=os.getenv("AWS_REGION", "us-east-1")
+            )
         else:
             monitor = LocalMonitor()
 
@@ -263,7 +272,9 @@ async def lifespan(app: FastAPI):
             logger.info("Using LangChain pipeline mode")
             llm_model = os.getenv("LLM_MODEL", "gpt-3.5-turbo")
             pipeline = LangChainRAGPipeline(retriever, llm_model=llm_model)
-            conversational_pipeline = LangChainConversationalPipeline(retriever, llm_model=llm_model)
+            conversational_pipeline = LangChainConversationalPipeline(
+                retriever, llm_model=llm_model
+            )
         elif use_mock or retriever_mode == "mock":
             # Use mock pipelines
             pipeline = MockRAGPipeline(retriever)
@@ -378,7 +389,9 @@ async def root():
         retriever_mode=os.getenv("RETRIEVER_MODE", "auto"),
         pipeline_mode=os.getenv("PIPELINE_MODE", "default"),
         cache_enabled=cache is not None,
-        monitoring="cloudwatch" if isinstance(monitor, CloudWatchMonitor) and monitor.enabled else "local",
+        monitoring=(
+            "cloudwatch" if isinstance(monitor, CloudWatchMonitor) and monitor.enabled else "local"
+        ),
     )
 
 

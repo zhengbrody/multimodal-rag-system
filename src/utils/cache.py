@@ -210,13 +210,9 @@ class SemanticCache:
             self._redis.ping()
             logger.info("Connected to Redis at %s", redis_url)
         except Exception as exc:
-            logger.warning(
-                "Redis unavailable (%s). Falling back to in-memory cache.", exc
-            )
+            logger.warning("Redis unavailable (%s). Falling back to in-memory cache.", exc)
             self._redis = None
-            self._fallback = InMemoryCache(
-                ttl=ttl, similarity_threshold=similarity_threshold
-            )
+            self._fallback = InMemoryCache(ttl=ttl, similarity_threshold=similarity_threshold)
 
         # Lazy-init OpenAI client for embedding generation
         try:
@@ -224,9 +220,7 @@ class SemanticCache:
 
             self._openai_client = OpenAI()
         except Exception:
-            logger.warning(
-                "OpenAI client unavailable; embedding-based cache keys disabled."
-            )
+            logger.warning("OpenAI client unavailable; embedding-based cache keys disabled.")
             self._openai_client = None
 
     # ------------------------------------------------------------------
@@ -318,9 +312,7 @@ class SemanticCache:
                     break
 
             if best_cache_key is not None and best_score >= self.similarity_threshold:
-                raw_result = self._redis.get(
-                    f"{self.CACHE_PREFIX}{best_cache_key}".encode()
-                )
+                raw_result = self._redis.get(f"{self.CACHE_PREFIX}{best_cache_key}".encode())
                 if raw_result is not None:
                     return self._deserialize(raw_result.decode())
         except Exception as exc:
