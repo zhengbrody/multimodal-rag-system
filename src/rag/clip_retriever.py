@@ -151,9 +151,7 @@ class CLIPRetriever:
             with torch.no_grad():
                 tokens = clip.tokenize(batch, truncate=True).to(self.device)
                 batch_embeddings = self.model.encode_text(tokens)
-                batch_embeddings = batch_embeddings / batch_embeddings.norm(
-                    dim=-1, keepdim=True
-                )
+                batch_embeddings = batch_embeddings / batch_embeddings.norm(dim=-1, keepdim=True)
             all_embeddings.append(batch_embeddings.cpu().numpy())
 
         combined = np.vstack(all_embeddings)
@@ -179,10 +177,12 @@ class CLIPRetriever:
         for idx, doc in enumerate(documents):
             image_path = doc.metadata.get("image_path") if hasattr(doc.metadata, "get") else None
 
-            self.documents.append({
-                "content": doc.content,
-                "metadata": doc.metadata,
-            })
+            self.documents.append(
+                {
+                    "content": doc.content,
+                    "metadata": doc.metadata,
+                }
+            )
 
             if image_path and Path(image_path).exists():
                 image_docs.append((len(self.documents) - 1, image_path))
@@ -251,10 +251,12 @@ class CLIPRetriever:
             try:
                 emb = self._get_image_embedding(img_path)
                 new_embeddings.append(emb)
-                self.documents.append({
-                    "content": f"[Image: {Path(img_path).name}]",
-                    "metadata": {**meta, "image_path": img_path},
-                })
+                self.documents.append(
+                    {
+                        "content": f"[Image: {Path(img_path).name}]",
+                        "metadata": {**meta, "image_path": img_path},
+                    }
+                )
                 self.doc_types.append("image")
             except Exception as e:
                 print(f"  Warning: Skipping image '{img_path}': {e}")
@@ -285,15 +287,11 @@ class CLIPRetriever:
             1-D array of similarity scores in [-1, 1].
         """
         query_norm = query_embedding / np.linalg.norm(query_embedding)
-        doc_norms = doc_embeddings / np.linalg.norm(
-            doc_embeddings, axis=1, keepdims=True
-        )
+        doc_norms = doc_embeddings / np.linalg.norm(doc_embeddings, axis=1, keepdims=True)
         similarities = np.dot(doc_norms, query_norm)
         return similarities
 
-    def retrieve(
-        self, query: str, k: int = 5, threshold: float = 0.2
-    ) -> List[Dict[str, Any]]:
+    def retrieve(self, query: str, k: int = 5, threshold: float = 0.2) -> List[Dict[str, Any]]:
         """
         Retrieve the top-k most relevant documents for a text query.
 
@@ -330,18 +328,18 @@ class CLIPRetriever:
             score = float(similarities[idx])
             weighted_score = float(weighted_similarities[idx])
             if score >= threshold:
-                results.append({
-                    "content": self.documents[idx]["content"],
-                    "metadata": self.documents[idx]["metadata"],
-                    "score": score,
-                    "weighted_score": weighted_score,
-                })
+                results.append(
+                    {
+                        "content": self.documents[idx]["content"],
+                        "metadata": self.documents[idx]["metadata"],
+                        "score": score,
+                        "weighted_score": weighted_score,
+                    }
+                )
 
         return results
 
-    def retrieve_by_image(
-        self, image_path: str, k: int = 5
-    ) -> List[Dict[str, Any]]:
+    def retrieve_by_image(self, image_path: str, k: int = 5) -> List[Dict[str, Any]]:
         """
         Retrieve the top-k most relevant documents using an image as the query.
 
@@ -367,11 +365,13 @@ class CLIPRetriever:
         results = []
         for idx in top_indices:
             score = float(similarities[idx])
-            results.append({
-                "content": self.documents[idx]["content"],
-                "metadata": self.documents[idx]["metadata"],
-                "score": score,
-            })
+            results.append(
+                {
+                    "content": self.documents[idx]["content"],
+                    "metadata": self.documents[idx]["metadata"],
+                    "score": score,
+                }
+            )
 
         return results
 
@@ -422,10 +422,7 @@ class CLIPRetriever:
             )
 
         print(f"CLIP retriever loaded from {path}")
-        print(
-            f"Documents: {len(self.documents)}, "
-            f"Embedding shape: {self.embeddings.shape}"
-        )
+        print(f"Documents: {len(self.documents)}, " f"Embedding shape: {self.embeddings.shape}")
 
     def get_category_stats(self) -> Dict[str, int]:
         """

@@ -62,9 +62,7 @@ class PineconeRetriever:
 
         # ---------- Pinecone ----------
         if not PINECONE_AVAILABLE:
-            raise ImportError(
-                "pinecone package is required. Install with: pip install pinecone"
-            )
+            raise ImportError("pinecone package is required. Install with: pip install pinecone")
 
         pinecone_api_key = os.getenv("PINECONE_API_KEY")
         if not pinecone_api_key:
@@ -89,9 +87,7 @@ class PineconeRetriever:
 
         # ---------- OpenAI ----------
         if not OPENAI_AVAILABLE:
-            raise ImportError(
-                "openai package is required. Install with: pip install openai"
-            )
+            raise ImportError("openai package is required. Install with: pip install openai")
 
         openai_api_key = os.getenv("OPENAI_API_KEY")
         if not openai_api_key:
@@ -108,21 +104,15 @@ class PineconeRetriever:
 
     def _get_embedding(self, text: str) -> List[float]:
         """Get embedding vector for a single text string."""
-        response = self.openai_client.embeddings.create(
-            input=text, model=self.embedding_model
-        )
+        response = self.openai_client.embeddings.create(input=text, model=self.embedding_model)
         return response.data[0].embedding
 
-    def _get_embeddings_batch(
-        self, texts: List[str], batch_size: int = 100
-    ) -> List[List[float]]:
+    def _get_embeddings_batch(self, texts: List[str], batch_size: int = 100) -> List[List[float]]:
         """Get embeddings for a list of texts in batches."""
         all_embeddings: List[List[float]] = []
         for i in range(0, len(texts), batch_size):
             batch = texts[i : i + batch_size]
-            response = self.openai_client.embeddings.create(
-                input=batch, model=self.embedding_model
-            )
+            response = self.openai_client.embeddings.create(input=batch, model=self.embedding_model)
             batch_embeddings = [item.embedding for item in response.data]
             all_embeddings.extend(batch_embeddings)
         return all_embeddings
@@ -174,9 +164,7 @@ class PineconeRetriever:
 
             # Flush in batches
             if len(vectors_to_upsert) >= batch_size:
-                self.index.upsert(
-                    vectors=vectors_to_upsert, namespace=self.namespace
-                )
+                self.index.upsert(vectors=vectors_to_upsert, namespace=self.namespace)
                 vectors_to_upsert = []
 
         # Flush remaining
@@ -184,8 +172,7 @@ class PineconeRetriever:
             self.index.upsert(vectors=vectors_to_upsert, namespace=self.namespace)
 
         print(
-            f"Upserted {len(documents)} vectors. "
-            f"Local store size: {len(self._document_store)}"
+            f"Upserted {len(documents)} vectors. " f"Local store size: {len(self._document_store)}"
         )
 
     # ------------------------------------------------------------------
@@ -246,15 +233,11 @@ class PineconeRetriever:
                     "category": pinecone_meta.get("category", "unknown"),
                 }
 
-            results.append(
-                {"content": content, "metadata": metadata, "score": score}
-            )
+            results.append({"content": content, "metadata": metadata, "score": score})
 
         return results
 
-    def retrieve_by_category(
-        self, query: str, category: str, k: int = 5
-    ) -> List[Dict[str, Any]]:
+    def retrieve_by_category(self, query: str, category: str, k: int = 5) -> List[Dict[str, Any]]:
         """
         Retrieve documents filtered to a specific category.
 
@@ -290,8 +273,7 @@ class PineconeRetriever:
             "total_vector_count": stats.get("total_vector_count", 0),
             "dimension": stats.get("dimension", self.dimension),
             "namespaces": {
-                ns: info.get("vector_count", 0)
-                for ns, info in stats.get("namespaces", {}).items()
+                ns: info.get("vector_count", 0) for ns, info in stats.get("namespaces", {}).items()
             },
             "local_store_size": len(self._document_store),
         }

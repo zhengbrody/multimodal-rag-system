@@ -224,12 +224,19 @@ Please reply in JSON format:
             try:
                 verification_data = json.loads(verification_text)
                 if not verification_data.get("verified", True):
-                    initial_result["answer"] += "\n\n[Note: Some content in this answer may need further verification against source materials.]"
+                    initial_result[
+                        "answer"
+                    ] += "\n\n[Note: Some content in this answer may need further verification against source materials.]"
                     initial_result["confidence"] = "low"
             except (json.JSONDecodeError, TypeError):
                 # If LLM output isn't valid JSON, try string matching as fallback
-                if '"verified": false' in verification_text.lower() or '"verified":false' in verification_text.lower():
-                    initial_result["answer"] += "\n\n[Note: Some content in this answer may need further verification against source materials.]"
+                if (
+                    '"verified": false' in verification_text.lower()
+                    or '"verified":false' in verification_text.lower()
+                ):
+                    initial_result[
+                        "answer"
+                    ] += "\n\n[Note: Some content in this answer may need further verification against source materials.]"
                     initial_result["confidence"] = "low"
 
         except Exception as e:
@@ -279,7 +286,7 @@ class ConversationalRAGPipeline(PersonalRAGPipeline):
         self.conversation_history.append({"question": question, "answer": result["answer"]})
         # Trim history to prevent unbounded memory growth
         if len(self.conversation_history) > self.memory_size * 2:
-            self.conversation_history = self.conversation_history[-self.memory_size:]
+            self.conversation_history = self.conversation_history[-self.memory_size :]
 
         return result
 

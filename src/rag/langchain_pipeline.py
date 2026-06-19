@@ -21,7 +21,6 @@ try:
         HumanMessagePromptTemplate,
     )
     from langchain.chains import LLMChain
-    from langchain.schema import Document as LCDocument
     from langchain.memory import ConversationBufferWindowMemory
 
     LANGCHAIN_AVAILABLE = True
@@ -157,12 +156,8 @@ class LangChainRAGPipeline:
         )
         prompt = ChatPromptTemplate.from_messages(
             [
-                SystemMessagePromptTemplate.from_template(
-                    self.VERIFICATION_SYSTEM_PROMPT
-                ),
-                HumanMessagePromptTemplate.from_template(
-                    self.VERIFICATION_HUMAN_TEMPLATE
-                ),
+                SystemMessagePromptTemplate.from_template(self.VERIFICATION_SYSTEM_PROMPT),
+                HumanMessagePromptTemplate.from_template(self.VERIFICATION_HUMAN_TEMPLATE),
             ]
         )
         return LLMChain(llm=verification_llm, prompt=prompt)
@@ -175,27 +170,18 @@ class LangChainRAGPipeline:
         """Build a context string from retrieved documents."""
         context_parts: List[str] = []
         for i, doc in enumerate(retrieved_docs, 1):
-            relevance = (
-                "High"
-                if doc["score"] > 0.7
-                else "Medium" if doc["score"] > 0.5 else "Low"
-            )
+            relevance = "High" if doc["score"] > 0.7 else "Medium" if doc["score"] > 0.5 else "Low"
             context_parts.append(
-                f"[Information Snippet {i}] (Relevance: {relevance})\n"
-                f"{doc['content']}\n"
+                f"[Information Snippet {i}] (Relevance: {relevance})\n" f"{doc['content']}\n"
             )
         return "\n".join(context_parts)
 
-    def _assess_confidence(
-        self, retrieved_docs: List[Dict[str, Any]]
-    ) -> str:
+    def _assess_confidence(self, retrieved_docs: List[Dict[str, Any]]) -> str:
         """Assess answer confidence based on retrieval scores."""
         if not retrieved_docs:
             return "low"
 
-        avg_score = sum(doc["score"] for doc in retrieved_docs) / len(
-            retrieved_docs
-        )
+        avg_score = sum(doc["score"] for doc in retrieved_docs) / len(retrieved_docs)
         max_score = max(doc["score"] for doc in retrieved_docs)
 
         if max_score > 0.75 and avg_score > 0.6:
@@ -249,9 +235,7 @@ class LangChainRAGPipeline:
 
         # Step 3: Generate answer via LangChain chain
         try:
-            chain_output = self.chain.invoke(
-                {"context": context, "question": question}
-            )
+            chain_output = self.chain.invoke({"context": context, "question": question})
             answer = chain_output.get("text", "")
         except Exception as e:
             return {
@@ -290,9 +274,7 @@ class LangChainRAGPipeline:
 
         return result
 
-    def query_with_verification(
-        self, question: str, k: int = 5
-    ) -> Dict[str, Any]:
+    def query_with_verification(self, question: str, k: int = 5) -> Dict[str, Any]:
         """
         Two-pass query: generate an answer, then verify it against sources.
 
@@ -302,16 +284,11 @@ class LangChainRAGPipeline:
         # First pass
         initial_result = self.query(question, k=k, include_sources=True)
 
-        if (
-            initial_result["confidence"] == "error"
-            or not initial_result["sources"]
-        ):
+        if initial_result["confidence"] == "error" or not initial_result["sources"]:
             return initial_result
 
         # Second pass: verify
-        sources_summary = "\n".join(
-            s["preview"] for s in initial_result["sources"][:3]
-        )
+        sources_summary = "\n".join(s["preview"] for s in initial_result["sources"][:3])
 
         try:
             verification_output = self.verification_chain.invoke(
@@ -408,16 +385,12 @@ class LangChainConversationalPipeline(LangChainRAGPipeline):
             enhanced_question = question
 
         # Use parent class query with enhanced question
-        result = super().query(
-            enhanced_question, k=k, include_sources=include_sources
-        )
+        result = super().query(enhanced_question, k=k, include_sources=include_sources)
         # Restore original question in output
         result["question"] = question
 
         # Save turn to memory
-        self.memory.save_context(
-            {"input": question}, {"output": result["answer"]}
-        )
+        self.memory.save_context({"input": question}, {"output": result["answer"]})
 
         return result
 
