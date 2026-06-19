@@ -10,6 +10,7 @@ Core RAG pipeline that:
 from typing import List, Dict, Any
 from openai import OpenAI
 import os
+import json
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -216,19 +217,20 @@ Please reply in JSON format:
                 max_tokens=500,
             )
 
-            # Parse verification (simplified - in production use proper JSON parsing)
             verification_text = verification_response.choices[0].message.content
             initial_result["verification"] = verification_text
 
-            # If verification finds issues, add warning
-            if (
-                '"verified": false' in verification_text.lower()
-                or '"verified":false' in verification_text.lower()
-            ):
-                initial_result[
-                    "answer"
-                ] += "\n\n[Note: Some content in this answer may need further verification]"
-                initial_result["confidence"] = "low"
+            # Parse verification result using JSON parsing with string fallback
+            try:
+                verification_data = json.loads(verification_text)
+                if not verification_data.get("verified", True):
+                    initial_result["answer"] += "\n\n[Note: Some content in this answer may need further verification against source materials.]"
+                    initial_result["confidence"] = "low"
+            except (json.JSONDecodeError, TypeError):
+                # If LLM output isn't valid JSON, try string matching as fallback
+                if '"verified": false' in verification_text.lower() or '"verified":false' in verification_text.lower():
+                    initial_result["answer"] += "\n\n[Note: Some content in this answer may need further verification against source materials.]"
+                    initial_result["confidence"] = "low"
 
         except Exception as e:
             initial_result["verification_error"] = str(e)
@@ -275,6 +277,9 @@ class ConversationalRAGPipeline(PersonalRAGPipeline):
 
         # Update conversation history
         self.conversation_history.append({"question": question, "answer": result["answer"]})
+        # Trim history to prevent unbounded memory growth
+        if len(self.conversation_history) > self.memory_size * 2:
+            self.conversation_history = self.conversation_history[-self.memory_size:]
 
         return result
 

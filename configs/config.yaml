@@ -1,11 +1,12 @@
 # Multimodal RAG System Configuration
+# These are the defaults used by the code. They can be overridden via environment variables.
 
 # Model Settings
 models:
   embedding:
     provider: openai  # Options: openai, huggingface
-    model_name: text-embedding-3-large
-    dimension: 3072
+    model_name: text-embedding-3-small  # Default: text-embedding-3-small (cheaper, 1536 dims). Can override via env vars.
+    dimension: 1536
 
   clip:
     model_name: ViT-B/32
@@ -13,8 +14,8 @@ models:
 
   llm:
     provider: openai  # Options: openai, anthropic
-    model_name: gpt-4-turbo-preview
-    temperature: 0.7
+    model_name: gpt-3.5-turbo  # Default: gpt-3.5-turbo (cheaper, sufficient for RAG). Can override via env vars.
+    temperature: 0.3  # Lower temperature for more factual responses
     max_tokens: 1000
 
 # Vector Database Settings
@@ -84,3 +85,39 @@ logging:
   level: INFO
   format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
   file: logs/app.log
+
+# Pinecone vector database
+pinecone:
+  index_name: "rag-index"
+  namespace: "default"
+  cloud: "aws"
+  region: "us-east-1"
+  metric: "cosine"
+
+# CLIP multimodal embeddings
+clip:
+  model_name: "ViT-B/32"
+  embedding_dimension: 512
+  batch_size: 64
+
+# LangChain pipeline
+langchain:
+  memory_type: "buffer_window"
+  memory_size: 5
+  chain_type: "stuff"
+
+# Redis caching
+cache:
+  enabled: false  # Override via ENABLE_CACHE env var
+  redis_url: "redis://localhost:6379"
+  ttl: 3600
+  similarity_threshold: 0.95
+
+# CloudWatch monitoring
+monitoring:
+  enabled: false  # Override via ENABLE_CLOUDWATCH env var
+  namespace: "RAGSystem"
+  region: "us-east-1"
+  alarms:
+    error_rate_threshold: 5
+    latency_p99_threshold: 2000

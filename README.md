@@ -9,7 +9,8 @@
 
 ## 🔗 Quick Links
 
-- **Live Demo / Frontend**: `http://localhost:8501` (after running `streamlit run frontend/personal_app.py`)
+- **🌐 Live Demo**: **[dzpersonal-rag-demo.streamlit.app](https://dzpersonal-rag-demo.streamlit.app/)** (public, no login required)
+- **Local Frontend**: `http://localhost:8501` (after running `streamlit run frontend/personal_app.py`)
 - **API Docs (FastAPI)**: `http://localhost:8000/docs`
 - **Quickstart**: [Getting Started](#-quick-start)
 - **Architecture & Metrics**: [Architecture](#-architecture) · [Metrics & Evaluation](docs/metrics.md)
@@ -140,7 +141,7 @@ points are documented for data validation and drift monitoring:
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/yourusername/multimodal-rag-system.git
+git clone https://github.com/zhengbrody/multimodal-rag-system.git
 cd multimodal-rag-system
 ```
 

@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: rag-api-service
+  namespace: rag-system
+  labels:
+    app: rag-api
+    app.kubernetes.io/part-of: rag-system
+    app.kubernetes.io/component: api
+spec:
+  type: ClusterIP
+  selector:
+    app: rag-api
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8000

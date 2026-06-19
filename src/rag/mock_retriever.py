@@ -289,7 +289,7 @@ class MockRetriever:
                     {
                         "content": doc["content"],
                         "metadata": doc["metadata"],
-                        "score": min(score * 2, 1.0),  # Scale up scores for better display
+                        "score": round(min(score * 1.5, 0.95), 4),  # Scale up but cap below 1.0 to preserve ranking
                     }
                 )
 

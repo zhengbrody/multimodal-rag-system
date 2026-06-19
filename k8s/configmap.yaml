@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rag-system-config
+  namespace: rag-system
+  labels:
+    app.kubernetes.io/part-of: rag-system
+data:
+  USE_MOCK: "false"
+  LLM_MODEL: "gpt-3.5-turbo"
+  EMBEDDING_MODEL: "text-embedding-3-small"
+  API_HOST: "0.0.0.0"
+  API_PORT: "8000"
+  ENVIRONMENT: "production"
+  LOG_LEVEL: "INFO"
+  PINECONE_INDEX: "rag-index"
