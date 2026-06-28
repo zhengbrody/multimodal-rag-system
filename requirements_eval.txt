@@ -1,0 +1,38 @@
+# Evaluation + retrieval harness dependencies (kept separate from requirements_simple/full).
+# Reproduces the environment used to produce eval/results/*. Local-first, no API keys.
+#
+# Setup on a fresh machine (Python 3.11 or 3.12; uv recommended):
+#   uv venv --python 3.12 .venv-eval
+#   source .venv-eval/bin/activate
+#   uv pip install -r requirements_eval.txt
+#
+# NOTE: CLIP is the PyPI package `clip-anytorch` (provides `import clip`), NOT the
+# git source `git+https://github.com/openai/CLIP.git` — the git source is blocked by
+# Claude Code's auto-mode classifier and the PyPI package exposes the same API.
+# `datasets` is pinned to 2.21 because v4 dropped script-based loaders (nlphuji/flickr30k
+# needs trust_remote_code=True).
+
+# Dataset download / handling
+datasets==2.21.0
+pillow>=10.0.0
+tqdm>=4.66.0
+
+# Dense-text baseline + cross-encoder reranker (sentence-transformers CrossEncoder)
+sentence-transformers>=5.0.0
+
+# CLIP (OpenAI ViT-B/32) for cross-modal text->image retrieval, runs on Apple MPS
+torch>=2.2.0
+torchvision>=0.17.0
+clip-anytorch>=2.6.0
+ftfy>=6.1.1
+regex>=2023.0.0
+
+# Sparse retrieval (BM25) + vector store
+rank-bm25>=0.2.2
+qdrant-client>=1.18.0
+
+# Tests
+pytest>=7.4.0
+
+# --- Phase 3b only (stronger dense backbone, ~0.92 R@5): install on demand ---
+# open_clip_torch>=2.24.0

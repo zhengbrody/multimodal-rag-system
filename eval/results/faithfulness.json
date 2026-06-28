@@ -1,0 +1,8 @@
+{
+  "queries": 1000,
+  "gallery": 1000,
+  "search": "exact brute-force (qdrant local mode)",
+  "top1_agreement": 1.0,
+  "top5_set_agreement": 1.0,
+  "top10_set_agreement": 1.0
+}

@@ -1,0 +1,69 @@
+{
+  "dataset": "flickr30k",
+  "task": "caption->image retrieval",
+  "gallery_size": 1000,
+  "num_queries": 1000,
+  "k_values": [
+    1,
+    5,
+    10
+  ],
+  "ndcg_k": 10,
+  "results": {
+    "clip": {
+      "recall@1": 0.567,
+      "recall@5": 0.822,
+      "recall@10": 0.886,
+      "mrr": 0.6770436507936508,
+      "ndcg@10": 0.7277971927931535,
+      "num_queries": 1000,
+      "modality": "text->image (cross-modal)",
+      "build_seconds": 2.67,
+      "query_seconds": 13.08
+    },
+    "qdrant": {
+      "recall@1": 0.568,
+      "recall@5": 0.813,
+      "recall@10": 0.883,
+      "mrr": 0.6731,
+      "ndcg@10": 0.7238598177929139,
+      "num_queries": 1000,
+      "modality": "text->image (vector DB, 1K gallery)",
+      "build_seconds": 3.89,
+      "query_seconds": 284.68
+    },
+    "qdrant_full": {
+      "recall@1": 0.188,
+      "recall@5": 0.382,
+      "recall@10": 0.473,
+      "mrr": 0.27343015873015875,
+      "ndcg@10": 0.32080441479490496,
+      "num_queries": 1000,
+      "modality": "text->image (vector DB, 31K gallery)",
+      "build_seconds": 3.63,
+      "query_seconds": 232.11
+    },
+    "dense": {
+      "recall@1": 0.564,
+      "recall@5": 0.778,
+      "recall@10": 0.847,
+      "mrr": 0.6548884920634921,
+      "ndcg@10": 0.7011401363515372,
+      "num_queries": 1000,
+      "modality": "text->text (dense proxy, local)",
+      "build_seconds": 6.92,
+      "query_seconds": 5.83
+    },
+    "mock": {
+      "recall@1": 0.269,
+      "recall@5": 0.451,
+      "recall@10": 0.525,
+      "mrr": 0.3482988095238095,
+      "ndcg@10": 0.390484958476983,
+      "num_queries": 1000,
+      "modality": "text->text (lexical proxy)",
+      "build_seconds": 0.0,
+      "query_seconds": 0.79
+    }
+  }
+}
