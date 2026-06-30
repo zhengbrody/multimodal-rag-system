@@ -1,0 +1,31 @@
+{
+  "dataset": "flickr30k",
+  "task": "caption->image retrieval",
+  "protocol": "5k",
+  "gallery_size": 1000,
+  "num_queries": 5000,
+  "k_values": [
+    1,
+    5,
+    10
+  ],
+  "ndcg_k": 10,
+  "results": {
+    "openclip": {
+      "recall@1": 0.7766,
+      "recall@1_ci95": 0.011546617529652362,
+      "recall@5": 0.942,
+      "recall@5_ci95": 0.006479685855483825,
+      "recall@10": 0.967,
+      "recall@10_ci95": 0.004952046453014608,
+      "mrr": 0.8474325396825397,
+      "mrr_ci95": 0.008250413526170595,
+      "ndcg@10": 0.8769098932696258,
+      "ndcg@10_ci95": 0.006960110072384537,
+      "num_queries": 5000,
+      "modality": "text->image (cross-modal, ViT-H/14)",
+      "build_seconds": 10.46,
+      "query_seconds": 45.36
+    }
+  }
+}

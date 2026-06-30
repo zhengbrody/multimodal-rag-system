@@ -34,5 +34,8 @@ qdrant-client>=1.18.0
 # Tests
 pytest>=7.4.0
 
-# --- Phase 3b only (stronger dense backbone, ~0.92 R@5): install on demand ---
-# open_clip_torch>=2.24.0
+# --- Phase 3b (stronger dense backbone, ~0.92-0.93 R@5): OpenCLIP ViT-H/14 laion2b ---
+# 1024-d embeddings; model ~3.9GB. Used by src/rag/openclip_retriever.py and the
+# `openclip` / `qdrant_openclip` eval adapters. Ingest into its own collection:
+#   python -m scripts.ingest --backbone open_clip
+open_clip_torch>=2.24.0

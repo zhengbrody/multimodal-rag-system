@@ -23,20 +23,31 @@ import gc
 import json
 import time
 from pathlib import Path
-from typing import Dict, List
+from typing import Any, Dict, List, Protocol, runtime_checkable
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = REPO_ROOT / "data" / "flickr30k"
 GALLERY_PATH = DATA_DIR / "gallery.jsonl"
 QUERY_FILES = {
-    "1k": DATA_DIR / "eval_queries.jsonl",      # 1 held-out caption/image (proxy-safe)
-    "5k": DATA_DIR / "eval_queries_5k.jsonl",   # standard protocol: all 5 captions/image
+    "1k": DATA_DIR / "eval_queries.jsonl",  # 1 held-out caption/image (proxy-safe)
+    "5k": DATA_DIR / "eval_queries_5k.jsonl",  # standard protocol: all 5 captions/image
 }
 RESULTS_DIR = REPO_ROOT / "eval" / "results"
 
 K_VALUES = (1, 5, 10)
 NDCG_K = 10
 RETRIEVE_DEPTH = max(max(K_VALUES), NDCG_K)  # how deep each retriever must return
+
+
+@runtime_checkable
+class _BatchFastPath(Protocol):
+    """Optional adapter contract: encode all queries once, then vector-search each
+    (avoids per-query model encodes at 5K-query scale). Implemented by the CLIP/OpenCLIP
+    in-memory and Qdrant adapters; absent on the text-proxy ones."""
+
+    def encode_queries(self, texts: List[str]) -> Any: ...
+
+    def retrieve_ids_vec(self, vec: Any, depth: int) -> List[str]: ...
 
 
 def _load_jsonl(path: Path) -> List[Dict]:
@@ -66,7 +77,7 @@ def evaluate_retriever(name: str, gallery: List[Dict], queries: List[Dict]) -> D
     relevants = [q["gt_image_id"] for q in queries]
     captions = [q["caption"] for q in queries]
     t0 = time.time()
-    if hasattr(adapter, "encode_queries"):
+    if isinstance(adapter, _BatchFastPath):
         # Batched fast path: encode all captions once, then vector-query each.
         vecs = adapter.encode_queries(captions)
         for i, vec in enumerate(vecs):
@@ -80,7 +91,7 @@ def evaluate_retriever(name: str, gallery: List[Dict], queries: List[Dict]) -> D
                 print(f"  queried {i + 1}/{len(queries)}")
     query_s = time.time() - t0
 
-    metrics = aggregate(rankings, relevants, k_values=K_VALUES, ndcg_k=NDCG_K)
+    metrics: Dict[str, Any] = aggregate(rankings, relevants, k_values=K_VALUES, ndcg_k=NDCG_K)
     metrics["modality"] = adapter.modality
     metrics["build_seconds"] = round(build_s, 2)
     metrics["query_seconds"] = round(query_s, 2)
@@ -97,6 +108,16 @@ def evaluate_retriever(name: str, gallery: List[Dict], queries: List[Dict]) -> D
     return metrics
 
 
+def metric_cells(m: Dict) -> str:
+    """The shared trailing metric cells (no surrounding pipes): the headline columns
+    'Recall@1 | Recall@5 ±CI | Recall@10 | MRR@10 | nDCG@10'. Reused by backbone_sweep."""
+    ci5 = m.get("recall@5_ci95", 0.0)
+    return (
+        f"{m['recall@1']:.3f} | {m['recall@5']:.3f} ±{ci5:.3f} | "
+        f"{m['recall@10']:.3f} | {m['mrr']:.3f} | {m[f'ndcg@{NDCG_K}']:.3f}"
+    )
+
+
 def render_table(results: Dict[str, Dict]) -> str:
     # Rankings are truncated to RETRIEVE_DEPTH (=10), so "MRR" here is MRR@10:
     # queries whose gold image falls beyond rank 10 contribute 0 (bias <= ~0.01).
@@ -108,20 +129,17 @@ def render_table(results: Dict[str, Dict]) -> str:
     rows = []
     label = {
         "clip": "CLIP ViT-B/32 (numpy, 1K)",
+        "openclip": "OpenCLIP ViT-H/14 (numpy, 1K)",
         "mock": "Mock (keyword)",
         "dense": "Dense MiniLM",
         "qdrant": "CLIP + Qdrant (1K gallery)",
         "qdrant_full": "CLIP + Qdrant (31K gallery)",
+        "qdrant_openclip": "OpenCLIP ViT-H/14 + Qdrant (1K gallery)",
+        "qdrant_openclip_full": "OpenCLIP ViT-H/14 + Qdrant (31K gallery)",
         "openai": "OpenAI text-embed-3-small",
     }
     for name, m in results.items():
-        r5 = m["recall@5"]
-        ci5 = m.get("recall@5_ci95", 0.0)
-        rows.append(
-            f"| {label.get(name, name)} | {m['modality']} | "
-            f"{m['recall@1']:.3f} | {r5:.3f} ±{ci5:.3f} | {m['recall@10']:.3f} | "
-            f"{m['mrr']:.3f} | {m[f'ndcg@{NDCG_K}']:.3f} |"
-        )
+        rows.append(f"| {label.get(name, name)} | {m['modality']} | {metric_cells(m)} |")
     return header + "\n".join(rows) + "\n"
 
 
@@ -158,7 +176,9 @@ def main() -> None:
 
     names = [n.strip() for n in args.retrievers.split(",") if n.strip()]
     if "openai" in names and not args.openai:
-        raise SystemExit("Refusing to run 'openai' retriever without --openai (it makes API calls).")
+        raise SystemExit(
+            "Refusing to run 'openai' retriever without --openai (it makes API calls)."
+        )
     proxy = {"mock", "dense", "openai"} & set(names)
     if args.queries == "5k" and proxy:
         raise SystemExit(
@@ -170,8 +190,10 @@ def main() -> None:
     queries = _load_jsonl(QUERY_FILES[args.queries])
     if args.limit:
         queries = queries[: args.limit]
-    print(f"Gallery: {len(gallery)} images | Queries: {len(queries)} captions "
-          f"({args.queries} protocol)")
+    print(
+        f"Gallery: {len(gallery)} images | Queries: {len(queries)} captions "
+        f"({args.queries} protocol)"
+    )
 
     results: Dict[str, Dict] = {}
     for name in names:

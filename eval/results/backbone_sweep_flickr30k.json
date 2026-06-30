@@ -1,0 +1,54 @@
+{
+  "dataset": "flickr30k",
+  "task": "caption->image retrieval",
+  "protocol": "5k",
+  "gallery_size": 1000,
+  "note": "Same protocol/gallery/queries; only the dense backbone size varies (LAION-2B weights throughout). No reranking. Lift is from the backbone.",
+  "results": {
+    "OpenCLIP ViT-B/32 (laion2b)": {
+      "recall@1": 0.664,
+      "recall@1_ci95": 0.01309387472030484,
+      "recall@5": 0.8808,
+      "recall@5_ci95": 0.008982377098233348,
+      "recall@10": 0.9336,
+      "recall@10_ci95": 0.00690206371670893,
+      "mrr": 0.7583053174603175,
+      "mrr_ci95": 0.009908846291850834,
+      "ndcg@10": 0.8010163413093225,
+      "ndcg@10_ci95": 0.0085896054426143,
+      "num_queries": 5000,
+      "backbone": "ViT-B-32 (laion2b_s34b_b79k)",
+      "seconds": 29.6
+    },
+    "OpenCLIP ViT-L/14 (laion2b)": {
+      "recall@1": 0.7554,
+      "recall@1_ci95": 0.011916019893186606,
+      "recall@5": 0.9286,
+      "recall@5_ci95": 0.0071380230909916164,
+      "recall@10": 0.959,
+      "recall@10_ci95": 0.005496873402529905,
+      "mrr": 0.8301984126984128,
+      "mrr_ci95": 0.008665561403754893,
+      "ndcg@10": 0.8618761073343479,
+      "ndcg@10_ci95": 0.0073883493920685415,
+      "num_queries": 5000,
+      "backbone": "ViT-L-14 (laion2b_s32b_b82k)",
+      "seconds": 88.0
+    },
+    "OpenCLIP ViT-H/14 (laion2b)": {
+      "recall@1": 0.7766,
+      "recall@1_ci95": 0.011546617529652362,
+      "recall@5": 0.942,
+      "recall@5_ci95": 0.006479685855483825,
+      "recall@10": 0.967,
+      "recall@10_ci95": 0.004952046453014608,
+      "mrr": 0.8474325396825397,
+      "mrr_ci95": 0.008250413526170595,
+      "ndcg@10": 0.8769098932696258,
+      "ndcg@10_ci95": 0.006960110072384537,
+      "num_queries": 5000,
+      "backbone": "ViT-H-14 (laion2b_s32b_b79k)",
+      "seconds": 121.0
+    }
+  }
+}
