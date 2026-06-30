@@ -1,0 +1,224 @@
+{
+  "description": "Provenance for every number cited by this project. Regenerate artifacts with `make reproduce`, then `make manifest`.",
+  "environment": {
+    "git_sha": "f4bf60a",
+    "python": "3.12.0",
+    "platform": "macOS-26.5.1-arm64-arm-64bit",
+    "packages": {
+      "torch": "2.12.1",
+      "open_clip_torch": "3.3.0",
+      "qdrant-client": "1.18.0",
+      "sentence-transformers": null
+    }
+  },
+  "eval_artifacts": {
+    "backbone_sweep_flickr30k.json": {
+      "dataset": "flickr30k",
+      "task": "caption->image retrieval",
+      "protocol": "5k",
+      "gallery_size": 1000,
+      "results": {
+        "OpenCLIP ViT-B/32 (laion2b)": {
+          "recall@1": 0.664,
+          "recall@5": 0.8808,
+          "recall@5_ci95": 0.008982377098233348,
+          "recall@10": 0.9336,
+          "mrr": 0.7583053174603175,
+          "ndcg@10": 0.8010163413093225
+        },
+        "OpenCLIP ViT-L/14 (laion2b)": {
+          "recall@1": 0.7554,
+          "recall@5": 0.9286,
+          "recall@5_ci95": 0.0071380230909916164,
+          "recall@10": 0.959,
+          "mrr": 0.8301984126984128,
+          "ndcg@10": 0.8618761073343479
+        },
+        "OpenCLIP ViT-H/14 (laion2b)": {
+          "recall@1": 0.7766,
+          "recall@5": 0.942,
+          "recall@5_ci95": 0.006479685855483825,
+          "recall@10": 0.967,
+          "mrr": 0.8474325396825397,
+          "ndcg@10": 0.8769098932696258
+        }
+      }
+    },
+    "baseline_flickr30k.json": {
+      "dataset": "flickr30k",
+      "task": "caption->image retrieval",
+      "protocol": "1k",
+      "gallery_size": 1000,
+      "num_queries": 100,
+      "results": {
+        "clip": {
+          "recall@1": 0.63,
+          "recall@5": 0.83,
+          "recall@5_ci95": 0.07399493294145283,
+          "recall@10": 0.9,
+          "mrr": 0.7283968253968254,
+          "ndcg@10": 0.7701466142315111
+        },
+        "qdrant": {
+          "recall@1": 0.67,
+          "recall@5": 0.84,
+          "recall@5_ci95": 0.07221677803878425,
+          "recall@10": 0.92,
+          "mrr": 0.7452063492063492,
+          "ndcg@10": 0.786478728978667
+        }
+      }
+    },
+    "faithfulness.json": {
+      "queries": 1000,
+      "gallery": 1000,
+      "search": "exact brute-force (qdrant local mode)",
+      "top1_agreement": 1.0,
+      "top5_set_agreement": 1.0,
+      "top10_set_agreement": 1.0
+    },
+    "phase1_flickr30k.json": {
+      "dataset": "flickr30k",
+      "task": "caption->image retrieval",
+      "gallery_size": 1000,
+      "num_queries": 1000,
+      "results": {
+        "clip": {
+          "recall@1": 0.567,
+          "recall@5": 0.822,
+          "recall@10": 0.886,
+          "mrr": 0.6770436507936508,
+          "ndcg@10": 0.7277971927931535
+        },
+        "qdrant": {
+          "recall@1": 0.568,
+          "recall@5": 0.813,
+          "recall@10": 0.883,
+          "mrr": 0.6731,
+          "ndcg@10": 0.7238598177929139
+        },
+        "qdrant_full": {
+          "recall@1": 0.188,
+          "recall@5": 0.382,
+          "recall@10": 0.473,
+          "mrr": 0.27343015873015875,
+          "ndcg@10": 0.32080441479490496
+        },
+        "dense": {
+          "recall@1": 0.564,
+          "recall@5": 0.778,
+          "recall@10": 0.847,
+          "mrr": 0.6548884920634921,
+          "ndcg@10": 0.7011401363515372
+        },
+        "mock": {
+          "recall@1": 0.269,
+          "recall@5": 0.451,
+          "recall@10": 0.525,
+          "mrr": 0.3482988095238095,
+          "ndcg@10": 0.390484958476983
+        }
+      }
+    },
+    "phase2_headline_flickr30k.json": {
+      "dataset": "flickr30k",
+      "task": "caption->image retrieval",
+      "protocol": "5k",
+      "gallery_size": 1000,
+      "num_queries": 5000,
+      "results": {
+        "clip": {
+          "recall@1": 0.593,
+          "recall@5": 0.844,
+          "recall@5_ci95": 0.010058842902844681,
+          "recall@10": 0.9018,
+          "mrr": 0.6988442063492063,
+          "ndcg@10": 0.7482004205654054
+        }
+      }
+    },
+    "phase2_scale_flickr30k.json": {
+      "dataset": "flickr30k",
+      "task": "caption->image retrieval",
+      "protocol": "1k",
+      "gallery_size": 1000,
+      "num_queries": 1000,
+      "results": {
+        "qdrant_full": {
+          "recall@1": 0.188,
+          "recall@5": 0.382,
+          "recall@5_ci95": 0.030130007948538262,
+          "recall@10": 0.473,
+          "mrr": 0.27343015873015875,
+          "ndcg@10": 0.32080441479490496
+        }
+      }
+    },
+    "phase3_ablation.json": {
+      "protocol": "held-out 1k (query=caption[1..4], gallery text=caption[0])",
+      "gallery_size": 1000,
+      "num_queries": 1000,
+      "results": {
+        "dense": {
+          "recall@1": 0.57,
+          "recall@5": 0.821,
+          "recall@5_ci95": 0.02377231198720935,
+          "recall@10": 0.887,
+          "mrr": 0.684491649855206,
+          "ndcg@10": 0.7295710462599083
+        },
+        "rrf": {
+          "recall@1": 0.497,
+          "recall@5": 0.745,
+          "recall@5_ci95": 0.02702847569691081,
+          "recall@10": 0.796,
+          "mrr": 0.6117201579823138,
+          "ndcg@10": 0.6495484144194432
+        },
+        "dense_rerank": {
+          "recall@1": 0.492,
+          "recall@5": 0.824,
+          "recall@5_ci95": 0.023615289121251097,
+          "recall@10": 0.906,
+          "mrr": 0.6339657034938837,
+          "ndcg@10": 0.6962073016446769
+        },
+        "rrf_rerank": {
+          "recall@1": 0.47,
+          "recall@5": 0.805,
+          "recall@5_ci95": 0.02456906182170574,
+          "recall@10": 0.895,
+          "mrr": 0.6142596416247363,
+          "ndcg@10": 0.6785829870046007
+        }
+      }
+    },
+    "phase3b_headline_flickr30k.json": {
+      "dataset": "flickr30k",
+      "task": "caption->image retrieval",
+      "protocol": "5k",
+      "gallery_size": 1000,
+      "num_queries": 5000,
+      "results": {
+        "openclip": {
+          "recall@1": 0.7766,
+          "recall@5": 0.942,
+          "recall@5_ci95": 0.006479685855483825,
+          "recall@10": 0.967,
+          "mrr": 0.8474325396825397,
+          "ndcg@10": 0.8769098932696258
+        }
+      }
+    }
+  },
+  "load_test": [
+    {
+      "concurrency": "100 users",
+      "raw": "8,715 | **0 (0.00%)** | 2 ms | 5 ms | 19 ms | 44 ms | **325 req/s**"
+    },
+    {
+      "concurrency": "500 users",
+      "raw": "33,378 | **0 (0.00%)** | 110 ms | 180 ms | **210 ms** | 689 ms | **1,151 req/s**"
+    }
+  ]
+}
