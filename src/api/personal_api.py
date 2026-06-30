@@ -9,13 +9,14 @@ Professional RAG API with:
 - Conversation management
 """
 
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, File, HTTPException, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 from typing import List, Optional, Dict, Any
 import os
 import time
 import json
+import tempfile
 from pathlib import Path
 from datetime import datetime
 import sys
@@ -55,6 +56,7 @@ except ImportError:
 
 from utils.cache import SemanticCache
 from utils.monitoring import CloudWatchMonitor, LocalMonitor
+from rag.image_search_service import ImageSearchService
 
 # Setup structured logging
 logger = setup_logger("personal_rag_api", level="INFO", log_file="logs/api.log")
@@ -114,6 +116,9 @@ pipeline: Optional[PersonalRAGPipeline] = None
 conversational_pipeline: Optional[ConversationalRAGPipeline] = None
 cache = None
 monitor = None
+# Multimodal image search (lazy + gated): serves the Phase-3b OpenCLIP gallery when its
+# cache is present, else the endpoints return 503 — keeps the zero-cost mock deployment intact.
+image_search = ImageSearchService()
 
 
 # Pydantic models
@@ -164,6 +169,31 @@ class FeedbackRequest(BaseModel):
     rating: int = Field(..., description="Rating from 1-5", ge=1, le=5)
     feedback_text: Optional[str] = Field(None, description="Optional feedback text", max_length=500)
     helpful: Optional[bool] = Field(None, description="Was the answer helpful?")
+
+
+class TextSearchRequest(BaseModel):
+    query: str = Field(
+        ...,
+        description="Free-text query describing the image to find",
+        min_length=1,
+        max_length=500,
+    )
+    k: int = Field(5, description="Number of images to return", ge=1, le=50)
+
+
+class ImageSearchResult(BaseModel):
+    image_id: str
+    score: float
+    rep_caption: Optional[str] = None
+
+
+class ImageSearchResponse(BaseModel):
+    query: str
+    modality: str
+    backend: Optional[str] = None
+    count: int
+    results: List[ImageSearchResult]
+    latency_ms: float
 
 
 @asynccontextmanager
@@ -507,6 +537,75 @@ async def ask_question(request: QuestionRequest):
             exc_info=True,
         )
         raise HTTPException(status_code=500, detail=f"Error processing question: {str(e)}")
+
+
+@app.post("/search/text", response_model=ImageSearchResponse)
+def search_text(request: TextSearchRequest):
+    """
+    Cross-modal **caption -> image** search (CLIP / OpenCLIP).
+
+    Returns the gallery images whose CLIP embedding is most similar to the query text.
+    Backed by the Phase-3b OpenCLIP ViT-H/14 gallery (R@5 = 0.942 on Flickr30k) when its
+    cache is present; otherwise returns 503 — e.g. the lightweight mock deployment, which
+    never loads the multi-GB model.
+    """
+    if not ImageSearchService.available():
+        raise HTTPException(
+            status_code=503,
+            detail="Multimodal image search is not available in this deployment "
+            "(no CLIP gallery cache). Build it with the eval prep + an openclip eval run.",
+        )
+    start = time.time()
+    try:
+        results = image_search.search_text(request.query, k=request.k)
+    except (RuntimeError, ImportError) as e:
+        raise HTTPException(status_code=503, detail=f"Image search backend unavailable: {e}")
+    return ImageSearchResponse(
+        query=request.query,
+        modality="text->image",
+        backend=image_search.backend_label,
+        count=len(results),
+        results=results,
+        latency_ms=round((time.time() - start) * 1000, 2),
+    )
+
+
+@app.post("/search/image", response_model=ImageSearchResponse)
+def search_image(file: UploadFile = File(...), k: int = 5):
+    """
+    Cross-modal **image -> image** (reverse image) search.
+
+    Upload an image; returns the most visually similar gallery images via CLIP / OpenCLIP
+    image embeddings. Returns 503 when no gallery cache is present (mock deployment).
+    """
+    if not ImageSearchService.available():
+        raise HTTPException(
+            status_code=503,
+            detail="Multimodal image search is not available in this deployment.",
+        )
+    k = max(1, min(int(k), 50))
+    start = time.time()
+    suffix = Path(file.filename or "upload.jpg").suffix or ".jpg"
+    tmp_path = None
+    try:
+        contents = file.file.read()  # sync read; this handler runs in Starlette's threadpool
+        with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
+            tmp.write(contents)
+            tmp_path = tmp.name
+        results = image_search.search_image(tmp_path, k=k)
+    except (RuntimeError, ImportError) as e:
+        raise HTTPException(status_code=503, detail=f"Image search backend unavailable: {e}")
+    finally:
+        if tmp_path and os.path.exists(tmp_path):
+            os.remove(tmp_path)
+    return ImageSearchResponse(
+        query=file.filename or "(uploaded image)",
+        modality="image->image",
+        backend=image_search.backend_label,
+        count=len(results),
+        results=results,
+        latency_ms=round((time.time() - start) * 1000, 2),
+    )
 
 
 @app.post("/clear-conversation")
