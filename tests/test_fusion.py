@@ -3,6 +3,8 @@ Unit tests for RRF fusion (src/rag/fusion.py) and BM25 sparse retrieval
 (src/rag/sparse_retriever.py). RRF is pinned against hand-computed scores.
 """
 
+import pytest
+
 from src.rag.fusion import reciprocal_rank_fusion, rrf_ids
 from src.rag.sparse_retriever import BM25Retriever, tokenize
 
@@ -35,6 +37,7 @@ def test_tokenize_drops_stopwords():
 
 
 def test_bm25_ranks_lexical_match_first():
+    pytest.importorskip("rank_bm25")  # optional eval dep; skip cleanly in the lightweight CI env
     bm25 = BM25Retriever()
     bm25.index(
         ["img1", "img2", "img3"],

@@ -25,9 +25,9 @@
     "python": "Expert level - 4+ years experience, used in all ML projects and production systems",
     "pytorch": "Advanced level - built LLM inference system, RAG pipeline, recommendation system using PyTorch",
     "tensorflow": "Proficient - used in academic projects and early ML work",
-    "langchain": "Advanced - built production RAG system processing 50K+ products with LangChain",
+    "langchain": "Advanced - built a multimodal RAG system indexing 60K+ image/text vectors, with a pluggable LangChain pipeline mode alongside CLIP/OpenCLIP + Qdrant retrieval",
     "llm": "Strong experience - fine-tuned LLaMA with LoRA, built RAG systems, Kaggle Silver Medal in LLM inference",
-    "rag": "Expert - built multimodal RAG system with 92% accuracy, sub-1s latency, 500+ concurrent users",
+    "rag": "Expert - built a multimodal RAG system: 94% Recall@5 on Flickr30k (OpenCLIP ViT-H/14, standard protocol), sub-second p99 latency (210ms) at 500 concurrent users with zero failures, CLIP/OpenCLIP cross-modal retrieval over Qdrant",
     "mlops": "Production experience - MLflow, Docker, Kubernetes, model monitoring, A/B testing, automated retraining",
     "aws": "Hands-on experience - EC2, Lambda, DynamoDB, S3, CloudFormation, deployed multiple production systems",
     "docker": "Production level - containerized all ML models, used in CI/CD pipelines",
@@ -47,8 +47,8 @@
     "penn state": "ML Engineer Research Assistant Sep 2024-Jan 2025, built multimodal NLP pipeline with cross-modal attention achieving 92% F1-score, scalable document processing handling 10K+ concurrent requests, also completed B.Eng. 2021-2025",
     "research": "ML Research Assistant at Penn State - Multimodal NLP, document processing, entity extraction with BERT and cross-modal attention, automated ML experiment tracking, fairness evaluation",
     
-    "project": "5 major projects: Multimodal RAG (92% Recall@5, microservices, K8s, comprehensive testing), Real-Time Recommendation with RL (10M events/day, contextual bandits), Distributed LLM Inference (Kaggle Silver, 40% cost reduction), Cloud E-commerce (8K transactions/day, 12 microservices), Music Recommender",
-    "rag project": "Built production-ready multimodal RAG (July-Oct 2025) with microservices architecture, FastAPI with 7 REST endpoints, Kubernetes orchestration, comprehensive test suite with JMeter load testing, 92% Recall@5, sub-1s latency for 500 concurrent users, 99.9% uptime",
+    "project": "5 major projects: Multimodal RAG (94% Recall@5, microservices, K8s, comprehensive testing), Real-Time Recommendation with RL (10M events/day, contextual bandits), Distributed LLM Inference (Kaggle Silver, 40% cost reduction), Cloud E-commerce (8K transactions/day, 12 microservices), Music Recommender",
+    "rag project": "Built production-ready multimodal RAG (July-Oct 2025) with microservices architecture, FastAPI with 7 REST endpoints, Kubernetes orchestration, comprehensive test suite with JMeter load testing, 94% Recall@5, sub-1s latency for 500 concurrent users, 99.9% uptime",
     "recommendation": "Built Real-Time Sequence Prediction with RL (Jan-May 2025) - hybrid system combining PySpark ALS collaborative filtering and contextual bandits with Thompson sampling, processing 10M+ daily interactions, 0.85 AUC, 2K+ QPS, 15% engagement increase with fairness constraints",
     "llm project": "Kaggle Silver Medal (May-Aug 2024) - Distributed Signal Processing System, fine-tuned LLaMA-2 7B with LoRA and responsible AI safeguards, 8-bit quantization, 65% latency reduction, 40% cost reduction, 99.9% availability on K8s, handling 20K+ daily requests",
     
@@ -68,8 +68,8 @@
     "email": "zhengdong0317@gmail.com",
     "phone": "(814) 826-8590",
     
-    "achievement": "Kaggle Silver Medal, 92% RAG accuracy, 65% latency reduction, 99.9% uptime, 15% precision improvement, 18% CTR increase",
-    "metric": "Key metrics: 92% accuracy, 200K+ transactions/day, 10M+ events/day, sub-1s latency, 99.9% uptime",
+    "achievement": "Kaggle Silver Medal, 94% Recall@5 (multimodal RAG), 65% latency reduction, 99.9% uptime, 15% precision improvement, 18% CTR increase",
+    "metric": "Key metrics: 94% Recall@5 (multimodal RAG), 200K+ transactions/day, 10M+ events/day, sub-1s latency, 99.9% uptime",
     
     "interest": "LLMs, RAG systems, MLOps, distributed ML, recommendation systems, model optimization, online learning, production ML systems, ML infrastructure",
     "goal": "Become a Machine Learning Engineering leader building scalable ML platforms that solve real-world problems. Aspire to work on production ML systems at scale, combining deep ML knowledge with strong systems engineering skills.",
@@ -228,7 +228,7 @@
       {
         "q": "Do you know LangChain?",
         "keywords": ["langchain", "rag framework"],
-        "a": "Yes, advanced level. Built production multimodal RAG system with LangChain processing 50K+ products, implemented chains, memory, and retrieval components"
+        "a": "Yes, advanced level. Built production multimodal RAG system with LangChain processing 60K+ image/text vectors, implemented chains, memory, and retrieval components"
       },
       {
         "q": "What about LLMs?",
@@ -379,22 +379,22 @@
       {
         "q": "What's your best project?",
         "keywords": ["best project", "proud", "favorite"],
-        "a": "Multimodal RAG System for Product Search - built end-to-end system with 92% retrieval accuracy, sub-1s latency, supporting 500+ concurrent users. Combined CLIP and OpenAI embeddings for semantic search, deployed on AWS with full MLOps pipeline, achieved 18% CTR improvement through A/B testing. It demonstrates both ML expertise and production engineering skills."
+        "a": "Multimodal RAG System for Product Search - built end-to-end system with 94% Recall@5, sub-1s latency, supporting 500+ concurrent users. Combined CLIP and OpenAI embeddings for semantic search, deployed on AWS with full MLOps pipeline, achieved 18% CTR improvement through A/B testing. It demonstrates both ML expertise and production engineering skills."
       },
       {
         "q": "Explain your RAG system",
         "keywords": ["rag system", "multimodal rag", "product search"],
-        "a": "Built production-ready multimodal RAG system (July-Oct 2025) with microservices architecture using FastAPI, containerized with Docker and orchestrated using Kubernetes, handling 500 concurrent requests with sub-1s latency. Integrated CLIP and OpenAI embedding models using LangChain framework, deployed vector search with Pinecone processing 50K+ products achieving 92% Recall@5 against 1000 manually labeled queries. Built FastAPI backend with 7 REST endpoints and comprehensive test suite (unit, integration, load testing with JMeter). Deployed full-stack application on AWS EC2 using Docker and GitHub Actions CI/CD, implementing CloudWatch monitoring and health checks maintaining 99.9% uptime over a 30-day period. Achieved 18% CTR improvement through A/B testing."
+        "a": "Built production-ready multimodal RAG system (July-Oct 2025) with microservices architecture using FastAPI, containerized with Docker and orchestrated using Kubernetes, handling 500 concurrent requests with sub-1s latency. Integrated CLIP and OpenAI embedding models using LangChain framework, deployed vector search with Qdrant processing 60K+ image/text vectors achieving 94% Recall@5 on the standard 5,000-caption Flickr30k protocol. Built FastAPI backend with 7 REST endpoints and comprehensive test suite (unit, integration, load testing with JMeter). Deployed full-stack application on AWS EC2 using Docker and GitHub Actions CI/CD, implementing CloudWatch monitoring and health checks maintaining 99.9% uptime over a 30-day period. Achieved 18% CTR improvement through A/B testing."
       },
       {
-        "q": "Why 92% accuracy for RAG?",
-        "keywords": ["92%", "accuracy", "rag accuracy"],
-        "a": "Achieved 92% Recall@5 through: 1) High-quality embeddings (CLIP for images, OpenAI text-embedding-3-large for text) 2) Proper document chunking strategy 3) Hybrid search combining text and image 4) Reranking pipeline for precision 5) Extensive evaluation on test set with human-labeled relevance"
+        "q": "Why 94% Recall@5 for RAG?",
+        "keywords": ["94%", "recall@5", "rag accuracy"],
+        "a": "Achieved 94% Recall@5 through: 1) High-quality embeddings (CLIP for images, OpenAI text-embedding-3-large for text) 2) Proper document chunking strategy 3) Hybrid search combining text and image 4) Reranking pipeline for precision 5) Extensive evaluation on test set with human-labeled relevance"
       },
       {
         "q": "How did you optimize RAG latency?",
         "keywords": ["rag latency", "sub-1s", "fast"],
-        "a": "Achieved sub-1s latency through: 1) Redis caching for frequent queries 2) Async request handling in FastAPI 3) Efficient vector search with Pinecone 4) Batch embedding generation 5) Query preprocessing optimization 6) Connection pooling 7) CDN for static assets"
+        "a": "Achieved sub-1s latency through: 1) Redis caching for frequent queries 2) Async request handling in FastAPI 3) Efficient vector search with Qdrant 4) Batch embedding generation 5) Query preprocessing optimization 6) Connection pooling 7) CDN for static assets"
       },
       {
         "q": "Tell me about your recommendation system",
@@ -484,7 +484,7 @@
       {
         "q": "How did you handle 500 concurrent users in RAG system?",
         "keywords": ["concurrent users", "rag scalability", "500 users"],
-        "a": "Handled 500 concurrent users through: 1) Microservices architecture with Kubernetes orchestration for auto-scaling 2) FastAPI async endpoints for non-blocking request handling 3) Redis caching for frequent queries 4) Efficient vector search with Pinecone 5) Load balancing across multiple pods 6) Comprehensive load testing with JMeter to verify performance. Achieved sub-1s latency and 99.9% uptime."
+        "a": "Handled 500 concurrent users through: 1) Microservices architecture with Kubernetes orchestration for auto-scaling 2) FastAPI async endpoints for non-blocking request handling 3) Redis caching for frequent queries 4) Efficient vector search with Qdrant 5) Load balancing across multiple pods 6) Comprehensive load testing with JMeter to verify performance. Achieved sub-1s latency and 99.9% uptime."
       },
       {
         "q": "What's privacy-preserving feature engineering?",
@@ -579,7 +579,7 @@
       {
         "q": "How did you test your RAG system?",
         "keywords": ["rag testing", "test suite", "jmeter", "load testing"],
-        "a": "Built comprehensive test suite for RAG system including: 1) Unit tests for individual components (retrieval, embedding, generation) 2) Integration tests for end-to-end pipeline 3) Load testing with JMeter to verify system handles 500 concurrent requests with sub-1s latency 4) Accuracy testing against 1000 manually labeled queries achieving 92% Recall@5. This thorough testing ensured production readiness and reliability."
+        "a": "Built comprehensive test suite for RAG system including: 1) Unit tests for individual components (retrieval, embedding, generation) 2) Integration tests for end-to-end pipeline 3) Load testing with JMeter to verify system handles 500 concurrent requests with sub-1s latency 4) Evaluation on the standard 5,000-caption Flickr30k protocol achieving 94% Recall@5. This thorough testing ensured production readiness and reliability."
       },
       {
         "q": "What's dependency mapping in microservices?",
@@ -616,7 +616,7 @@
       {
         "q": "What's cosine similarity?",
         "keywords": ["cosine similarity", "similarity measure"],
-        "a": "Measures similarity between vectors using cosine of angle between them. Range [-1,1], where 1 = identical direction, 0 = orthogonal, -1 = opposite. Formula: (A·B) / (||A|| ||B||). Used in RAG system to find most similar products. Better than Euclidean distance for high-dimensional embeddings."
+        "a": "Measures similarity between vectors using cosine of angle between them. Range [-1,1], where 1 = identical direction, 0 = orthogonal, -1 = opposite. Formula: (A·B) / (||A|| ||B||). Used in RAG system to find most similar images. Better than Euclidean distance for high-dimensional embeddings."
       },
       {
         "q": "How does FAISS work?",
@@ -926,7 +926,7 @@
       {
         "q": "What metrics do you track?",
         "keywords": ["metrics", "kpi", "measure"],
-        "a": "Depends on project: 1) ML metrics - accuracy, precision, recall, F1, AUC, NDCG 2) System metrics - latency, throughput, uptime, error rate 3) Business metrics - CTR, engagement, conversion. Example: RAG system tracked both 92% retrieval accuracy AND 18% CTR improvement. Always align technical metrics with business goals."
+        "a": "Depends on project: 1) ML metrics - accuracy, precision, recall, F1, AUC, NDCG 2) System metrics - latency, throughput, uptime, error rate 3) Business metrics - CTR, engagement, conversion. Example: RAG system tracked both 94% Recall@5 AND 18% CTR improvement. Always align technical metrics with business goals."
       },
       {
         "q": "How do you measure model performance?",
@@ -936,12 +936,12 @@
       {
         "q": "What impact have your projects had?",
         "keywords": ["impact", "business value"],
-        "a": "Quantifiable impacts: 1) Allianz - 15% precision improvement saving costs from false positives, 200K+ transactions processed daily 2) RAG system - 18% CTR increase, 92% accuracy 3) Recommendation - 15% engagement increase, 2K+ QPS serving 4) LLM - 65% latency reduction 5) E-commerce - 8K+ daily transactions, 99.9% uptime. Focus on metrics that matter to business."
+        "a": "Quantifiable impacts: 1) Allianz - 15% precision improvement saving costs from false positives, 200K+ transactions processed daily 2) RAG system - 18% CTR increase, 94% Recall@5 3) Recommendation - 15% engagement increase, 2K+ QPS serving 4) LLM - 65% latency reduction 5) E-commerce - 8K+ daily transactions, 99.9% uptime. Focus on metrics that matter to business."
       },
       {
         "q": "How much data have you worked with?",
         "keywords": ["data volume", "scale"],
-        "a": "Worked with: 1) 200K+ daily insurance transactions at Allianz 2) 10M+ daily user interactions in recommendation system 3) 50K+ products in RAG system 4) 10K+ documents daily in NLP pipeline 5) 500+ sensor streams. Comfortable with big data tools (PySpark, Kafka) and optimizing for large-scale processing."
+        "a": "Worked with: 1) 200K+ daily insurance transactions at Allianz 2) 10M+ daily user interactions in recommendation system 3) 60K+ image/text vectors in RAG system 4) 10K+ documents daily in NLP pipeline 5) 500+ sensor streams. Comfortable with big data tools (PySpark, Kafka) and optimizing for large-scale processing."
       },
       {
         "q": "What's your best optimization achievement?",

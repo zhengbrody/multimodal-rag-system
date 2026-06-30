@@ -37,8 +37,8 @@ jobs:
     - name: Check code formatting
       run: |
         pip install black ruff
-        black --check src/ tests/
-        ruff check src/ tests/
+        black --check src/ tests/ eval/ scripts/
+        ruff check src/ tests/ eval/ scripts/
 
   lint:
     runs-on: ubuntu-latest
@@ -55,10 +55,17 @@ jobs:
         pip install black ruff mypy
 
     - name: Run black
-      run: black --check src/ tests/
+      run: black --check src/ tests/ eval/ scripts/
 
     - name: Run ruff
-      run: ruff check src/ tests/
+      run: ruff check src/ tests/ eval/ scripts/
 
-    - name: Run mypy (best-effort)
+    - name: Run mypy (enforced — retrieval/eval modules)
+      run: |
+        mypy --ignore-missing-imports --follow-imports=silent \
+          eval/ \
+          src/rag/fusion.py src/rag/sparse_retriever.py src/rag/reranker.py \
+          src/rag/openclip_retriever.py src/rag/image_search_service.py src/rag/vector_store.py
+
+    - name: Run mypy (best-effort — rest of src/)
       run: mypy --ignore-missing-imports src/ || true

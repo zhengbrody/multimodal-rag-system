@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/part-of: rag-system
     app.kubernetes.io/component: api
 spec:
-  replicas: 3
+  replicas: 2  # start at the HPA floor so the demo shows a clean 2 -> N scale-up
   selector:
     matchLabels:
       app: rag-api
@@ -31,13 +31,14 @@ spec:
                 name: rag-system-config
             - secretRef:
                 name: rag-system-secrets
+                optional: true  # mock mode needs no keys; prod supplies the real secret
           resources:
             requests:
-              cpu: 250m
-              memory: 256Mi
+              cpu: 100m
+              memory: 128Mi
             limits:
-              cpu: 500m
-              memory: 512Mi
+              cpu: 300m
+              memory: 256Mi
           livenessProbe:
             httpGet:
               path: /health
@@ -54,9 +55,5 @@ spec:
             periodSeconds: 10
             timeoutSeconds: 5
             failureThreshold: 3
-          volumeMounts:
-            - name: data-volume
-              mountPath: /app/data
-      volumes:
-        - name: data-volume
-          emptyDir: {}
+      # No data-volume mount: the image bakes data/raw/knowledge_base.json, and an
+      # emptyDir at /app/data would shadow it and break mock-mode startup.

@@ -42,6 +42,12 @@ python -m eval.evaluate --retrievers clip --queries 5k --tag headline   # standa
 python -m eval.ablation_rerank --rerank-n 50                            # dense vs +RRF vs +rerank
 python -m eval.faithfulness_check                                       # vector-DB == numpy proof
 pytest tests/test_eval_metrics.py tests/test_fusion.py -q               # metric/fusion unit tests
+
+# Phase 3b — stronger dense backbone (OpenCLIP ViT-H/14, laion2b, 1024-d). Needs:
+#   uv pip install open_clip_torch>=2.24.0
+python -m eval.evaluate --retrievers openclip --queries 5k --tag phase3b_headline   # ViT-H/14 R@5 (numpy, 1K gallery — the headline)
+python -m scripts.ingest --backbone open_clip                          # re-ingest 62K vectors → flickr30k_openclip collection
+python -m eval.evaluate --retrievers qdrant_openclip_full --queries 1k --tag phase3b_scale  # ViT-H/14 31K-corpus number (slow)
 ```
 
 Perf note: **Qdrant local mode = exact full-scan** (~0.28s/query over 62K), so 5K-query
@@ -54,14 +60,25 @@ identical to Qdrant via `faithfulness.json`). Eval adapters batch-encode queries
 - `eval/metrics.py` — Recall@k, MRR, nDCG@10 + 95% CIs (Wald); unit-tested.
 - `eval/datasets/prepare_flickr30k.py` — 1K gallery; `eval_queries.jsonl` (held-out, proxy-safe)
   and `eval_queries_5k.jsonl` (standard 5000-caption protocol).
-- `eval/adapters.py` — uniform `retrieve_ids` over clip/mock/dense/qdrant/qdrant_full.
+- `eval/adapters.py` — uniform `retrieve_ids` over clip/openclip/mock/dense/qdrant{,_openclip}{,_full}.
 - `eval/evaluate.py` — runner; `--queries 1k|5k`, `--tag`, CI columns.
 - `eval/ablation_rerank.py` — dense vs +RRF vs +rerank ablation.
 - `eval/faithfulness_check.py` — isolated proof the vector DB preserves rankings.
 - `src/rag/vector_store.py` — pluggable Qdrant/Pinecone VectorStore (embedder-agnostic).
 - `scripts/ingest.py` — batched CLIP ingest of full Flickr30k.
 - `src/rag/sparse_retriever.py` (BM25), `src/rag/fusion.py` (RRF), `src/rag/reranker.py` (cross-encoder).
-- Tests: `tests/test_eval_metrics.py`, `tests/test_fusion.py`.
+- `src/rag/openclip_retriever.py` — **Phase 3b** OpenCLIP ViT-H/14 (laion2b, 1024-d) retriever; mirrors
+  `CLIPRetriever`'s interface, embed-dim probed (never hard-coded). `eval/adapters.py` adds `openclip`
+  (numpy fast path → headline) and `qdrant_openclip{,_full}` (vector-DB); `scripts/ingest.py --backbone
+  open_clip` writes 1024-d vectors to a SEPARATE `flickr30k_openclip` collection.
+- `src/rag/image_search_service.py` — **Phase 4** lazy + gated bridge from the measured OpenCLIP
+  gallery to the served API; import-safe under `requirements_simple` (heavy deps loaded only on first
+  use), returns 503 when no gallery cache (keeps the mock deployment working). Backs the new
+  `POST /search/text` (caption→image) and `POST /search/image` (reverse image) FastAPI endpoints.
+- `eval/qualitative_demo.py` — **Phase 2** writes `eval/results/phase2_qualitative.md`: text→image and
+  image→image retrieved examples (by image_id + caption) — the qualitative companion to R@5=0.942.
+- Tests: `tests/test_eval_metrics.py`, `tests/test_fusion.py` (BM25 test `importorskip`s `rank_bm25`
+  so the lightweight CI env skips it cleanly, not fails).
 
 ## Evidence so far (REAL measured numbers)
 
@@ -69,19 +86,24 @@ Flickr30k caption→image. Artifacts under `eval/results/`.
 
 | Claim | Status | Real number |
 |---|---|---|
-| "92% Recall@5, 1K eval set" | **measured** | Dense CLIP ViT-B/32 **R@5 = 0.844 ±0.010** (standard 5000-caption protocol; matches published ~0.83-0.85). Full 31K-corpus R@5 = 0.382 ±0.030. |
+| "92% Recall@5, 1K eval set" | **MET (reproduced in-harness)** | Shipped backbone **OpenCLIP ViT-H/14 (laion2b): R@5 = 0.942 ±0.006** (standard 5000-caption protocol, 1K gallery; `phase3b_headline_*`). Corroborated by LAION published 94.0. Baseline CLIP ViT-B/32 was 0.844 ±0.010. |
 | Hybrid RRF + rerank → 0.92 | **DOES NOT reach it** | Held-out 1k: dense 0.821 / +RRF(equal) 0.745 / dense+rerank 0.824 / +RRF+rerank 0.805. Weighted RRF best 0.842. Text rerank is a wash (structural ceiling). See `phase3_findings.md`. |
-| Path to 0.92 | **measured, honest** | Stronger dense backbone: OpenCLIP ViT-L/14(laion2b) 0.909, **ViT-H/14(laion2b) 0.929** (on our protocol; corroborated by LAION published 92.9/94.0). NOT via RRF/rerank. |
+| Path to 0.92 | **ACHIEVED via backbone** | Stronger dense backbone, NOT RRF/rerank. ViT-B/32 0.844 → **ViT-H/14 0.942** (reproduced; LAION ViT-L/14 0.909, ViT-H/14 published 94.0 corroborate). Phase-3b run: 1000 imgs encoded in 78s on MPS, n=5000 queries. |
 | "50K+ items" | **met** | 62,028 vectors ingested (31,014 images + 31,014 captions) in Qdrant. |
 | "CLIP multimodal + Qdrant" | **real** | CLIP cross-modal + Qdrant backing store; faithfulness 1000/1000 vs numpy. |
 
-## Stale/false strings to fix (résumé/KB layer)
+## Stale/false strings (résumé/KB layer) — evidence-backed ones FIXED
 
-`data/raw/knowledge_base.json` and `docs/PROJECT_POSITIONING.md` (line ~57) contain:
-"92% Recall@5", "50K+ products", "1000 manually labeled queries", "deployed Pinecone".
-Truth: photos not products; queries auto-generated (held-out captions, seeded); Qdrant not
-Pinecone; 0.92 only with a ViT-H/14 backbone we haven't shipped yet. **Fix in Phase 6**
-once the final backbone/number is chosen.
+`data/raw/knowledge_base.json`: the **evidence-backed** false strings about THIS project are
+corrected — "92% accuracy/Recall@5" → **94% Recall@5** (real, 5k protocol), "50K+ products" →
+**60K+ image/text vectors**, "1000 manually labeled queries" → **standard 5,000-caption protocol**
+(auto-generated, seeded), and "vector search with Pinecone" → **Qdrant** (the real store). Penn State
+"92% F1-score"/"92% code coverage" are a DIFFERENT past job — deliberately left untouched.
+
+**Deliberately NOT changed** (user's call — unverifiable narrative, not in the evidence scope):
+"Product Search" framing, "deployed on AWS EC2", "18% CTR via A/B testing", "2K+ QPS", "99.9% uptime".
+If those don't reflect reality, they're the user's to correct. `docs/PROJECT_POSITIONING.md` is a
+positioning/honesty doc (its "92% Recall@5" line is a self-aware caveat); left as-is.
 
 ## Follow-up plan (status against the original 7-phase plan)
 
@@ -90,20 +112,36 @@ standard 5000-caption protocol + 95% CIs — was completed between P1 and P3.)
 
 - **P0 eval harness** ✅ — Recall@5/10, MRR, nDCG@10 + CIs; baseline table; unit tests; faithfulness proof.
 - **P1 50K ingest + real vector store** ✅ — Qdrant, 62,028 vectors; faithfulness 1000/1000 vs numpy.
-- **P2 CLIP end-to-end** ⚠️ PARTIAL — text→image is fully activated & measured; **TODO: image→image
-  and text→image qualitative demos (retrieved examples) + add multimodal query cases to the eval set.**
+- **P2 CLIP end-to-end** ✅ — text→image fully activated & measured; image→image + text→image
+  qualitative demos generated (`eval/qualitative_demo.py` → `phase2_qualitative.md`, ViT-H/14;
+  retrieval is visibly on-topic). Served live via the Phase-4 `/search/*` endpoints.
 - **P3 RRF + cross-encoder rerank ablation** ✅ — honest result: does **not** reach 0.92; lever is the
   dense backbone, not RRF/text-rerank (see `eval/results/phase3_findings.md`).
-- **P3b dense-backbone decision** ❌ NEEDS USER DECISION — (a) ship **OpenCLIP ViT-H/14** (add `open_clip`
-  adapter, re-ingest gallery, re-run harness → cite ~0.92-0.93), or (b) keep ViT-B/32 → cite **0.84**.
-  Either way keep weighted-RRF (dense-heavy, ~0.84) as the documented hybrid. **Blocks the headline
-  number, so P2 sign-off and P6 résumé bullets depend on this.**
-- **P4 endpoints → 7** ❌ — add `/search/text`, `/search/image`, `/health` (Pydantic); update Swagger.
-- **P5 load test** ❌ — run JMeter/Locust vs the containerized API; capture p50/p95/p99 @ 100/300/500.
-- **P6 evidence pack** ❌ — README with eval tables + ablation + load report + arch diagram; fix the
-  stale KB/positioning strings (products / manually-labeled / Pinecone / 92%); 2 rewritten résumé bullets.
+- **P3b dense-backbone decision** ✅ DONE — shipped **OpenCLIP ViT-H/14** (laion2b); headline
+  **reproduced in-harness: R@5 = 0.942 ±0.006** (standard 5k protocol, 1K gallery, n=5000;
+  `phase3b_headline_*`). Code: `openclip_retriever.py`, `openclip`/`qdrant_openclip` adapters,
+  `ingest.py --backbone open_clip`, `open_clip_torch` dep. The 0.92 target is MET via the backbone,
+  NOT RRF/rerank. Keep weighted-RRF (dense-heavy, ~0.84) as the documented hybrid. **Still optional:**
+  the 31K full-corpus ViT-H/14 number (re-ingest with `--backbone open_clip` → `qdrant_openclip_full`).
+- **P4 endpoints (multimodal search)** ✅ — added `POST /search/text` (caption→image) and
+  `POST /search/image` (reverse image), Pydantic-typed, auto-documented in Swagger; gated/lazy so the
+  mock deployment is untouched. Verified end-to-end (text query returns on-topic images; image self-match
+  score=1.0). API now exposes 11 functional routes. `/health` already existed.
+- **P5 load test** ✅ — Locust driver (`tests/load/locustfile.py`, pure-Python alt to the JMeter plan);
+  measured **0 failures at 500 concurrent users, p99 = 210 ms, ~1,150 req/s** (mock mode, single worker;
+  100 users: p99 19 ms, 325 req/s). Report: `tests/load/results/load_report.md`.
+- **P6 evidence pack** ✅ (mostly) — README "Evidence & Benchmarks" section (eval table + honest ablation
+  note + load table + search endpoints) and `/search/*` curl docs; KB evidence-strings fixed (see above);
+  résumé bullets drafted (in chat). Optional polish remaining: a dedicated multimodal arch diagram.
+- **CI hygiene (bonus)** ✅ — fixed pre-existing CI-red from the eval merge: black-formatted
+  `sparse_retriever`/`reranker`/`vector_store`/`test_eval_metrics`, removed an F541 f-string, and made
+  the BM25 test skip without `rank_bm25`. Verified `pytest tests/` (29 pass/1 skip) + black + ruff green
+  in a `requirements_simple`-only env. Also: `.gitignore` now covers `.venv-eval/`.
 
-**Overall: ~half done.** P0/P1/P3 ✅; P2 ⚠️; P3b decision + P4/P5/P6 ❌.
+**Overall: plan complete.** P0–P6 ✅ (headline R@5=0.942 reproduced; multimodal search served; 500-user
+load test 0 failures/p99 210 ms; CI green; KB evidence-strings honest). Optional follow-ups only:
+the 31K full-corpus ViT-H/14 number, a multimodal arch diagram, and the user's call on the
+unverifiable KB narrative (AWS/CTR/QPS/product-search).
 
 ## Working agreement
 

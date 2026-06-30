@@ -9,7 +9,6 @@ import math
 
 from eval.metrics import aggregate, ndcg_at_k, recall_at_k, reciprocal_rank
 
-
 # ---- Recall@k (single relevant item) ---------------------------------------
 
 
@@ -67,9 +66,9 @@ def test_ndcg_outside_cutoff_is_zero():
 def test_aggregate_mixed():
     # q1: gold at rank 1, q2: gold at rank 3, q3: gold missing (rank > list)
     rankings = [
-        ["g1", "x", "y"],          # gold g1 @1
-        ["x", "y", "g2", "z"],     # gold g2 @3
-        ["x", "y", "z"],           # gold g3 absent
+        ["g1", "x", "y"],  # gold g1 @1
+        ["x", "y", "g2", "z"],  # gold g2 @3
+        ["x", "y", "z"],  # gold g3 absent
     ]
     relevants = ["g1", "g2", "g3"]
     out = aggregate(rankings, relevants, k_values=(1, 5), ndcg_k=10)
@@ -82,7 +81,7 @@ def test_aggregate_mixed():
     assert math.isclose(out["mrr"], (1.0 + 1 / 3 + 0.0) / 3)
     # nDCG@10: (1 + 1/log2(4) + 0) / 3
     expected_ndcg = (1.0 + 1.0 / math.log2(4) + 0.0) / 3
-    assert math.isclose(out[f"ndcg@10"], expected_ndcg)
+    assert math.isclose(out["ndcg@10"], expected_ndcg)
     assert out["num_queries"] == 3
 
 

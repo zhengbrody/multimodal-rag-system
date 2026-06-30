@@ -23,6 +23,19 @@
 
 This project demonstrates a **production-ready RAG (Retrieval-Augmented Generation) system** specifically designed for personal website Q&A functionality. Visitors can ask questions about you in natural language, and the system provides accurate, context-aware answers based on your personal knowledge base.
 
+### Two distinct layers (kept separate on purpose)
+
+- **Layer A — Personal Q&A assistant**: a text RAG that answers questions about the owner from a
+  personal knowledge base, with anti-hallucination strategies, confidence scoring, and source tracing.
+  *Quality here is about answer faithfulness — not a retrieval percentage.*
+- **Layer B — Multimodal retrieval engine**: caption→image and image→image search over Flickr30k
+  using CLIP / OpenCLIP + Qdrant, **benchmarked at 94.2% Recall@5** (OpenCLIP ViT-H/14, standard
+  5,000-caption protocol). **This 94.2% is Layer B's retrieval metric — it is _not_ the personal-Q&A
+  "accuracy".**
+
+The two layers share infrastructure (FastAPI, typed schemas, tests, CI) but are **evaluated
+separately**. The benchmark numbers below describe Layer B.
+
 ### Key Highlights
 
 - ✅ **Anti-Hallucination Strategies**: Multiple mechanisms ensure AI doesn't fabricate information
@@ -30,6 +43,51 @@ This project demonstrates a **production-ready RAG (Retrieval-Augmented Generati
 - ✅ **Dual Mode**: Mock mode (no API costs) and OpenAI mode (high-quality embeddings)
 - ✅ **Modern UI**: Conversation-style interface with real-time feedback
 - ✅ **Comprehensive Testing**: Unit tests, integration tests, and CI/CD pipeline
+
+## 📊 Evidence & Benchmarks (real, reproducible numbers)
+
+Beyond the Q&A app, this repo includes an **eval-first** engagement that backs the headline
+claims with measured numbers on a public benchmark (Flickr30k caption→image retrieval).
+Everything below is reproduced in-harness; artifacts live under `eval/results/`.
+
+**Retrieval quality** — standard 5,000-caption protocol, 1K-image gallery, with 95% CIs:
+
+| Dense backbone | Recall@5 | Recall@10 | MRR@10 | nDCG@10 |
+|---|---|---|---|---|
+| CLIP ViT-B/32 (baseline) | 0.844 ±0.010 | 0.902 | 0.699 | 0.748 |
+| **OpenCLIP ViT-H/14 (shipped)** | **0.942 ±0.006** | 0.967 | 0.847 | 0.877 |
+
+- The **0.94 Recall@5** is reached via a stronger dense backbone — **not** BM25-RRF or a text
+  cross-encoder reranker, which an honest ablation showed plateau at ~0.84 (a structural ceiling;
+  see `eval/results/phase3_findings.md`). Corroborated by LAION's published ViT-H/14 number (94.0).
+- Index: **62,028 CLIP vectors** (31,014 images + 31,014 captions) in **Qdrant**; vector-DB rankings
+  proven identical to a numpy baseline (1000/1000, `faithfulness.json`).
+
+**Load test** — Locust, mock mode (serving + retrieval layer), single `uvicorn` worker:
+
+| Concurrency | Throughput | p50 | p95 | p99 | Failures |
+|---|---|---|---|---|---|
+| 100 users | 325 req/s | 2 ms | 5 ms | 19 ms | **0%** |
+| 500 users | 1,151 req/s | 110 ms | 180 ms | **210 ms** | **0%** |
+
+Zero failures at 500 concurrent users with sub-second p99. Full report: `tests/load/results/load_report.md`.
+
+**Kubernetes autoscaling (observed, local kind cluster)** — deployed to a local kind cluster and
+drove the Locust load through a NodePort; the HPA scaled on CPU:
+
+| Phase | CPU util / target | Ready pods |
+|---|---|---|
+| baseline | 3% / 50% | **2** |
+| under 500-user load | peaked **300%** / 50% | **6** (scaled 2→6 in ~40s) |
+| load removed | → 3% / 50% | **6 → 3 → 2** (back to floor, ~115s) |
+
+Real run (`make k8s-demo`), 79,228 requests / 0 failures while scaled out. It's a **local kind
+demo, not a cloud/production deployment**, and the HPA is tuned for a short observable run — full
+detail + caveats in `k8s/results/autoscaling_report.md`.
+
+**Multimodal search endpoints** (served from the OpenCLIP gallery, gated/lazy):
+`POST /search/text` (caption→image) and `POST /search/image` (reverse image search). Qualitative
+examples: `eval/results/phase2_qualitative.md`.
 
 ## 🏗️ Architecture
 
@@ -69,7 +127,7 @@ This project demonstrates a **production-ready RAG (Retrieval-Augmented Generati
     └──────────┘
 ```
 
-### Diagram (Mermaid)
+### Layer A — Personal Q&A flow (Mermaid)
 
 ```mermaid
 flowchart TD
@@ -83,6 +141,24 @@ flowchart TD
   KB --> LLM
   LLM --> Response[Answer + Confidence + Sources]
 ```
+
+### Layer B — Multimodal retrieval engine (Mermaid)
+
+The shipped retrieval path is **dense only** (CLIP/OpenCLIP → Qdrant). BM25 + RRF + a
+cross-encoder reranker were evaluated and **did not beat dense** (~0.84 ceiling) — the
+0.942 lift comes from the **ViT-H/14 backbone**, not fusion/reranking.
+
+```mermaid
+flowchart TD
+  TQ[Text caption] --> ENC[CLIP / OpenCLIP ViT-H/14 encoder]
+  IQ[Query image] --> ENC
+  ENC -->|"1024-d normalized embedding"| QD[(Qdrant ANN · 62K image+caption vectors)]
+  QD --> RANK[Ranked images · Recall@5 = 0.942]
+  ENC -. "ablated hybrid" .-> HYB["+ BM25 · RRF · cross-encoder rerank<br/>(did NOT beat dense — see phase3_findings.md)"]
+  HYB -. "no lift" .-> RANK
+```
+
+Served via `POST /search/text` (caption→image) and `POST /search/image` (reverse image).
 
 ## 🛡️ Anti-Hallucination Strategies
 
@@ -213,6 +289,19 @@ curl -X POST "http://localhost:8000/ask" \
     "conversational": false
   }'
 ```
+
+#### Multimodal Search (caption→image / reverse image)
+```bash
+# Text → image: find gallery images matching a description
+curl -X POST "http://localhost:8000/search/text" \
+  -H "Content-Type: application/json" \
+  -d '{"query": "a dog running on the beach", "k": 5}'
+
+# Image → image: upload a photo, get the most similar gallery images
+curl -X POST "http://localhost:8000/search/image?k=5" -F "file=@/path/to/photo.jpg"
+```
+> Served from the OpenCLIP ViT-H/14 gallery when present; returns `503` in the lightweight
+> mock deployment (no multi-GB model is loaded there).
 
 #### Get Metrics
 ```bash

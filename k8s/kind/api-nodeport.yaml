@@ -1,0 +1,20 @@
+# Demo-only NodePort so the host's Locust can reach the API through kube-proxy
+# (load-balanced across all rag-api pods). Production uses the ClusterIP Service
+# (k8s/api-service.yaml) behind the Ingress; this does not replace it.
+apiVersion: v1
+kind: Service
+metadata:
+  name: rag-api-nodeport
+  namespace: rag-system
+  labels:
+    app: rag-api
+    app.kubernetes.io/part-of: rag-system
+spec:
+  type: NodePort
+  selector:
+    app: rag-api
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8000
+      nodePort: 30080

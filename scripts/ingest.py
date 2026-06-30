@@ -18,12 +18,15 @@ JPEGs written to disk). The script reports ingest throughput, which is itself
 evidence. Backend is chosen by VECTOR_BACKEND (default: local Qdrant, no keys).
 
 Memory note (16GB): only CLIP ViT-B/32 (~600MB) + the batch tensors are resident;
-the vector store streams to disk. No reranker/LLM is loaded here.
+the vector store streams to disk. No reranker/LLM is loaded here. The Phase-3b
+backbone (OpenCLIP ViT-H/14, ~3.9GB) is heavier — it ingests with a smaller image
+batch and writes 1024-d vectors to a SEPARATE collection (flickr30k_openclip).
 
 Run:
-    python -m scripts.ingest                      # full corpus, local Qdrant
-    python -m scripts.ingest --limit 500          # quick smoke test
-    VECTOR_BACKEND=pinecone python -m scripts.ingest   # hosted (needs keys)
+    python -m scripts.ingest                          # ViT-B/32, full corpus, local Qdrant
+    python -m scripts.ingest --limit 500              # quick smoke test
+    python -m scripts.ingest --backbone open_clip     # ViT-H/14 (Phase 3b, 1024-d)
+    VECTOR_BACKEND=pinecone python -m scripts.ingest  # hosted (needs keys)
 """
 
 from __future__ import annotations
@@ -43,9 +46,12 @@ if str(REPO_ROOT) not in sys.path:
 
 from src.rag.vector_store import VectorStore  # noqa: E402
 
-COLLECTION = "flickr30k_clip"
-CLIP_DIM = 512
-IMAGE_BATCH = 128
+# Per-backbone vector-store collections. The 512-d ViT-B/32 and 1024-d ViT-H/14
+# vectors MUST live in separate collections — mixing dims in one collection is a bug.
+COLLECTIONS = {"clip": "flickr30k_clip", "open_clip": "flickr30k_openclip"}
+# ViT-H/14 is ~6x the params of ViT-B/32; encode fewer images per batch to stay
+# under the 16GB ceiling (text batches are cheap, shared).
+IMAGE_BATCH = {"clip": 128, "open_clip": 32}
 TEXT_BATCH = 256
 
 
@@ -54,14 +60,56 @@ def _load_clip():
     import clip
 
     device = (
-        "mps"
-        if hasattr(torch.backends, "mps") and torch.backends.mps.is_available()
-        else "cpu"
+        "mps" if hasattr(torch.backends, "mps") and torch.backends.mps.is_available() else "cpu"
     )
     print(f"Loading CLIP ViT-B/32 on {device}...")
     model, preprocess = clip.load("ViT-B/32", device=device)
     model.eval()
     return clip, model, preprocess, device
+
+
+def _load_backbone(backbone: str):
+    """
+    Resolve a backbone name to a uniform encoder interface.
+
+    Returns (encode_images, encode_texts, dim, device, label) where:
+      * encode_images(list_of_PIL) -> (n, dim) L2-normalized float32 array
+      * encode_texts(list_of_str)  -> (n, dim) L2-normalized float32 array
+      * dim is read from the model (never hard-coded for OpenCLIP).
+    """
+    if backbone == "clip":
+        clip_mod, model, preprocess, device = _load_clip()
+
+        def encode_images(pil_images):
+            return _encode_images(model, preprocess, device, pil_images)
+
+        def encode_texts(texts):
+            return _encode_texts(clip_mod, model, device, texts)
+
+        return encode_images, encode_texts, 512, device, "CLIP ViT-B/32 (512-d)"
+
+    if backbone == "open_clip":
+        from src.rag.openclip_retriever import OpenCLIPRetriever
+
+        oc = OpenCLIPRetriever("ViT-H-14", "laion2b_s32b_b79k")
+
+        def encode_images(pil_images):
+            return oc._encode_images_batch(pil_images)
+
+        def encode_texts(texts):
+            return np.asarray(
+                oc._get_embeddings_batch(texts, batch_size=TEXT_BATCH), dtype=np.float32
+            )
+
+        return (
+            encode_images,
+            encode_texts,
+            oc.embed_dim,
+            oc.device,
+            f"OpenCLIP ViT-H/14 laion2b ({oc.embed_dim}-d)",
+        )
+
+    raise SystemExit(f"Unknown backbone '{backbone}'. Choices: clip, open_clip")
 
 
 @torch.no_grad()
@@ -81,7 +129,7 @@ def _encode_texts(clip, model, device, texts: List[str]) -> np.ndarray:
     return feats.cpu().numpy().astype(np.float32)
 
 
-def ingest(limit: int | None = None) -> None:
+def ingest(limit: int | None = None, backbone: str = "clip") -> None:
     from datasets import load_dataset
 
     print("Loading nlphuji/flickr30k (cached after first run)...")
@@ -91,9 +139,11 @@ def ingest(limit: int | None = None) -> None:
     n_images = len(ds)
     print(f"  {n_images} images to ingest (-> {2 * n_images} vectors).")
 
-    clip, model, preprocess, device = _load_clip()
-    store = VectorStore(collection=COLLECTION, dim=CLIP_DIM)
-    print(f"Vector backend: {store.backend} | collection: {COLLECTION}")
+    encode_images, encode_texts, dim, device, label = _load_backbone(backbone)
+    collection = COLLECTIONS[backbone]
+    image_batch = IMAGE_BATCH[backbone]
+    store = VectorStore(collection=collection, dim=dim)
+    print(f"Backbone: {label} | backend: {store.backend} | collection: {collection} | dim: {dim}")
     store.recreate()
 
     next_id = 0
@@ -107,7 +157,7 @@ def ingest(limit: int | None = None) -> None:
         nonlocal next_id, total_img, buf_imgs, buf_meta
         if not buf_imgs:
             return
-        vecs = _encode_images(model, preprocess, device, buf_imgs)
+        vecs = encode_images(buf_imgs)
         ids = list(range(next_id, next_id + len(buf_imgs)))
         store.upsert(ids, vecs, buf_meta)
         next_id += len(buf_imgs)
@@ -118,7 +168,7 @@ def ingest(limit: int | None = None) -> None:
         image_id = str(row.get("img_id") or row.get("filename") or next_id)
         buf_imgs.append(row["image"])
         buf_meta.append({"type": "image", "image_id": image_id, "split": row.get("split", "?")})
-        if len(buf_imgs) >= IMAGE_BATCH:
+        if len(buf_imgs) >= image_batch:
             flush_images()
             elapsed = time.time() - t_start
             print(f"  images {total_img}/{n_images}  ({total_img / elapsed:.0f} img/s)")
@@ -135,7 +185,7 @@ def ingest(limit: int | None = None) -> None:
         nonlocal next_id, total_cap, buf_txt, buf_meta
         if not buf_txt:
             return
-        vecs = _encode_texts(clip, model, device, [t for t, _ in buf_txt])
+        vecs = encode_texts([t for t, _ in buf_txt])
         ids = list(range(next_id, next_id + len(buf_txt)))
         store.upsert(ids, vecs, buf_meta)
         next_id += len(buf_txt)
@@ -158,7 +208,9 @@ def ingest(limit: int | None = None) -> None:
     print("\n" + "=" * 60)
     print("INGEST COMPLETE")
     print("=" * 60)
+    print(f"  Backbone           : {label}")
     print(f"  Backend            : {store.backend}")
+    print(f"  Collection         : {collection}")
     print(f"  Total vectors      : {total}")
     print(f"  Image vectors      : {n_image_vecs}")
     print(f"  Caption vectors    : {store.count(where={'type': 'caption'})}")
@@ -169,8 +221,15 @@ def ingest(limit: int | None = None) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Ingest Flickr30k CLIP vectors into the store.")
     parser.add_argument("--limit", type=int, default=None, help="Cap images (smoke test).")
+    parser.add_argument(
+        "--backbone",
+        default="clip",
+        choices=sorted(COLLECTIONS),
+        help="Dense backbone: 'clip' (ViT-B/32, 512-d, default) or 'open_clip' "
+        "(ViT-H/14 laion2b, 1024-d — Phase 3b, separate collection).",
+    )
     args = parser.parse_args()
-    ingest(limit=args.limit)
+    ingest(limit=args.limit, backbone=args.backbone)
 
 
 if __name__ == "__main__":

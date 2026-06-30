@@ -39,10 +39,21 @@ bit-for-bit by an independent re-run; the reranker demonstrably reorders
 | OpenCLIP ViT-L/14 (laion2b) | 0.909 | 0.953 |
 | **OpenCLIP ViT-H/14 (laion2b)** | **0.929** | 0.963 |
 
-(Measured by the Phase-3 verification agent in this repo's venv on the held-out 1k
-protocol; to be reproduced as a first-class harness artifact in Phase 3b.)
-Corroborated by published standard-protocol R@5 (LAION): OpenAI ViT-L/14 87.0,
-LAION-2B ViT-L/14 92.9, ViT-H/14 94.0.
+(Table above: held-out 1k protocol, early Phase-3 measurement.) **This curve is now a
+reproducible first-class harness artifact** — run `make backbone-sweep` (`eval/backbone_sweep.py`)
+to regenerate it on the standard 5,000-caption protocol, holding training data fixed at
+LAION-2B so only model size varies. Measured result (`backbone_sweep_table.md`):
+
+| Dense backbone (LAION-2B) | Recall@5 | Recall@10 |
+|---|---|---|
+| OpenCLIP ViT-B/32 | 0.881 | 0.934 |
+| OpenCLIP ViT-L/14 | 0.929 | 0.959 |
+| **OpenCLIP ViT-H/14** | **0.942** | 0.967 |
+
+Monotonic in model size, **no reranking** — the lift is the backbone. Corroborated by
+published standard-protocol R@5 (LAION): LAION-2B ViT-L/14 92.9, ViT-H/14 94.0.
+(Note: OpenCLIP ViT-B/32 @ laion2b = 0.881 is higher than the *OpenAI* ViT-B/32 baseline
+shipped in the app = 0.844; same architecture, better training data.)
 
 **Conclusion:** ~0.92 R@5 is honestly reachable on Flickr30k caption→image — via a
 stronger CLIP backbone (OpenCLIP ViT-H/14), NOT via BM25-RRF or a text reranker.
