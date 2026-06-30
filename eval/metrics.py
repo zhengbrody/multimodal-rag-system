@@ -17,7 +17,7 @@ All functions are pure and deterministic so the unit tests can pin exact values.
 from __future__ import annotations
 
 import math
-from typing import Dict, Iterable, List, Sequence, Set
+from typing import Dict, Iterable, Sequence, Set
 
 
 def _as_relevant_set(relevant) -> Set:

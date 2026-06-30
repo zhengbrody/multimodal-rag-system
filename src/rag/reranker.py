@@ -20,7 +20,7 @@ should never be co-resident with a 7B LLM. Use fp16 on MPS/CUDA to halve it.
 
 from __future__ import annotations
 
-from typing import List, Optional, Sequence, Tuple
+from typing import Any, List, Optional, Sequence, Tuple
 
 
 class CrossEncoderReranker:
@@ -29,7 +29,7 @@ class CrossEncoderReranker:
     def __init__(self, model_name: str = "BAAI/bge-reranker-v2-m3", device: Optional[str] = None):
         self.model_name = model_name
         self.device = device
-        self._model = None
+        self._model: Any = None  # lazily-loaded CrossEncoder
 
     def _ensure_loaded(self) -> None:
         if self._model is not None:
@@ -49,7 +49,10 @@ class CrossEncoderReranker:
         print("Cross-encoder loaded.")
 
     def rerank(
-        self, query: str, candidates: Sequence[Tuple[str, str]], top_k: Optional[int] = None,
+        self,
+        query: str,
+        candidates: Sequence[Tuple[str, str]],
+        top_k: Optional[int] = None,
         batch_size: int = 64,
     ) -> List[Tuple[str, float]]:
         """

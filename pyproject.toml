@@ -99,6 +99,6 @@ line-length = 100
 target-version = "py310"
 
 [tool.mypy]
-python_version = "3.10"
+python_version = "3.12"  # repo targets 3.11-3.12 (see CI matrix); 3.10 was stale
 warn_return_any = true
 warn_unused_configs = true

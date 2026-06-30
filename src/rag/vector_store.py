@@ -30,7 +30,7 @@ from __future__ import annotations
 import os
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, List, Optional, Sequence
+from typing import Dict, List, Optional, Sequence, cast
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_LOCAL_PATH = REPO_ROOT / "data" / "flickr30k" / "qdrant"
@@ -57,7 +57,7 @@ class VectorStore:
     ):
         self.collection = collection
         self.dim = dim
-        self.backend = (backend or os.getenv("VECTOR_BACKEND", "local")).lower()
+        self.backend = (backend or os.getenv("VECTOR_BACKEND") or "local").lower()
         self._impl = self._make_backend(local_path)
 
     # -- backend construction -------------------------------------------------
@@ -87,11 +87,11 @@ class VectorStore:
 
     def query(self, vector: Sequence[float], k: int, where: Optional[Dict] = None) -> List[Hit]:
         """Top-k nearest neighbours, optionally filtered by an exact-match metadata dict."""
-        return self._impl.query(vector, k, where)
+        return cast(List[Hit], self._impl.query(vector, k, where))
 
     def count(self, where: Optional[Dict] = None) -> int:
         """Number of stored vectors (optionally matching a metadata filter)."""
-        return self._impl.count(where)
+        return int(self._impl.count(where))
 
     def close(self) -> None:
         """Release the backend (frees the local Qdrant file lock)."""
@@ -135,9 +135,7 @@ class _QdrantBackend:
             return None
         return self._models.Filter(
             must=[
-                self._models.FieldCondition(
-                    key=key, match=self._models.MatchValue(value=value)
-                )
+                self._models.FieldCondition(key=key, match=self._models.MatchValue(value=value))
                 for key, value in where.items()
             ]
         )
@@ -168,9 +166,11 @@ class _QdrantBackend:
         return [Hit(id=str(p.id), score=float(p.score), payload=dict(p.payload or {})) for p in res]
 
     def count(self, where=None) -> int:
-        return self.client.count(
-            collection_name=self.collection, count_filter=self._filter(where)
-        ).count
+        return int(
+            self.client.count(
+                collection_name=self.collection, count_filter=self._filter(where)
+            ).count
+        )
 
     def close(self):
         # Releases the embedded-storage lock so another client can open the path.
@@ -186,12 +186,27 @@ class _QdrantBackend:
 
 
 class _PineconeBackend:
-    def __init__(self, collection: str, dim: int):
-        from pinecone import Pinecone, ServerlessSpec  # lazy: only when selected
+    """
+    Experimental / optional hosted backend. Demonstrates the pluggable-backend design
+    behind the same VectorStore interface, but is NOT exercised in CI/eval (the default
+    'local' Qdrant backend needs no keys). Requires PINECONE_API_KEY and pinecone>=3.
+    """
 
+    def __init__(self, collection: str, dim: int):
+        # Check the key first so the common "no key" case fails fast with a clear message,
+        # before the optional dependency is even imported.
         api_key = os.getenv("PINECONE_API_KEY")
         if not api_key:
-            raise ValueError("VECTOR_BACKEND=pinecone but PINECONE_API_KEY is not set.")
+            raise ValueError(
+                "VECTOR_BACKEND=pinecone but PINECONE_API_KEY is not set. Pinecone is an "
+                "experimental/optional backend; the default 'local' Qdrant backend needs no keys."
+            )
+        try:
+            from pinecone import Pinecone, ServerlessSpec  # lazy: only when selected
+        except ImportError as e:
+            raise ImportError(
+                "VECTOR_BACKEND=pinecone requires the optional 'pinecone-client>=3' package."
+            ) from e
         self.collection = collection
         self.dim = dim
         self._pc = Pinecone(api_key=api_key)
@@ -255,4 +270,4 @@ class _PineconeBackend:
     def count(self, where=None) -> int:
         # NOTE: Pinecone has no cheap filtered count; this returns the index-wide
         # total and IGNORES `where`. Do not rely on filtered counts on this backend.
-        return self.index.describe_index_stats().get("total_vector_count", 0)
+        return int(self.index.describe_index_stats().get("total_vector_count", 0))

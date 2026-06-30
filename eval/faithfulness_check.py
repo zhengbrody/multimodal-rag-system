@@ -103,7 +103,7 @@ def main() -> None:
         hits = client.query_points(
             "faith", query=queries[q].tolist(), limit=DEPTH, with_payload=True
         ).points
-        q_rows = [h.payload["row"] for h in hits]
+        q_rows = [(h.payload or {})["row"] for h in hits]
         n_rows = list(numpy_topk[q])
         if q_rows[0] == n_rows[0]:
             top1_match += 1

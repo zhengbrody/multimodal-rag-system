@@ -62,8 +62,10 @@ def prepare(max_images: int | None = None, force: bool = False) -> None:
 
     expected = max_images or 1000
     if not force and _already_prepared(expected):
-        print(f"Eval set already prepared at {DATA_DIR} ({expected} images). "
-              "Use --force to rebuild.")
+        print(
+            f"Eval set already prepared at {DATA_DIR} ({expected} images). "
+            "Use --force to rebuild."
+        )
         return
 
     print("Loading nlphuji/flickr30k (this downloads ~4GB on first run)...")
