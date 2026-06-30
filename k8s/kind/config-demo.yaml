@@ -1,0 +1,16 @@
+# Demo override of the app ConfigMap: run KEY-FREE in mock mode (the committed
+# k8s/configmap.yaml is the production variant with USE_MOCK=false + OpenAI/Pinecone).
+# Same name (rag-system-config) so the Deployment's envFrom picks it up unchanged.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rag-system-config
+  namespace: rag-system
+  labels:
+    app.kubernetes.io/part-of: rag-system
+data:
+  USE_MOCK: "true"
+  API_HOST: "0.0.0.0"
+  API_PORT: "8000"
+  ENVIRONMENT: "demo"
+  LOG_LEVEL: "WARNING"

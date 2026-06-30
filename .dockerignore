@@ -13,8 +13,16 @@ __pycache__/
 logs/
 data/processed/
 data/raw/*.pkl
+# Large eval/retrieval artifacts — must NOT bloat the API image build context
+data/flickr30k/
 venv/
 .venv/
+.venv-eval/
+.venv*/
+eval/results/
+tests/load/results/
+docs/
+*.md
 node_modules/
 dist/
 build/

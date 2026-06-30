@@ -1,0 +1,13 @@
+# Local kind cluster for the HPA autoscaling demo.
+# Maps the NodePort (30080) to host localhost:8000 so the existing Locust load test
+# can hit the Service through kube-proxy (load-balanced across all pods, which is what
+# lets HPA see aggregate CPU rise and scale out).
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+name: rag-demo
+nodes:
+  - role: control-plane
+    extraPortMappings:
+      - containerPort: 30080
+        hostPort: 8000
+        protocol: TCP
